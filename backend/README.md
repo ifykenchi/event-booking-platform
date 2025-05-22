@@ -83,7 +83,8 @@ Each week includes: Learning goals Implementation goals Deliverables
 
 ### Week 3: Booking System
 
-- Learning Goals:
+#### Learning Goals:
+
 - Learn relational data modeling (referencing in MongoDB)
 - Form handling in Angular and React Native
 - Error handling (seat limits, duplicates)
@@ -104,7 +105,8 @@ Each week includes: Learning goals Implementation goals Deliverables
 
 ### Week 4: Dashboard, Testing, and Polishing
 
-- Learning Goals:
+#### Learning Goals:
+
 - Use of aggregations in MongoDB
 - Display charts/statistics (Angular)
 - Learn basic testing (Postman tests or Jest for backend)
