@@ -9,15 +9,15 @@ import { signupPost } from '../../../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../../services/register.service';
 
 @Component({
-  selector: 'app-user-signup',
+  selector: 'app-admin-login',
   imports: [ReactiveFormsModule],
-  templateUrl: './user-signup.component.html',
-  styleUrl: './user-signup.component.css',
+  templateUrl: './admin-login.component.html',
+  styleUrl: './admin-login.component.css',
 })
-export class UserSignupComponent {
+export class AdminLoginComponent {
   constructor(private registerService: RegisterService) {}
 
-  userSignupForm = new FormGroup({
+  adminLoginForm = new FormGroup({
     username: new FormControl<string>('', {
       nonNullable: true,
       validators: [
@@ -45,27 +45,23 @@ export class UserSignupComponent {
   });
 
   get username() {
-    return this.userSignupForm.controls.username;
+    return this.adminLoginForm.controls.username;
   }
-
   get email() {
-    return this.userSignupForm.controls.email;
+    return this.adminLoginForm.controls.email;
   }
-
   get password() {
-    return this.userSignupForm.controls.password;
+    return this.adminLoginForm.controls.password;
   }
 
   onSubmit() {
-    if (this.userSignupForm.valid) {
-      const newUser = this.userSignupForm.value as signupPost;
-      this.registerService.userSignup(newUser).subscribe({
+    if (this.adminLoginForm.valid) {
+      const newAdmin = this.adminLoginForm.value as signupPost;
+      this.registerService.adminLogin(newAdmin).subscribe({
         next: (res) => console.log('Success!', res),
         error: (err) => console.error('Error!', err),
       });
-      // console.log('Form Submitted!', newUser);
-      // next: (res) => this.router.navigate(['/dashboard']),
-      this.userSignupForm.reset();
+      this.adminLoginForm.reset();
     } else {
       console.log('Form is invalid');
     }

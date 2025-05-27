@@ -5,6 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { signupPost } from '../../../../../interfaces/services.interfaces';
+import { RegisterService } from '../../../../services/register.service';
 
 @Component({
   selector: 'app-admin-signup',
@@ -13,18 +15,34 @@ import {
   styleUrl: './admin-signup.component.css',
 })
 export class AdminSignupComponent {
+  constructor(private registerService: RegisterService) {}
+  // constructor() {}
+  // ngOnInit() {}
+
   adminSignupForm = new FormGroup({
     username: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.min(3), Validators.max(30), Validators.required],
+      validators: [
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.required,
+      ],
     }),
     email: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.email, Validators.max(30), Validators.required],
+      validators: [
+        Validators.email,
+        Validators.maxLength(30),
+        Validators.required,
+      ],
     }),
     password: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.min(6), Validators.max(30), Validators.required],
+      validators: [
+        Validators.minLength(6),
+        Validators.maxLength(30),
+        Validators.required,
+      ],
     }),
   });
 
@@ -42,7 +60,14 @@ export class AdminSignupComponent {
 
   onSubmit() {
     if (this.adminSignupForm.valid) {
-      console.log('Form Submitted!', this.adminSignupForm.value);
+      const newAdmin = this.adminSignupForm.value as signupPost;
+      this.registerService.adminSignup(newAdmin).subscribe({
+        next: (res) => console.log('Success!', res),
+        error: (err) => console.error('Error!', err),
+      });
+      // console.log('Form Submitted!', newAdmin);
+      // next: (res) => this.router.navigate(['/dashboard']),
+      this.adminSignupForm.reset();
     } else {
       console.log('Form is invalid');
     }
