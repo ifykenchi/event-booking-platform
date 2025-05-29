@@ -1,32 +1,45 @@
 import { Response, Request } from "express";
 import UserAuthController from "../controllers/userauth.control";
+import { RootService } from "./_root.service";
 
-class UserService {
+class UserService extends RootService {
 	register = async (req: Request, res: Response) => {
+		const actionType = "USER_REGISTER";
 		try {
 			const output = await UserAuthController.register(req.body);
-
-			if (output.error) {
-				res.status(400).json(output);
-			}
-
-			res.status(201).json(output);
+			this.sendResponse({
+				res,
+				status: 201,
+				data: output,
+				actionType,
+			});
 		} catch (error: any) {
-			res.status(500).json({ error: error.message });
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+				actionType,
+			});
 		}
 	};
 
 	login = async (req: Request, res: Response) => {
+		const actionType = "USER_LOGIN";
 		try {
 			const output = await UserAuthController.login(req.body);
-
-			if (output.error) {
-				res.status(400).json(output);
-			}
-
-			res.status(200).json(output);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+				actionType,
+			});
 		} catch (error: any) {
-			res.status(500).json({ error: error.message });
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+				actionType,
+			});
 		}
 	};
 }

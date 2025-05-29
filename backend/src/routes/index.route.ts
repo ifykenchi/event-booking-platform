@@ -9,10 +9,10 @@ export const routes = (app: express.Application) => {
 	router = express.Router();
 
 	console.log(chalk.yellow.bgBlack.bold("Loading user routes"));
-	usersRoute.loadRoutes("/api", router);
+	usersRoute.loadRoutes("/", router);
 
 	console.log(chalk.yellow.bgBlack.bold("Loading admin routes"));
-	adminRoute.loadRoutes("/api/admin", router);
+	adminRoute.loadRoutes("/admin", router);
 
 	router.get("/", (req, res) => {
 		res.send(`Welcome to the Event Booking App - ${env.NODE_ENV}`);

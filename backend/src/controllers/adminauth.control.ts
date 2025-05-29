@@ -9,10 +9,10 @@ class AdminAuthController {
 			const isAdmin = await Admin.findOne({ email: email });
 			if (isAdmin) {
 				const response = {
-					error: true,
+					status: 400,
 					message: "Admin already exists",
 				};
-				return response;
+				throw response;
 			}
 			const admin = new Admin({
 				username,
@@ -21,7 +21,8 @@ class AdminAuthController {
 			});
 			admin.password = await hash(admin.password);
 			await admin.save();
-			const accessToken = TokenUtil.register_admin({ admin });
+			const newAdmin = { admin: admin };
+			const accessToken = TokenUtil.register_admin(newAdmin);
 			const response = {
 				error: false,
 				admin,
@@ -36,31 +37,30 @@ class AdminAuthController {
 
 	login = async (payload: any) => {
 		try {
-			const { username, email, password } = payload;
-			const isAdmin = await Admin.findOne({ username: username, email: email });
+			const { email, password } = payload;
+			const isAdmin = await Admin.findOne({ email: email });
 
 			if (!isAdmin) {
 				const response = {
-					error: true,
-					message: "Invalid username or email",
+					status: 400,
+					message: "Invalid email",
 				};
-				return response;
+				throw response;
 			}
 
 			const validPassword = await isMatch(password, isAdmin.password);
 
 			if (!validPassword) {
 				const response = {
-					error: true,
+					status: 400,
 					message: "Invalid password",
 				};
-				return response;
+				throw response;
 			}
 
 			const admin = { admin: isAdmin };
-			const accessToken = TokenUtil.register_user({ admin });
+			const accessToken = TokenUtil.register_admin(admin);
 			const response = {
-				error: false,
 				email,
 				accessToken,
 				message: "Admin Login Successful",

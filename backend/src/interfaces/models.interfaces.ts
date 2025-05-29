@@ -11,3 +11,10 @@ export interface IAdmin extends Document {
 	email: string;
 	password: string;
 }
+
+export interface IEvent extends Document {
+	title: string;
+	about: string;
+	userId: string;
+	createdOn: Date;
+}

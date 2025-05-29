@@ -13,7 +13,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class RegisterService {
-  private apiUrl = 'http://localhost:8082/api';
+  private apiUrl = 'http://localhost:8082';
 
   constructor(private http: HttpClient) {}
 

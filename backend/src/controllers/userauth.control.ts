@@ -9,10 +9,10 @@ class UserAuthController {
 			const isUser = await User.findOne({ email: email });
 			if (isUser) {
 				const response = {
-					error: true,
+					status: 400,
 					message: "User already exists",
 				};
-				return response;
+				throw response;
 			}
 			const user = new User({
 				username,
@@ -38,31 +38,30 @@ class UserAuthController {
 
 	login = async (payload: any) => {
 		try {
-			const { username, email, password } = payload;
-			const isUser = await User.findOne({ username: username, email: email });
+			const { email, password } = payload;
+			const isUser = await User.findOne({ email: email });
 
 			if (!isUser) {
 				const response = {
-					error: true,
-					message: "Invalid username or email",
+					status: 400,
+					message: "Invalid email",
 				};
-				return response;
+				throw response;
 			}
 
 			const validPassword = await isMatch(password, isUser.password);
 
 			if (!validPassword) {
 				const response = {
-					error: true,
+					status: 400,
 					message: "Invalid password",
 				};
-				return response;
+				throw response;
 			}
 
 			const user = { user: isUser };
 			const accessToken = TokenUtil.register_user({ user });
 			const response = {
-				error: false,
 				email,
 				accessToken,
 				message: "Login Successful",

@@ -10,21 +10,21 @@ class UserRoute {
 		this.login(prefix, router);
 	}
 	private test(prefix: string, router: Router) {
-		router.get(`${prefix}`, (req, res) => {
+		router.get(`${prefix}`, (_req, res) => {
 			res.send("<h1>Server is running...</h1>");
 		});
 	}
 	private register(prefix: string, router: Router) {
 		router.post(
-			`${prefix}/register`,
+			`${prefix}register`,
 			Joi.vdtor(SchemaValidator.register),
 			UserService.register
 		);
 	}
 	private login(prefix: string, router: Router) {
 		router.post(
-			`${prefix}/login`,
-			Joi.vdtor(SchemaValidator.register),
+			`${prefix}login`,
+			Joi.vdtor(SchemaValidator.login),
 			UserService.login
 		);
 	}
