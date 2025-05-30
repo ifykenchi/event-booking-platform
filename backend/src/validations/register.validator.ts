@@ -27,11 +27,15 @@ class SchemaValidator {
 	public validEvent = joi.object({
 		title: joi.string().min(3).max(50).required(),
 		about: joi.string().min(6).max(3000).required(),
-		userId: joi.string().required(),
+		category: joi.string().min(3).max(300).required(),
 		createdOn: joi.date(),
 	});
-	// .length(24) // Must be exactly 24 chars
-	// .hex() // Must be a hexadecimal string (0-9, a-f)
+
+	public editEvent = joi.object({
+		title: joi.string().min(3).max(50),
+		about: joi.string().min(6).max(3000),
+		category: joi.string().min(3).max(3000),
+	});
 }
 
 export default new SchemaValidator();

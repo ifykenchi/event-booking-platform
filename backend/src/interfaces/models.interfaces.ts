@@ -15,6 +15,6 @@ export interface IAdmin extends Document {
 export interface IEvent extends Document {
 	title: string;
 	about: string;
-	userId: string;
+	category: string;
 	createdOn: Date;
 }

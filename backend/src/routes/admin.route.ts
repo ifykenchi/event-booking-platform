@@ -11,6 +11,9 @@ class AdminRoute {
 		this.login(prefix, router);
 		this.addEvent(prefix, router);
 		this.getAllEvents(prefix, router);
+		this.getEvent(prefix, router);
+		this.editEvent(prefix, router);
+		this.deleteEvent(prefix, router);
 	}
 	private test(prefix: string, router: Router) {
 		router.get(`${prefix}`, (_req, res) => {
@@ -44,6 +47,28 @@ class AdminRoute {
 			`${prefix}/get-all-events`,
 			AuthMidware.authAdmin,
 			AdminService.getAllEvents
+		);
+	}
+	private getEvent(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/get-event/:eventId`,
+			AuthMidware.authAdmin,
+			AdminService.getEvent
+		);
+	}
+	private editEvent(prefix: string, router: Router) {
+		router.post(
+			`${prefix}/edit-event/:eventId`,
+			AuthMidware.authAdmin,
+			Joi.vdtor(SchemaValidator.editEvent),
+			AdminService.editEvent
+		);
+	}
+	private deleteEvent(prefix: string, router: Router) {
+		router.post(
+			`${prefix}/delete-event/:eventId`,
+			AuthMidware.authAdmin,
+			AdminService.deleteEvent
 		);
 	}
 }

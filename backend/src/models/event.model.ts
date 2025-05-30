@@ -4,7 +4,7 @@ import type { IEvent } from "../interfaces/models.interfaces";
 const eventSchema: Schema = new Schema({
 	title: { type: String },
 	about: { type: String },
-	userId: { type: String },
+	category: { type: String },
 	createdOn: { type: Date, default: new Date().getTime() },
 });
 

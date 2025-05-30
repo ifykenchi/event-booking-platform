@@ -1,5 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import env from "../env";
+import { Request } from "express";
 
 class TokenUtil {
 	register_user(payload: any) {
@@ -20,6 +21,15 @@ class TokenUtil {
 		return jwt.sign(payload, env.ADMIN_TOKEN_SECRET, {
 			expiresIn: "36000m",
 		});
+	}
+
+	get_token(req: Request) {
+		const authHeader = req.headers.authorization;
+		if (!authHeader) {
+			throw new Error("Authorization header is missing or invalid");
+		}
+		const token = authHeader.split(" ")[1];
+		return token;
 	}
 
 	verify_user(token: string) {

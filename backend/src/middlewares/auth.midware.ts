@@ -4,11 +4,7 @@ import { Request, Response, NextFunction } from "express";
 class AuthMidWare {
 	private _is_authenticated = async (req: Request, role: string) => {
 		try {
-			const authHeader = req.headers.authorization;
-			if (!authHeader) {
-				throw new Error("Authorization header is missing or invalid");
-			}
-			const token = authHeader.split(" ")[1];
+			const token = TokenUtil.get_token(req);
 			if (role === "admin") {
 				const tokenData = TokenUtil.verify_admin(token);
 				if (!tokenData) {
@@ -28,13 +24,39 @@ class AuthMidWare {
 		}
 	};
 
+	private _admin_authenticated = async (req: Request) => {
+		try {
+			const token = TokenUtil.get_token(req);
+			const tokenData = TokenUtil.verify_admin(token);
+			if (!tokenData) {
+				throw new Error("Token verification failed");
+			}
+			(req as any).user = tokenData;
+		} catch (error: any) {
+			throw new Error("Authentication failed: " + error.message);
+		}
+	};
+
+	private _user_authenticated = async (req: Request) => {
+		try {
+			const token = TokenUtil.get_token(req);
+			const tokenData = TokenUtil.verify_user(token);
+			if (!tokenData) {
+				throw new Error("Token verification failed");
+			}
+			(req as any).user = tokenData;
+		} catch (error: any) {
+			throw new Error("Authentication failed: " + error.message);
+		}
+	};
+
 	authAdmin = async (
 		req: Request,
 		res: Response,
 		next: NextFunction
 	): Promise<void> => {
 		try {
-			await this._is_authenticated(req, "admin");
+			await this._admin_authenticated(req);
 			next();
 		} catch (error: any) {
 			res.status(401).json({
@@ -49,7 +71,7 @@ class AuthMidWare {
 		next: NextFunction
 	): Promise<void> => {
 		try {
-			await this._is_authenticated(req, "user");
+			await this._user_authenticated(req);
 			next();
 		} catch (error: any) {
 			res.status(401).json({
