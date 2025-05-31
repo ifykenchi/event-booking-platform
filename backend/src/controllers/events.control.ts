@@ -1,7 +1,7 @@
 import Event from "../models/event.model";
 import { Request } from "express";
 
-class AdminEventController {
+class EventsController {
 	addEvent = async (req: Request) => {
 		try {
 			const { title, about, category } = req.body;
@@ -83,6 +83,27 @@ class AdminEventController {
 		}
 	};
 
+	searchEvents = async (payload: { key: any; value: any }, select = "") => {
+		try {
+			if (!payload.key || !payload.value) {
+				const response = {
+					status: 400,
+					message: "Both 'key' and 'value' query parameters are required",
+				};
+				throw response;
+			}
+			const regrex = new RegExp(`${payload.value}`, "i");
+			const records = await Event.find({
+				[payload.key]: { $regex: regrex },
+			}).select(select);
+			if (!records) throw { message: `${Event.collection.name} not found` };
+			// if (!records.length) throw { message: `${Event.collection.name} not found` };
+			return records;
+		} catch (error) {
+			throw error;
+		}
+	};
+
 	deleteEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
@@ -105,4 +126,4 @@ class AdminEventController {
 	};
 }
 
-export default new AdminEventController();
+export default new EventsController();

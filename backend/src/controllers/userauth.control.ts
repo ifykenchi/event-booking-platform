@@ -24,7 +24,6 @@ class UserAuthController {
 
 			const accessToken = TokenUtil.register_user({ user });
 			const response = {
-				error: false,
 				user,
 				accessToken,
 				message: "Registration Successful",

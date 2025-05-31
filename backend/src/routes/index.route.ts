@@ -9,7 +9,7 @@ export const routes = (app: express.Application) => {
 	router = express.Router();
 
 	console.log(chalk.yellow.bgBlack.bold("Loading user routes"));
-	usersRoute.loadRoutes("/", router);
+	usersRoute.loadRoutes("/user", router);
 
 	console.log(chalk.yellow.bgBlack.bold("Loading admin routes"));
 	adminRoute.loadRoutes("/admin", router);

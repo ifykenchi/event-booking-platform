@@ -36,7 +36,7 @@ class AdminRoute {
 	}
 	private addEvent(prefix: string, router: Router) {
 		router.post(
-			`${prefix}/add-event`,
+			`${prefix}/event`,
 			AuthMidware.authAdmin,
 			Joi.vdtor(SchemaValidator.validEvent),
 			AdminService.addEvent
@@ -44,29 +44,29 @@ class AdminRoute {
 	}
 	private getAllEvents(prefix: string, router: Router) {
 		router.get(
-			`${prefix}/get-all-events`,
+			`${prefix}/events`,
 			AuthMidware.authAdmin,
 			AdminService.getAllEvents
 		);
 	}
 	private getEvent(prefix: string, router: Router) {
 		router.get(
-			`${prefix}/get-event/:eventId`,
+			`${prefix}/event/:eventId`,
 			AuthMidware.authAdmin,
 			AdminService.getEvent
 		);
 	}
 	private editEvent(prefix: string, router: Router) {
-		router.post(
-			`${prefix}/edit-event/:eventId`,
+		router.patch(
+			`${prefix}/event/:eventId`,
 			AuthMidware.authAdmin,
 			Joi.vdtor(SchemaValidator.editEvent),
 			AdminService.editEvent
 		);
 	}
 	private deleteEvent(prefix: string, router: Router) {
-		router.post(
-			`${prefix}/delete-event/:eventId`,
+		router.delete(
+			`${prefix}/delete/:eventId`,
 			AuthMidware.authAdmin,
 			AdminService.deleteEvent
 		);

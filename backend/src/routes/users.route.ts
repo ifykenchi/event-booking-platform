@@ -19,28 +19,28 @@ class UserRoute {
 	}
 	private register(prefix: string, router: Router) {
 		router.post(
-			`${prefix}register`,
+			`${prefix}/register`,
 			Joi.vdtor(SchemaValidator.register),
 			UserService.register
 		);
 	}
 	private login(prefix: string, router: Router) {
 		router.post(
-			`${prefix}login`,
+			`${prefix}/login`,
 			Joi.vdtor(SchemaValidator.login),
 			UserService.login
 		);
 	}
 	private getAllEvents(prefix: string, router: Router) {
 		router.get(
-			`${prefix}get-all-events`,
+			`${prefix}/events`,
 			AuthMidware.authUser,
 			UserService.getAllEvents
 		);
 	}
 	private searchEvents(prefix: string, router: Router) {
 		router.get(
-			`${prefix}search-events`,
+			`${prefix}/search`,
 			AuthMidware.authUser,
 			UserService.searchEvents
 		);
