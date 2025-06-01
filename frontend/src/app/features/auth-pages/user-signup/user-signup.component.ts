@@ -8,10 +8,11 @@ import {
 import { signupPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-signup',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './user-signup.component.html',
   styleUrl: './user-signup.component.css',
 })

@@ -5,20 +5,29 @@ import { AdminLoginComponent } from './features/auth-pages/admin-login/admin-log
 import { UserLoginComponent } from './features/auth-pages/user-login/user-login.component';
 
 export const routes: Routes = [
+  // {
+  //   path: '/',
+  //   redirectTo: 'user/login',
+  //   component: UserLoginComponent,
+  // },
   {
     path: 'user/register',
+    title: 'User Signup Page',
     component: UserSignupComponent,
   },
   {
     path: 'user/login',
+    title: 'User Login Page',
     component: UserLoginComponent,
   },
   {
     path: 'admin/register',
+    title: 'Admin Signup Page',
     component: AdminSignupComponent,
   },
   {
     path: 'admin/login',
+    title: 'Admin Login Page',
     component: AdminLoginComponent,
   },
 ];

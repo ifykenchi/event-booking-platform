@@ -1,7 +1,11 @@
-<div class="mt-5">
-  <h1>Admin Login</h1>
+<div class="container mt-5">
+  <h1 class="mb-4">Admin Login</h1>
 
-  <form [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="adminLoginForm"
+    (ngSubmit)="onSubmit()"
+    style="width: 500px"
+  >
     <div class="mb-3">
       <label for="email" class="form-label">Email address</label>
       <input
@@ -71,4 +75,8 @@
       Submit
     </button>
   </form>
+
+  <p class="mt-2">
+    Don't have an account? <a routerLink="/admin/register">Sign Up</a>
+  </p>
 </div>
