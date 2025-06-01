@@ -1,0 +1,108 @@
+<div class="mt-5">
+  <h1>Admin Signup</h1>
+
+  <form [formGroup]="adminSignupForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        aria-describedby="username"
+        formControlName="username"
+      />
+
+      <div *ngIf="username.invalid && (username.dirty || username.touched)">
+        <p
+          *ngIf="username.hasError('required')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Username is required.
+        </p>
+        <p
+          *ngIf="username.hasError('minlength')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Username must be at least 3 characters long.
+        </p>
+        <p
+          *ngIf="username.hasError('maxlength')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Username cannot exceed 30 characters.
+        </p>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        aria-describedby="emailHelp"
+        formControlName="email"
+      />
+      <div *ngIf="email.invalid && (email.dirty || email.touched)">
+        <p
+          *ngIf="email.hasError('required')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Email is required.
+        </p>
+        <p
+          *ngIf="email.hasError('email')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Please enter a valid email.
+        </p>
+        <p
+          *ngIf="email.hasError('maxlength')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Email cannot exceed 30 characters.
+        </p>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+      />
+      <div *ngIf="password.invalid && (password.dirty || password.touched)">
+        <p
+          *ngIf="password.hasError('required')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Password is required.
+        </p>
+        <p *ngIf="password.hasError('minlength')" class="alert alert-danger">
+          Password must be at least 6 characters long
+        </p>
+        <p
+          *ngIf="password.hasError('maxlength')"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Password cannot exceed 30 characters.
+        </p>
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="adminSignupForm.valid === false"
+    >
+      Submit
+    </button>
+  </form>
+</div>

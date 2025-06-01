@@ -5,12 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { signupPost } from '../../../../../interfaces/services.interfaces';
-import { RegisterService } from '../../../../services/register.service';
+import { loginPost } from '../../../interfaces/services.interfaces';
+import { RegisterService } from '../../../services/register.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.css',
 })
@@ -18,14 +19,6 @@ export class UserLoginComponent {
   constructor(private registerService: RegisterService) {}
 
   userLoginForm = new FormGroup({
-    username: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [
-        Validators.minLength(3),
-        Validators.maxLength(30),
-        Validators.required,
-      ],
-    }),
     email: new FormControl<string>('', {
       nonNullable: true,
       validators: [
@@ -44,9 +37,6 @@ export class UserLoginComponent {
     }),
   });
 
-  get username() {
-    return this.userLoginForm.controls.username;
-  }
   get email() {
     return this.userLoginForm.controls.email;
   }
@@ -56,7 +46,7 @@ export class UserLoginComponent {
 
   onSubmit() {
     if (this.userLoginForm.valid) {
-      const newUser = this.userLoginForm.value as signupPost;
+      const newUser = this.userLoginForm.value as loginPost;
       this.registerService.userLogin(newUser).subscribe({
         next: (res) => console.log('Success!', res),
         error: (err) => console.error('Error!', err),

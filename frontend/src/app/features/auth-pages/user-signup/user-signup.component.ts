@@ -5,12 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { signupPost } from '../../../../../interfaces/services.interfaces';
-import { RegisterService } from '../../../../services/register.service';
+import { signupPost } from '../../../interfaces/services.interfaces';
+import { RegisterService } from '../../../services/register.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-signup',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './user-signup.component.html',
   styleUrl: './user-signup.component.css',
 })

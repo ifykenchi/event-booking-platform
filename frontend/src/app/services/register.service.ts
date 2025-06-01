@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { signupPost } from '../../interfaces/services.interfaces';
+import { signupPost, loginPost } from '../interfaces/services.interfaces';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -25,15 +25,15 @@ export class RegisterService {
     );
   }
 
-  adminLogin(newAdmin: signupPost): Observable<any> {
+  adminLogin(newAdmin: loginPost): Observable<any> {
     return this.http.post(`${this.apiUrl}/admin/login`, newAdmin, httpOptions);
   }
 
   userSignup(newUser: signupPost): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, newUser, httpOptions);
+    return this.http.post(`${this.apiUrl}/user/register`, newUser, httpOptions);
   }
 
-  userLogin(newUser: signupPost): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, newUser, httpOptions);
+  userLogin(newUser: loginPost): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/login`, newUser, httpOptions);
   }
 }

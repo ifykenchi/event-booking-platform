@@ -5,19 +5,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { signupPost } from '../../../../../interfaces/services.interfaces';
-import { RegisterService } from '../../../../services/register.service';
+import { signupPost } from '../../../interfaces/services.interfaces';
+import { RegisterService } from '../../../services/register.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-admin-login',
-  imports: [ReactiveFormsModule],
-  templateUrl: './admin-login.component.html',
-  styleUrl: './admin-login.component.css',
+  selector: 'app-admin-signup',
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './admin-signup.component.html',
+  styleUrl: './admin-signup.component.css',
 })
-export class AdminLoginComponent {
+export class AdminSignupComponent {
   constructor(private registerService: RegisterService) {}
+  // constructor() {}
+  // ngOnInit() {}
 
-  adminLoginForm = new FormGroup({
+  adminSignupForm = new FormGroup({
     username: new FormControl<string>('', {
       nonNullable: true,
       validators: [
@@ -45,23 +48,27 @@ export class AdminLoginComponent {
   });
 
   get username() {
-    return this.adminLoginForm.controls.username;
+    return this.adminSignupForm.controls.username;
   }
+
   get email() {
-    return this.adminLoginForm.controls.email;
+    return this.adminSignupForm.controls.email;
   }
+
   get password() {
-    return this.adminLoginForm.controls.password;
+    return this.adminSignupForm.controls.password;
   }
 
   onSubmit() {
-    if (this.adminLoginForm.valid) {
-      const newAdmin = this.adminLoginForm.value as signupPost;
-      this.registerService.adminLogin(newAdmin).subscribe({
+    if (this.adminSignupForm.valid) {
+      const newAdmin = this.adminSignupForm.value as signupPost;
+      this.registerService.adminSignup(newAdmin).subscribe({
         next: (res) => console.log('Success!', res),
         error: (err) => console.error('Error!', err),
       });
-      this.adminLoginForm.reset();
+      // console.log('Form Submitted!', newAdmin);
+      // next: (res) => this.router.navigate(['/dashboard']),
+      this.adminSignupForm.reset();
     } else {
       console.log('Form is invalid');
     }
