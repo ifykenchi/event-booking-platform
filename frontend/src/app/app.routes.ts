@@ -3,13 +3,15 @@ import { UserSignupComponent } from './features/auth-pages/user-signup/user-sign
 import { AdminSignupComponent } from './features/auth-pages/admin-signup/admin-signup.component';
 import { AdminLoginComponent } from './features/auth-pages/admin-login/admin-login.component';
 import { UserLoginComponent } from './features/auth-pages/user-login/user-login.component';
+import { adminGuard } from './guards/admin.guard';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
-  // {
-  //   path: '/',
-  //   redirectTo: 'user/login',
-  //   component: UserLoginComponent,
-  // },
+  {
+    path: '',
+    redirectTo: 'user/register',
+    pathMatch: 'full',
+  },
   {
     path: 'user/register',
     title: 'User Signup Page',
@@ -19,6 +21,7 @@ export const routes: Routes = [
     path: 'user/login',
     title: 'User Login Page',
     component: UserLoginComponent,
+    canActivate: [userGuard],
   },
   {
     path: 'admin/register',
@@ -30,4 +33,5 @@ export const routes: Routes = [
     title: 'Admin Login Page',
     component: AdminLoginComponent,
   },
+  { path: '**', redirectTo: 'user/register' },
 ];

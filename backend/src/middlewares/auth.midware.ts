@@ -2,28 +2,6 @@ import TokenUtil from "../utilities/token.util";
 import { Request, Response, NextFunction } from "express";
 
 class AuthMidWare {
-	// private _is_authenticated = async (req: Request, role: string) => {
-	// 	try {
-	// 		const token = TokenUtil.get_token(req);
-	// 		if (role === "admin") {
-	// 			const tokenData = TokenUtil.verify_admin(token);
-	// 			if (!tokenData) {
-	// 				throw new Error("Token verification failed");
-	// 			}
-	// 			(req as any).user = tokenData;
-	// 		}
-	// 		if (role === "user") {
-	// 			const tokenData = TokenUtil.verify_user(token);
-	// 			if (!tokenData) {
-	// 				throw new Error("Token verification failed");
-	// 			}
-	// 			(req as any).user = tokenData;
-	// 		}
-	// 	} catch (error: any) {
-	// 		throw new Error("Authentication failed: " + error.message);
-	// 	}
-	// };
-
 	private _admin_authenticated = async (req: Request) => {
 		try {
 			const token = TokenUtil.get_token(req);

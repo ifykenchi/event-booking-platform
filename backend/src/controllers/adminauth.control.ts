@@ -22,11 +22,11 @@ class AdminAuthController {
 			admin.password = await hash(admin.password);
 			await admin.save();
 			const newAdmin = { admin: admin };
-			const accessToken = TokenUtil.register_admin(newAdmin);
+			const adminToken = TokenUtil.register_admin(newAdmin);
 			const response = {
 				error: false,
 				admin,
-				accessToken,
+				adminToken,
 				message: "Admin Registration Successful",
 			};
 			return response;
@@ -59,10 +59,10 @@ class AdminAuthController {
 			}
 
 			const admin = { admin: isAdmin };
-			const accessToken = TokenUtil.register_admin(admin);
+			const adminToken = TokenUtil.register_admin(admin);
 			const response = {
 				email,
-				accessToken,
+				adminToken,
 				message: "Admin Login Successful",
 			};
 
