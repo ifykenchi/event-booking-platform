@@ -18,7 +18,18 @@ export class LocalStorageService {
     localStorage.removeItem(key);
   }
 
+  isLoggedIn(): boolean {
+    if (
+      localStorage.getItem('accessToken') ||
+      localStorage.getItem('adminToken')
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   clear(): void {
-    localStorage.clear();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('adminToken');
   }
 }

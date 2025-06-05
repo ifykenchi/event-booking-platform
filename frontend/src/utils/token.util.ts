@@ -1,7 +1,7 @@
 class TokenUtil {
   user_token() {
     if (localStorage.getItem('accessToken')) return true;
-    return true;
+    return false;
   }
 
   admin_token() {
