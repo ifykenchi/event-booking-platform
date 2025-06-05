@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,7 +8,7 @@ import {
 import { loginPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-login',
@@ -17,7 +17,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './user-login.component.css',
 })
 export class UserLoginComponent {
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private router: Router
+  ) {}
 
   userLoginForm = new FormGroup({
     email: new FormControl<string>('', {
@@ -49,7 +52,10 @@ export class UserLoginComponent {
     if (this.userLoginForm.valid) {
       const newUser = this.userLoginForm.value as loginPost;
       this.registerService.userLogin(newUser).subscribe({
-        next: (res) => console.log('Success!', res),
+        next: (res) => {
+          console.log('Success!', res);
+          this.router.navigate(['/user/dashboard']);
+        },
         error: (err) => console.error('Error!', err),
       });
       this.userLoginForm.reset();

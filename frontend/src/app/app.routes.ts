@@ -5,6 +5,7 @@ import { AdminLoginComponent } from './features/auth-pages/admin-login/admin-log
 import { UserLoginComponent } from './features/auth-pages/user-login/user-login.component';
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 import { UserDashboardComponent } from './features/dashboard/user-dashboard/user-dashboard.component';
+import { ViewEventsComponent } from './features/events/view-events/view-events.component';
 import { adminGuard } from './guards/admin.guard';
 import { userGuard } from './guards/user.guard';
 
@@ -28,6 +29,12 @@ export const routes: Routes = [
     path: 'user/dashboard',
     title: 'User Dashboard',
     component: UserDashboardComponent,
+    canActivate: [userGuard],
+  },
+  {
+    path: 'user/events',
+    title: 'Events',
+    component: ViewEventsComponent,
     canActivate: [userGuard],
   },
   {

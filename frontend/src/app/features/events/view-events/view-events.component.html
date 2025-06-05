@@ -1,0 +1,5 @@
+<div class="container my-3 row row-cols-1 row-cols-md-3 g-4">
+  <div class="col" *ngFor="let event of events">
+    <app-card [eventData]="event"></app-card>
+  </div>
+</div>
