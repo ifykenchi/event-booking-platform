@@ -13,6 +13,7 @@ class AdminRoute {
 		this.getAllEvents(prefix, router);
 		this.getEvent(prefix, router);
 		this.editEvent(prefix, router);
+		this.searchEvents(prefix, router);
 		this.deleteEvent(prefix, router);
 	}
 	private admin(prefix: string, router: Router) {
@@ -60,6 +61,13 @@ class AdminRoute {
 			AuthMidware.authAdmin,
 			Joi.vdtor(SchemaValidator.editEvent),
 			AdminService.editEvent
+		);
+	}
+	private searchEvents(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/search`,
+			AuthMidware.authAdmin,
+			AdminService.searchEvents
 		);
 	}
 	private deleteEvent(prefix: string, router: Router) {

@@ -40,3 +40,5 @@ export interface DeleteI {
 }
 
 export type SearchKey = 'title' | 'category';
+
+export type Category = 'ALL' | 'Entertainment' | 'Football' | 'Tech' | 'Others';

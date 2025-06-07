@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { LocalStorageService } from './localStorage.service';
 import {
@@ -42,6 +42,13 @@ export class EventsService {
     };
   }
 
+  private filteredEventsSource = new BehaviorSubject<EventI[]>([]);
+  filteredEvents$ = this.filteredEventsSource.asObservable();
+
+  setFilteredEvents(events: EventI[]) {
+    this.filteredEventsSource.next(events);
+  }
+
   getAdminEvents(): Observable<responseI> {
     return this.http.get<responseI>(
       `${this.apiUrl}/admin/events`,
@@ -75,6 +82,15 @@ export class EventsService {
     );
   }
 
+  searchAdminEvents(key: SearchKey, value: string): Observable<EventI[]> {
+    const params = new HttpParams().set('key', key).set('value', value);
+
+    return this.http.get<EventI[]>(`${this.apiUrl}/admin/search`, {
+      ...this.getAdminHttpOptions(),
+      params: params,
+    });
+  }
+
   deleteAdminEvent(eventId: string): Observable<DeleteI> {
     return this.http.delete<DeleteI>(
       `${this.apiUrl}/admin/delete/${eventId}`,
@@ -89,13 +105,8 @@ export class EventsService {
     );
   }
 
-  searchUserEvents(query: {
-    key: SearchKey;
-    value: string;
-  }): Observable<EventI[]> {
-    const params = new HttpParams()
-      .set('key', query.key)
-      .set('value', query.value);
+  searchUserEvents(key: SearchKey, value: string): Observable<EventI[]> {
+    const params = new HttpParams().set('key', key).set('value', value);
 
     return this.http.get<EventI[]>(`${this.apiUrl}/user/search`, {
       ...this.getUserHttpOptions(),

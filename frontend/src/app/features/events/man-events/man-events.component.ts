@@ -5,18 +5,18 @@ import { EventI } from '../../../interfaces/services.interfaces';
 import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-view-events',
+  selector: 'app-man-events',
   imports: [CardComponent, NgFor],
-  templateUrl: './view-events.component.html',
-  styleUrl: './view-events.component.css',
+  templateUrl: './man-events.component.html',
+  styleUrl: './man-events.component.css',
 })
-export class ViewEventsComponent {
+export class ManEventsComponent {
   events: EventI[] = [];
 
   constructor(private eventsService: EventsService) {}
 
   ngOnInit() {
-    this.eventsService.getUserEvents().subscribe({
+    this.eventsService.getAdminEvents().subscribe({
       next: (res) => {
         this.events = res.events;
         // console.log('Success!', this.events);
