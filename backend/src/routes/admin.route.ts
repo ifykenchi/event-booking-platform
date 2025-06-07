@@ -6,7 +6,7 @@ import AdminService from "../services/admin.service";
 
 class AdminRoute {
 	public loadRoutes(prefix: string, router: Router) {
-		this.test(prefix, router);
+		this.admin(prefix, router);
 		this.register(prefix, router);
 		this.login(prefix, router);
 		this.addEvent(prefix, router);
@@ -15,10 +15,8 @@ class AdminRoute {
 		this.editEvent(prefix, router);
 		this.deleteEvent(prefix, router);
 	}
-	private test(prefix: string, router: Router) {
-		router.get(`${prefix}`, (_req, res) => {
-			res.send("<h1>Server is running...</h1>");
-		});
+	private admin(prefix: string, router: Router) {
+		router.get(`${prefix}`, AuthMidware.authAdmin, AdminService.getAdmin);
 	}
 	private register(prefix: string, router: Router) {
 		router.post(

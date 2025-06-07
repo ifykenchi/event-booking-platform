@@ -6,40 +6,77 @@
     href="/"
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
   >
-    <span class="fs-4">Welcome</span>
+    <span class="fs-4">Welcome {{ username }}</span>
   </a>
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item">
-      <a
-        routerLink="/user/dashboard"
-        routerLinkActive="active"
-        class="nav-link text-white cursor-pointer"
-        [class.active]="isActive('/user/dashboard')"
-      >
-        Dashboard
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        routerLink="/user/events"
-        routerLinkActive="active"
-        class="nav-link text-white cursor-pointer"
-        [class.active]="isActive('/user/events')"
-      >
-        Events
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        routerLink="/user/dashboard"
-        routerLinkActive="active"
-        class="nav-link text-white cursor-pointer"
-        [class.active]="isActive('/user/bookings')"
-      >
-        Bookings
-      </a>
-    </li>
+    <!-- User specific links -->
+    <ng-container *ngIf="!isAdmin">
+      <li class="nav-item">
+        <a
+          routerLink="/user/dashboard"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/user/dashboard')"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/user/events"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/user/events')"
+        >
+          Events
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/user/dashboard"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/user/bookings')"
+        >
+          Bookings
+        </a>
+      </li>
+    </ng-container>
+
+    <!-- Admin specific links -->
+    <ng-container *ngIf="isAdmin">
+      <li class="nav-item">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/admin/dashboard')"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/admin/events"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/admin/events')"
+        >
+          Events
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive="active"
+          class="nav-link text-white cursor-pointer"
+          [class.active]="isActive('/admin/bookings')"
+        >
+          Bookings
+        </a>
+      </li>
+    </ng-container>
   </ul>
   <hr />
   <div class="dropdown">
@@ -57,15 +94,17 @@
         height="32"
         class="rounded-circle me-2"
       />
-      <strong>user</strong>
+      <strong>{{ username }}</strong>
     </a>
     <ul
       class="dropdown-menu dropdown-menu-dark text-small shadow"
       aria-labelledby="dropdownUser1"
     >
-      <li><a class="dropdown-item cursor-pointer" href="#">Settings</a></li>
+      <li><a class="dropdown-item cursor-pointer">Settings</a></li>
       <li><hr class="dropdown-divider" /></li>
-      <li><a class="dropdown-item cursor-pointer" href="#">Sign out</a></li>
+      <li>
+        <a class="dropdown-item cursor-pointer" (click)="logout()">Sign out</a>
+      </li>
     </ul>
   </div>
 </div>

@@ -16,7 +16,7 @@ export class AppComponent {
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
 
-  get showSidebar(): boolean {
+  get showComponent(): boolean {
     const isAuthRoute = [
       '/user/login',
       '/user/register',

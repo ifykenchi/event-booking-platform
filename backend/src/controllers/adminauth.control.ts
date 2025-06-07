@@ -1,6 +1,8 @@
 import Admin from "../models/admin.model";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
+import { Request, Response } from "express";
+import { CustomRequest } from "../interfaces/express";
 
 class AdminAuthController {
 	register = async (payload: any) => {
@@ -24,7 +26,6 @@ class AdminAuthController {
 			const newAdmin = { admin: admin };
 			const adminToken = TokenUtil.register_admin(newAdmin);
 			const response = {
-				error: false,
 				admin,
 				adminToken,
 				message: "Admin Registration Successful",
@@ -66,6 +67,30 @@ class AdminAuthController {
 				message: "Admin Login Successful",
 			};
 
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	getAdmin = async (req: CustomRequest) => {
+		try {
+			const { admin } = req.user || {};
+			if (!admin) {
+				const response = {
+					status: 401,
+					message: "Unauthorized User",
+				};
+				throw response;
+			}
+			const adminData = {
+				username: admin.username,
+				email: admin.email,
+			};
+			const response = {
+				adminData,
+				message: "Admin Details Have been Sent",
+			};
 			return response;
 		} catch (error) {
 			throw error;

@@ -8,7 +8,7 @@ import {
 import { loginPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-login',
@@ -17,7 +17,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './admin-login.component.css',
 })
 export class AdminLoginComponent {
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private router: Router
+  ) {}
 
   adminLoginForm = new FormGroup({
     email: new FormControl<string>('', {
@@ -49,7 +52,10 @@ export class AdminLoginComponent {
     if (this.adminLoginForm.valid) {
       const newAdmin = this.adminLoginForm.value as loginPost;
       this.registerService.adminLogin(newAdmin).subscribe({
-        next: (res) => console.log('Success!', res),
+        next: (res) => {
+          console.log('Success!', res);
+          this.router.navigate(['/admin/dashboard']);
+        },
         error: (err) => console.error('Error!', err),
       });
       this.adminLoginForm.reset();

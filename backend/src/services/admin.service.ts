@@ -38,6 +38,23 @@ class AdminService extends RootService {
 		}
 	};
 
+	getAdmin = async (req: Request, res: Response) => {
+		try {
+			const output = await AdminAuthController.getAdmin(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
 	addEvent = async (req: Request, res: Response) => {
 		try {
 			const output = await EventsController.addEvent(req);

@@ -20,6 +20,21 @@ export interface responseI {
   events: EventI[];
 }
 
+export interface UserDataI {
+  username: string;
+  password: string;
+}
+
+export interface UserDataResponseI {
+  message: string;
+  userData: UserDataI;
+}
+
+export interface AdminDataResponseI {
+  message: string;
+  adminData: UserDataI;
+}
+
 export interface DeleteI {
   message: string;
 }

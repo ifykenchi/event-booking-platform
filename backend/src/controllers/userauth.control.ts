@@ -1,6 +1,7 @@
 import User from "../models/user.model";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
+import { CustomRequest } from "../interfaces/express";
 
 class UserAuthController {
 	register = async (payload: any) => {
@@ -22,7 +23,8 @@ class UserAuthController {
 			user.password = await hash(user.password);
 			await user.save();
 
-			const accessToken = TokenUtil.register_user({ user });
+			const newUser = { user: user };
+			const accessToken = TokenUtil.register_user(newUser);
 			const response = {
 				user,
 				accessToken,
@@ -59,13 +61,37 @@ class UserAuthController {
 			}
 
 			const user = { user: isUser };
-			const accessToken = TokenUtil.register_user({ user });
+			const accessToken = TokenUtil.register_user(user);
 			const response = {
 				email,
 				accessToken,
 				message: "Login Successful",
 			};
 
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	getUser = async (req: CustomRequest) => {
+		try {
+			const { user } = req.user || {};
+			if (!user) {
+				const response = {
+					status: 401,
+					message: "Unauthorized User",
+				};
+				throw response;
+			}
+			const userData = {
+				username: user.username,
+				email: user.email,
+			};
+			const response = {
+				userData,
+				message: "User Details Have been Sent",
+			};
 			return response;
 		} catch (error) {
 			throw error;
