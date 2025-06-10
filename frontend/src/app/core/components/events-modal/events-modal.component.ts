@@ -38,7 +38,7 @@ export class EventsModalComponent implements OnChanges {
     }),
     category: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.minLength(3), Validators.maxLength(50)],
+      validators: [Validators.required],
     }),
   });
 
@@ -71,17 +71,26 @@ export class EventsModalComponent implements OnChanges {
 
   onSubmit() {
     if (this.eventModalForm.valid) {
-      const updatedEvent = {
+      const formEvent = {
         ...this.eventData,
         ...this.eventModalForm.value,
       };
+      const { _id, title, about, category } = formEvent;
+
+      const updatedEvent = {
+        _id: _id,
+        title: title,
+        about: about,
+        category: category,
+      };
+
       // Emit the data
       this.editClick.emit(updatedEvent);
+      console.log(updatedEvent);
     }
   }
 
   closeModal() {
-    this.showModal = false;
     this.modalClosed.emit();
   }
 }

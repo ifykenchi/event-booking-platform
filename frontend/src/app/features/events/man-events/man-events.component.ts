@@ -4,17 +4,19 @@ import { EventsService } from '../../../services/events.service';
 import { EventI } from '../../../interfaces/services.interfaces';
 import { NgFor } from '@angular/common';
 import { EventsModalComponent } from '../../../core/components/events-modal/events-modal.component';
+import { AddEventModalComponent } from '../../../core/components/add-event-modal/add-event-modal.component';
 
 @Component({
   selector: 'app-man-events',
-  imports: [CardComponent, NgFor, EventsModalComponent],
+  imports: [CardComponent, NgFor, EventsModalComponent, AddEventModalComponent],
   templateUrl: './man-events.component.html',
   styleUrl: './man-events.component.css',
 })
 export class ManEventsComponent {
   events: EventI[] = [];
-  eventData = {};
+  eventData!: EventI;
   showModal: boolean = false;
+  showAddModal: boolean = false;
 
   constructor(private eventsService: EventsService) {}
 
@@ -49,7 +51,7 @@ export class ManEventsComponent {
   showEventsModal(eventData: EventI) {
     this.showModal = true;
     this.eventData = eventData;
-    console.log(this.showModal, this.eventData);
+    // console.log(this.showModal, this.eventData);
   }
 
   handleEdit(updatedEvent: Partial<EventI>) {
@@ -59,24 +61,52 @@ export class ManEventsComponent {
       return;
     }
 
-    console.log(updatedEvent._id, updatedEvent);
+    // console.log(updatedEvent._id, updatedEvent);
 
-    // this.eventsService
-    //   .editAdminEvent(updatedEvent._id, updatedEvent)
-    //   .subscribe({
-    //     next: (res) => {
-    //       console.log('Event updated successfully', res);
-    //       this.eventsService.refreshAdminEvents();
-    //       this.showModal = false;
-    //     },
-    //     error: (err) => {
-    //       console.error('Failed to update event', err);
-    //       // this.showModal = false;
-    //     },
-    //   });
+    this.eventsService
+      .editAdminEvent(updatedEvent._id, updatedEvent)
+      .subscribe({
+        next: (res) => {
+          console.log('Event updated successfully', res);
+          this.eventsService.refreshAdminEvents();
+          this.showModal = false;
+        },
+        error: (err) => {
+          console.error('Failed to update event', err);
+          // this.showModal = false;
+        },
+      });
+  }
+
+  handleAddEvent(addedEvent: EventI) {
+    if (!addedEvent) {
+      console.error('Submitted Event cannot be empty');
+      return;
+    }
+
+    this.eventsService.addAdminEvent(addedEvent).subscribe({
+      next: (res) => {
+        console.log('Event added successfully', res);
+        this.eventsService.refreshAdminEvents();
+        this.showAddModal = false;
+      },
+      error: (err) => {
+        console.error('Failed to add event', err);
+        // this.showAddModal = false;
+      },
+    });
+  }
+
+  displayAddModal() {
+    this.showAddModal = true;
+    console.log(this.showAddModal);
   }
 
   handleModalClosed() {
     this.showModal = false;
+  }
+
+  handleCloseAddModal() {
+    this.showAddModal = false;
   }
 }

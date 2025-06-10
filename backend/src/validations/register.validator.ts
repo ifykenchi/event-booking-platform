@@ -32,6 +32,7 @@ class SchemaValidator {
 	});
 
 	public editEvent = joi.object({
+		_id: joi.string().min(3).max(50),
 		title: joi.string().min(3).max(50),
 		about: joi.string().min(6).max(3000),
 		category: joi.string().min(3).max(50),

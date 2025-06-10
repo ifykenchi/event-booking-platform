@@ -1,7 +1,7 @@
 <div
   class="modal fade"
-  [class.show]="showModal"
-  [style.display]="showModal ? 'block' : 'none'"
+  [class.show]="showAddModal"
+  [style.display]="showAddModal ? 'block' : 'none'"
 >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -22,6 +22,13 @@
               formControlName="title"
             />
             <div *ngIf="title.invalid && title.dirty">
+              <p
+                *ngIf="title.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Title is Required.
+              </p>
               <p
                 *ngIf="title.hasError('minlength')"
                 class="alert alert-danger"
@@ -48,6 +55,13 @@
               formControlName="about"
             ></textarea>
             <div *ngIf="about.invalid && about.dirty">
+              <p
+                *ngIf="title.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                About content is Required.
+              </p>
               <p
                 *ngIf="about.hasError('minlength')"
                 class="alert alert-danger"
@@ -102,7 +116,7 @@
             class="btn btn-primary"
             [disabled]="eventModalForm.valid === false"
           >
-            Save
+            Add Event
           </button>
         </form>
       </div>

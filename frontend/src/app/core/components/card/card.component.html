@@ -1,10 +1,12 @@
 <div class="card" style="width: 18rem">
   <div class="card-body">
     <h5 class="card-title">{{ eventData.title }}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">
+      {{ eventData.category }}
+    </h6>
     <p class="card-text">
       {{ eventData.about }}
     </p>
-    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
     <!-- <a href="#" class="card-link mx-3">Edit</a> -->
     <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
     <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>

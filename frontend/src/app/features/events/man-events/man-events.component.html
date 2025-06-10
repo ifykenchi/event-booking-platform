@@ -1,11 +1,28 @@
+<button
+  class="btn btn-outline-success m-3"
+  role="button"
+  type="button"
+  (click)="displayAddModal()"
+>
+  Add Event
+</button>
+
+<app-events-modal
+  [showModal]="showModal"
+  [eventData]="eventData"
+  (editClick)="handleEdit($event)"
+  (modalClosed)="handleModalClosed()"
+></app-events-modal>
+
+<!-- (addClick)="displayAddModal()" -->
+<app-add-event-modal
+  [showAddModal]="showAddModal"
+  (closeAddModal)="handleCloseAddModal()"
+  (addClick)="handleAddEvent($event)"
+></app-add-event-modal>
+
 <div class="container my-3 row row-cols-1 row-cols-md-3 g-4">
   <div class="col" *ngFor="let event of events">
-    <app-events-modal
-      [showModal]="showModal"
-      [eventData]="event"
-      (editClick)="handleEdit($event)"
-      (modalClosed)="handleModalClosed()"
-    ></app-events-modal>
     <app-card
       [eventData]="event"
       (deleteClick)="handleDelete($event)"

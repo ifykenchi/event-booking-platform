@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LocalStorageService } from '../../../services/localStorage.service';
@@ -12,6 +12,8 @@ import { Category } from '../../../interfaces/services.interfaces';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  // @Output() addClick = new EventEmitter();
+
   isAdmin: boolean = false;
 
   constructor(
@@ -43,4 +45,9 @@ export class NavbarComponent {
       });
     }
   }
+
+  // onAdd() {
+  //   this.addClick.emit();
+  //   console.log('Added');
+  // }
 }
