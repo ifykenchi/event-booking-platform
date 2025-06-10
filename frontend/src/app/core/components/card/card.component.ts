@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { EventI } from '../../../interfaces/services.interfaces';
 
 @Component({
   selector: 'app-card',
@@ -7,5 +8,19 @@ import { Component, Input } from '@angular/core';
   styleUrl: './card.component.css',
 })
 export class CardComponent {
-  @Input() eventData: any;
+  @Input() eventData!: EventI;
+  @Output() deleteClick = new EventEmitter();
+  @Output() editClick = new EventEmitter();
+  show: boolean = false;
+
+  onDelete() {
+    this.deleteClick.emit(this.eventData._id);
+    // console.log('Delete');
+  }
+
+  onEdit() {
+    this.show = true;
+    this.editClick.emit(this.eventData);
+    // console.log(this.show);
+  }
 }

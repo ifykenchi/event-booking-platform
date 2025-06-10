@@ -101,7 +101,7 @@ class EventsController {
 				query = { [payload.key]: { $regex: regrex } };
 			}
 
-			const records = await Event.find(query).select(select);
+			const records = await Event.find(query).select(select).sort({ title: 1 });
 			if (!records) throw { message: `${Event.collection.name} not found` };
 			// if (!records.length) throw { message: `${Event.collection.name} not found` };
 			return records;

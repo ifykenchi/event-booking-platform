@@ -10,9 +10,11 @@ export interface loginPost {
 }
 
 export interface EventI {
+  _id: string;
   title: string;
   about: string;
   category: string;
+  createdOn: string;
 }
 
 export interface responseI {
