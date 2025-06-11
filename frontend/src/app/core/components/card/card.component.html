@@ -8,7 +8,9 @@
       {{ eventData.about }}
     </p>
     <!-- <a href="#" class="card-link mx-3">Edit</a> -->
-    <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
-    <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>
+    <ng-container *ngIf="isAdmin">
+      <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
+      <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>
+    </ng-container>
   </div>
 </div>

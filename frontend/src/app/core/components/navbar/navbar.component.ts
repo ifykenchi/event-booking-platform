@@ -12,8 +12,6 @@ import { Category } from '../../../interfaces/services.interfaces';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  // @Output() addClick = new EventEmitter();
-
   isAdmin: boolean = false;
 
   constructor(
