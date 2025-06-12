@@ -83,8 +83,6 @@ export class EventsModalComponent implements OnChanges {
         about: about,
         category: category,
       };
-
-      // Emit the data
       this.editClick.emit(updatedEvent);
       console.log(updatedEvent);
     }

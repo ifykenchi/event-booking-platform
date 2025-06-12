@@ -8,7 +8,8 @@ import {
 import { signupPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-admin-signup',
@@ -17,9 +18,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './admin-signup.component.css',
 })
 export class AdminSignupComponent {
-  constructor(private registerService: RegisterService) {}
-  // constructor() {}
-  // ngOnInit() {}
+  constructor(
+    private registerService: RegisterService,
+    private notification: NotificationService,
+    private router: Router
+  ) {}
 
   adminSignupForm = new FormGroup({
     username: new FormControl<string>('', {
@@ -64,14 +67,20 @@ export class AdminSignupComponent {
     if (this.adminSignupForm.valid) {
       const newAdmin = this.adminSignupForm.value as signupPost;
       this.registerService.adminSignup(newAdmin).subscribe({
-        next: (res) => console.log('Success!', res),
-        error: (err) => console.error('Error!', err),
+        next: (res) => {
+          console.log('Success!', res);
+          this.router.navigate(['/admin/dashboard']);
+          this.notification.showSuccess('You are Signed Up!');
+        },
+        error: (err) => {
+          console.error('Error!', err);
+          this.notification.showError('An error occured. Please try again.');
+        },
       });
-      // console.log('Form Submitted!', newAdmin);
-      // next: (res) => this.router.navigate(['/dashboard']),
       this.adminSignupForm.reset();
     } else {
       console.log('Form is invalid');
+      this.notification.showError('Invalid Credentials. Please try again.');
     }
   }
 }

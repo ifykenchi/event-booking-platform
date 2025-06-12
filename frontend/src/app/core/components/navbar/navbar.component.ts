@@ -27,7 +27,6 @@ export class NavbarComponent {
     if (this.isAdmin) {
       this.eventsService.searchAdminEvents('category', category).subscribe({
         next: (res) => {
-          // console.log(res);
           this.eventsService.setFilteredEvents(res);
         },
         error: (err) => console.error('Failed Request', err),
@@ -36,16 +35,10 @@ export class NavbarComponent {
     if (!this.isAdmin) {
       this.eventsService.searchUserEvents('category', category).subscribe({
         next: (res) => {
-          // console.log(res);
           this.eventsService.setFilteredEvents(res);
         },
         error: (err) => console.error('Failed Request', err),
       });
     }
   }
-
-  // onAdd() {
-  //   this.addClick.emit();
-  //   console.log('Added');
-  // }
 }

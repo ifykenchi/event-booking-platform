@@ -24,12 +24,10 @@ export class CardComponent {
 
   onDelete() {
     this.deleteClick.emit(this.eventData._id);
-    // console.log('Delete');
   }
 
   onEdit() {
     this.show = true;
     this.editClick.emit(this.eventData);
-    // console.log(this.show);
   }
 }

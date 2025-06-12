@@ -8,7 +8,8 @@ import {
 import { signupPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-user-signup',
@@ -17,7 +18,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './user-signup.component.css',
 })
 export class UserSignupComponent {
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private notification: NotificationService,
+    private router: Router
+  ) {}
 
   userSignupForm = new FormGroup({
     username: new FormControl<string>('', {
@@ -62,14 +67,20 @@ export class UserSignupComponent {
     if (this.userSignupForm.valid) {
       const newUser = this.userSignupForm.value as signupPost;
       this.registerService.userSignup(newUser).subscribe({
-        next: (res) => console.log('Success!', res),
-        error: (err) => console.error('Error!', err),
+        next: (res) => {
+          console.log('Success!', res);
+          this.router.navigate(['/user/dashboard']);
+          this.notification.showSuccess('You are Signed Up!');
+        },
+        error: (err) => {
+          console.error('Error!', err);
+          this.notification.showError('An error occured. Please try again.');
+        },
       });
-      // console.log('Form Submitted!', newUser);
-      // next: (res) => this.router.navigate(['/dashboard']),
       this.userSignupForm.reset();
     } else {
       console.log('Form is invalid');
+      this.notification.showError('Invalid Credentials. Please try again.');
     }
   }
 }

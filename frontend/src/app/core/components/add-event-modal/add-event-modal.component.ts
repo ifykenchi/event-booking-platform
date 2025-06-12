@@ -57,7 +57,6 @@ export class AddEventModalComponent {
 
   onSubmit() {
     if (this.eventModalForm.valid) {
-      // console.log(this.eventModalForm.value);
       const addedEvent = this.eventModalForm.value;
       this.addClick.emit(addedEvent);
     }

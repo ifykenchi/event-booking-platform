@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
 import { CardComponent } from '../../../core/components/card/card.component';
 import { EventsService } from '../../../services/events.service';
 import { EventI } from '../../../interfaces/services.interfaces';
@@ -6,7 +7,7 @@ import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-view-events',
-  imports: [CardComponent, NgFor],
+  imports: [NavbarComponent, CardComponent, NgFor],
   templateUrl: './view-events.component.html',
   styleUrl: './view-events.component.css',
 })
@@ -25,9 +26,6 @@ export class ViewEventsComponent {
     });
 
     this.eventsService.filteredEvents$.subscribe((events) => {
-      // if (events.length > 0) {
-      //   this.events = events;
-      // }
       this.events = events;
     });
   }

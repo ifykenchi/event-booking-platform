@@ -1,13 +1,12 @@
 <div class="card" style="width: 18rem">
   <div class="card-body">
     <h5 class="card-title">{{ eventData.title }}</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">
+    <h6 class="badge rounded-pill text-bg-warning mb-2">
       {{ eventData.category }}
     </h6>
     <p class="card-text">
       {{ eventData.about }}
     </p>
-    <!-- <a href="#" class="card-link mx-3">Edit</a> -->
     <ng-container *ngIf="isAdmin">
       <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
       <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>

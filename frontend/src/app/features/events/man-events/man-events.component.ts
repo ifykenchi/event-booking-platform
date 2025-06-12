@@ -1,14 +1,22 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
 import { CardComponent } from '../../../core/components/card/card.component';
 import { EventsService } from '../../../services/events.service';
 import { EventI } from '../../../interfaces/services.interfaces';
 import { NgFor } from '@angular/common';
 import { EventsModalComponent } from '../../../core/components/events-modal/events-modal.component';
 import { AddEventModalComponent } from '../../../core/components/add-event-modal/add-event-modal.component';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-man-events',
-  imports: [CardComponent, NgFor, EventsModalComponent, AddEventModalComponent],
+  imports: [
+    CardComponent,
+    NgFor,
+    EventsModalComponent,
+    AddEventModalComponent,
+    NavbarComponent,
+  ],
   templateUrl: './man-events.component.html',
   styleUrl: './man-events.component.css',
 })
@@ -18,50 +26,47 @@ export class ManEventsComponent {
   showModal: boolean = false;
   showAddModal: boolean = false;
 
-  constructor(private eventsService: EventsService) {}
+  constructor(
+    private eventsService: EventsService,
+    private notification: NotificationService
+  ) {}
 
   ngOnInit() {
     this.eventsService.getAdminEvents().subscribe({
       next: (res) => {
         this.events = res.events;
-        // console.log('Success!', this.events);
       },
       error: (err) => console.error('Failed to load events!', err),
     });
 
     this.eventsService.filteredEvents$.subscribe((events) => {
-      // if (events.length > 0) {
-      //   this.events = events;
-      // }
       this.events = events;
     });
   }
 
   handleDelete(eventId: string) {
-    // console.log(eventId);
     this.eventsService.deleteAdminEvent(eventId).subscribe({
       next: (res) => {
-        // console.log(res);
         this.eventsService.refreshAdminEvents();
+        this.notification.showSuccess('Event Deleted');
       },
-      error: (err) => console.error('Failed to delete event!', err),
+      error: (err) => {
+        console.error('Failed to delete event!', err);
+        this.notification.showSuccess('An error occured. Please try again');
+      },
     });
   }
 
   showEventsModal(eventData: EventI) {
     this.showModal = true;
     this.eventData = eventData;
-    // console.log(this.showModal, this.eventData);
   }
 
   handleEdit(updatedEvent: Partial<EventI>) {
-    // console.log('Event to edit: ', eventToEdit);
     if (!updatedEvent?._id) {
       console.error('No event ID provided for editing');
       return;
     }
-
-    // console.log(updatedEvent._id, updatedEvent);
 
     this.eventsService
       .editAdminEvent(updatedEvent._id, updatedEvent)
@@ -70,10 +75,11 @@ export class ManEventsComponent {
           console.log('Event updated successfully', res);
           this.eventsService.refreshAdminEvents();
           this.showModal = false;
+          this.notification.showSuccess('Event updated');
         },
         error: (err) => {
           console.error('Failed to update event', err);
-          // this.showModal = false;
+          this.notification.showError('Event update Failed');
         },
       });
   }
@@ -89,10 +95,11 @@ export class ManEventsComponent {
         console.log('Event added successfully', res);
         this.eventsService.refreshAdminEvents();
         this.showAddModal = false;
+        this.notification.showSuccess('Event created');
       },
       error: (err) => {
         console.error('Failed to add event', err);
-        // this.showAddModal = false;
+        this.notification.showError('Event creation failed. Please try again.');
       },
     });
   }
