@@ -15,6 +15,16 @@ export interface IAdmin extends Document {
 export interface IEvent extends Document {
 	title: string;
 	about: string;
+	availablleSeats: number;
 	category: string;
+	createdOn: Date;
+}
+
+export interface IBooking extends Document {
+	eventId: string;
+	userId: string;
+	userDetails: object;
+	availableSeats: number;
+	bookedSeats: number;
 	createdOn: Date;
 }
