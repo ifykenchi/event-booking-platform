@@ -28,6 +28,11 @@ export class LocalStorageService {
     return false;
   }
 
+  isAdmin(): boolean {
+    if (localStorage.getItem('adminToken')) return true;
+    return false;
+  }
+
   clear(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('adminToken');

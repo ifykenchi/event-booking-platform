@@ -38,6 +38,23 @@ class AdminService extends RootService {
 		}
 	};
 
+	getAdmin = async (req: Request, res: Response) => {
+		try {
+			const output = await AdminAuthController.getAdmin(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
 	addEvent = async (req: Request, res: Response) => {
 		try {
 			const output = await EventsController.addEvent(req);
@@ -92,6 +109,30 @@ class AdminService extends RootService {
 	editEvent = async (req: Request, res: Response) => {
 		try {
 			const output = await EventsController.editEvent(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
+	searchEvents = async (req: Request, res: Response) => {
+		try {
+			const { key, value } = req.query;
+			const select = (req.query.select as string) || "";
+
+			const output = await EventsController.searchEvents(
+				{ key, value },
+				select
+			);
+
 			this.sendResponse({
 				res,
 				status: 200,

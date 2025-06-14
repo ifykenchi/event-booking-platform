@@ -1,0 +1,111 @@
+<div
+  class="modal fade"
+  [class.show]="showModal"
+  [style.display]="showModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form
+          class="mt-4"
+          [formGroup]="eventModalForm"
+          (ngSubmit)="onSubmit()"
+          style="width: 400px"
+        >
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              aria-describedby="title"
+              formControlName="title"
+            />
+            <div *ngIf="title.invalid && title.dirty">
+              <p
+                *ngIf="title.hasError('minlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Title must be at least 3 characters long.
+              </p>
+              <p
+                *ngIf="title.hasError('maxlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Title cannot exceed 50 characters.
+              </p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="about" class="form-label">About</label>
+            <textarea
+              class="form-control"
+              placeholder="about"
+              id="about"
+              style="height: 100px"
+              formControlName="about"
+            ></textarea>
+            <div *ngIf="about.invalid && about.dirty">
+              <p
+                *ngIf="about.hasError('minlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Content must be at least 6 characters long
+              </p>
+              <p
+                *ngIf="about.hasError('maxlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Content cannot exceed 3000 characters.
+              </p>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="category">Category</label>
+            <select
+              class="form-select"
+              id="category"
+              formControlName="category"
+            >
+              <option [value]="null" disabled>Choose...</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Football">Football</option>
+              <option value="Tech">Tech</option>
+              <option value="Others">Others</option>
+            </select>
+
+            <div
+              *ngIf="category.invalid && (category.dirty || category.touched)"
+            >
+              <p
+                *ngIf="category.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Category is required
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-danger me-3"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="eventModalForm.valid === false"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

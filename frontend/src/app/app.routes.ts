@@ -5,6 +5,8 @@ import { AdminLoginComponent } from './features/auth-pages/admin-login/admin-log
 import { UserLoginComponent } from './features/auth-pages/user-login/user-login.component';
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 import { UserDashboardComponent } from './features/dashboard/user-dashboard/user-dashboard.component';
+import { ViewEventsComponent } from './features/events/view-events/view-events.component';
+import { ManEventsComponent } from './features/events/man-events/man-events.component';
 import { adminGuard } from './guards/admin.guard';
 import { userGuard } from './guards/user.guard';
 
@@ -31,6 +33,12 @@ export const routes: Routes = [
     canActivate: [userGuard],
   },
   {
+    path: 'user/events',
+    title: 'Events',
+    component: ViewEventsComponent,
+    canActivate: [userGuard],
+  },
+  {
     path: 'admin/register',
     title: 'Admin Signup Page',
     component: AdminSignupComponent,
@@ -44,6 +52,12 @@ export const routes: Routes = [
     path: 'admin/dashboard',
     title: 'Admin Dashboard',
     component: AdminDashboardComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'admin/events',
+    title: 'Events',
+    component: ManEventsComponent,
     canActivate: [adminGuard],
   },
   { path: '**', redirectTo: 'user/register' },

@@ -92,10 +92,16 @@ class EventsController {
 				};
 				throw response;
 			}
-			const regrex = new RegExp(`${payload.value}`, "i");
-			const records = await Event.find({
-				[payload.key]: { $regex: regrex },
-			}).select(select);
+			let query = {};
+
+			if (payload.value === "ALL") {
+				query = { [payload.key]: { $exists: true } };
+			} else {
+				const regrex = new RegExp(`${payload.value}`, "i");
+				query = { [payload.key]: { $regex: regrex } };
+			}
+
+			const records = await Event.find(query).select(select).sort({ title: 1 });
 			if (!records) throw { message: `${Event.collection.name} not found` };
 			// if (!records.length) throw { message: `${Event.collection.name} not found` };
 			return records;

@@ -6,16 +6,14 @@ import UserService from "../services/users.service";
 
 class UserRoute {
 	public loadRoutes(prefix: string, router: Router) {
-		this.test(prefix, router);
+		this.user(prefix, router);
 		this.register(prefix, router);
 		this.login(prefix, router);
 		this.getAllEvents(prefix, router);
 		this.searchEvents(prefix, router);
 	}
-	private test(prefix: string, router: Router) {
-		router.get(`${prefix}`, (_req, res) => {
-			res.send("<h1>Server is running...</h1>");
-		});
+	private user(prefix: string, router: Router) {
+		router.get(`${prefix}`, AuthMidware.authUser, UserService.getUser);
 	}
 	private register(prefix: string, router: Router) {
 		router.post(

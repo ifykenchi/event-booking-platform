@@ -8,7 +8,8 @@ import {
 import { loginPost } from '../../../interfaces/services.interfaces';
 import { RegisterService } from '../../../services/register.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-user-login',
@@ -17,7 +18,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './user-login.component.css',
 })
 export class UserLoginComponent {
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private router: Router,
+    private notification: NotificationService
+  ) {}
 
   userLoginForm = new FormGroup({
     email: new FormControl<string>('', {
@@ -49,12 +54,20 @@ export class UserLoginComponent {
     if (this.userLoginForm.valid) {
       const newUser = this.userLoginForm.value as loginPost;
       this.registerService.userLogin(newUser).subscribe({
-        next: (res) => console.log('Success!', res),
-        error: (err) => console.error('Error!', err),
+        next: (res) => {
+          console.log('Success!', res);
+          this.router.navigate(['/user/dashboard']);
+          this.notification.showSuccess('Logged In');
+        },
+        error: (err) => {
+          console.error('Error!', err);
+          this.notification.showError('An error occured. Please try again.');
+        },
       });
       this.userLoginForm.reset();
     } else {
       console.log('Form is invalid');
+      this.notification.showError('Invalid email or password');
     }
   }
 }

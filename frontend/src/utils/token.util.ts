@@ -8,6 +8,11 @@ class TokenUtil {
     if (localStorage.getItem('adminToken')) return true;
     return false;
   }
+
+  getUsername(isAdmin: boolean) {
+    if (isAdmin) {
+    }
+  }
 }
 
 export default new TokenUtil();

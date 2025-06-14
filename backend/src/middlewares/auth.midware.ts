@@ -1,8 +1,9 @@
 import TokenUtil from "../utilities/token.util";
 import { Request, Response, NextFunction } from "express";
+import { CustomRequest } from "../interfaces/express";
 
 class AuthMidWare {
-	private _admin_authenticated = async (req: Request) => {
+	private _admin_authenticated = async (req: CustomRequest) => {
 		try {
 			const token = TokenUtil.get_token(req);
 			const tokenData = TokenUtil.verify_admin(token);
@@ -15,7 +16,7 @@ class AuthMidWare {
 		}
 	};
 
-	private _user_authenticated = async (req: Request) => {
+	private _user_authenticated = async (req: CustomRequest) => {
 		try {
 			const token = TokenUtil.get_token(req);
 			const tokenData = TokenUtil.verify_user(token);
@@ -29,7 +30,7 @@ class AuthMidWare {
 	};
 
 	authAdmin = async (
-		req: Request,
+		req: CustomRequest,
 		res: Response,
 		next: NextFunction
 	): Promise<void> => {
@@ -44,7 +45,7 @@ class AuthMidWare {
 	};
 
 	authUser = async (
-		req: Request,
+		req: CustomRequest,
 		res: Response,
 		next: NextFunction
 	): Promise<void> => {

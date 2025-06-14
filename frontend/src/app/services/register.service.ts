@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { signupPost, loginPost } from '../interfaces/services.interfaces';
+import {
+  signupPost,
+  loginPost,
+  UserDataResponseI,
+  AdminDataResponseI,
+} from '../interfaces/services.interfaces';
 import { LocalStorageService } from './localStorage.service';
 
 const httpOptions = {
@@ -20,6 +25,42 @@ export class RegisterService {
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {}
+
+  private getUserHttpOptions() {
+    const accessToken = this.localStorageService.getItem('accessToken');
+    if (!accessToken) throw new Error('Token not found');
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + accessToken,
+      }),
+    };
+  }
+
+  private getAdminHttpOptions() {
+    const adminToken = this.localStorageService.getItem('adminToken');
+    if (!adminToken) throw new Error('No access token found');
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + adminToken,
+      }),
+    };
+  }
+
+  getAdmin(): Observable<AdminDataResponseI> {
+    return this.http.get<AdminDataResponseI>(
+      `${this.apiUrl}/admin`,
+      this.getAdminHttpOptions()
+    );
+  }
+
+  getUser(): Observable<UserDataResponseI> {
+    return this.http.get<UserDataResponseI>(
+      `${this.apiUrl}/user`,
+      this.getUserHttpOptions()
+    );
+  }
 
   adminSignup(newAdmin: signupPost): Observable<any> {
     return this.http
