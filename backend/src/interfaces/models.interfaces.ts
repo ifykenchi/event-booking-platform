@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface IUser extends Document {
 	username: string;
@@ -15,16 +15,21 @@ export interface IAdmin extends Document {
 export interface IEvent extends Document {
 	title: string;
 	about: string;
-	availablleSeats: number;
+	availableSeats: number;
+	bookedSeats: number;
 	category: string;
 	createdOn: Date;
 }
 
+interface IUserDetails {
+	fullName: string;
+	email: string;
+	phoneNumber: string;
+}
+
 export interface IBooking extends Document {
-	eventId: string;
-	userId: string;
-	userDetails: object;
-	availableSeats: number;
-	bookedSeats: number;
+	eventId: Types.ObjectId;
+	userId: Types.ObjectId;
+	userDetails: IUserDetails;
 	createdOn: Date;
 }

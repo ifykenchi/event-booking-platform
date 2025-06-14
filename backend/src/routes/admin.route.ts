@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Joi from "../middlewares/validator.midware";
 import SchemaValidator from "../validations/register.validator";
+import BookingSchemaValidator from "../validations/booking.validator";
 import AuthMidware from "../middlewares/auth.midware";
 import AdminService from "../services/admin.service";
 
@@ -15,6 +16,7 @@ class AdminRoute {
 		this.editEvent(prefix, router);
 		this.searchEvents(prefix, router);
 		this.deleteEvent(prefix, router);
+		this.getAllBookings(prefix, router);
 	}
 	private admin(prefix: string, router: Router) {
 		router.get(`${prefix}`, AuthMidware.authAdmin, AdminService.getAdmin);
@@ -75,6 +77,13 @@ class AdminRoute {
 			`${prefix}/delete/:eventId`,
 			AuthMidware.authAdmin,
 			AdminService.deleteEvent
+		);
+	}
+	private getAllBookings(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/bookings`,
+			AuthMidware.authAdmin,
+			AdminService.getAllBookings
 		);
 	}
 }
