@@ -8,7 +8,7 @@ class BookingsController {
 			const bookings = await Booking.find({})
 				.populate({
 					path: "eventId",
-					select: "title category availableSeats bookedSeats,",
+					select: "title category availableSeats bookedSeats",
 				})
 				.populate({
 					path: "userId",
@@ -27,14 +27,14 @@ class BookingsController {
 	getUserBookings = async (req: Request) => {
 		try {
 			const userId = req.params.userId;
-			const bookings = await Booking.find({ _id: userId })
+			const bookings = await Booking.find({ userId: userId })
 				.populate({
 					path: "eventId",
-					select: "title category availableSeats bookedSeats,",
+					select: "title category availableSeats bookedSeats",
 				})
 				.populate({
 					path: "userId",
-					select: "username, email",
+					select: "username email",
 				})
 				.sort({ createdOn: 1 });
 			const response = {
@@ -50,7 +50,7 @@ class BookingsController {
 	addBooking = async (req: Request) => {
 		try {
 			const { eventId, userId, userDetails } = req.body;
-			const isBooked = await Booking.findOne({ _id: userId });
+			const isBooked = await Booking.findOne({ userId: userId });
 			if (isBooked) {
 				const response = {
 					status: 400,
@@ -62,7 +62,7 @@ class BookingsController {
 			if (!event) {
 				const response = {
 					status: 404,
-					message: "Event or User does not exist",
+					message: "Event does not exist",
 				};
 				throw response;
 			}
@@ -71,7 +71,7 @@ class BookingsController {
 					status: 400,
 					message: "No seats available for booking",
 				};
-				return response;
+				throw response;
 			}
 			event.bookedSeats += 1;
 			await event.save();
@@ -82,6 +82,7 @@ class BookingsController {
 				userDetails,
 			});
 			await booking.save();
+
 			const response = {
 				booking,
 				message: "Booking Created Successfully",
@@ -95,7 +96,7 @@ class BookingsController {
 	deleteBooking = async (req: Request) => {
 		try {
 			const bookingId = req.params.bookingId;
-			const booking = await Booking.findByIdAndDelete(bookingId);
+			const booking = await Booking.findOne({ _id: bookingId });
 			if (!booking) {
 				const response = {
 					status: 404,
@@ -103,6 +104,27 @@ class BookingsController {
 				};
 				throw response;
 			}
+
+			const event = await Event.findOne({ _id: booking.eventId });
+			if (!event) {
+				const response = {
+					status: 404,
+					message: "Event does not exist",
+				};
+				throw response;
+			}
+			if (event.bookedSeats <= 0) {
+				const response = {
+					status: 400,
+					message: "No Booked Seats to Delete",
+				};
+				throw response;
+			}
+
+			event.bookedSeats -= 1;
+			await event.save();
+			await Booking.deleteOne({ _id: bookingId });
+
 			const response = {
 				message: "Booking Deleted Successfully",
 			};

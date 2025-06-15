@@ -28,8 +28,7 @@ class SchemaValidator {
 	public validEvent = joi.object({
 		title: joi.string().min(3).max(50).required(),
 		about: joi.string().min(6).max(3000).required(),
-		availableSeats: joi.number().integer().min(1).required(),
-		bookedSeats: joi.number().integer().min(0),
+		availableSeats: joi.number().integer().min(0).required(),
 		category: joi.string().min(3).max(50).required(),
 		createdOn: joi.date(),
 	});

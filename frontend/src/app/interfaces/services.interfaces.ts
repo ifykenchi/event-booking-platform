@@ -13,6 +13,8 @@ export interface EventI {
   _id: string;
   title: string;
   about: string;
+  availableSeats: number;
+  bookedSeats: number;
   category: string;
   createdOn: string;
 }

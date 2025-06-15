@@ -4,10 +4,11 @@ import { Request } from "express";
 class EventsController {
 	addEvent = async (req: Request) => {
 		try {
-			const { title, about, category } = req.body;
+			const { title, about, availableSeats, category } = req.body;
 			const event = new Event({
 				title,
 				about,
+				availableSeats,
 				category,
 			});
 			await event.save();
@@ -58,7 +59,7 @@ class EventsController {
 	editEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const { title, about, category } = req.body;
+			const { title, about, availableSeats, category } = req.body;
 
 			// const { user } = req.user;
 			const event = await Event.findOne({ _id: eventId });
@@ -71,6 +72,7 @@ class EventsController {
 			}
 			if (title) event.title = title;
 			if (about) event.about = about;
+			if (availableSeats) event.availableSeats = availableSeats;
 			if (category) event.category = category;
 			await event.save();
 			const response = {

@@ -5,7 +5,6 @@ import chalk = require("chalk");
 mongoose.set("strictQuery", false);
 
 export const dbConfig = () => {
-	// Connect to MongoDB
 	if (env.MONGODB_URI) {
 		mongoose
 			.connect(env.MONGODB_URI)

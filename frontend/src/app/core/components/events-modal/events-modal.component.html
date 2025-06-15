@@ -64,6 +64,41 @@
               </p>
             </div>
           </div>
+          <div class="mb-3">
+            <label for="availableSeats" class="form-label"
+              >Available Seats</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="availableSeats"
+              aria-describedby="availableSeats"
+              formControlName="availableSeats"
+            />
+            <div *ngIf="availableSeats.invalid && availableSeats.dirty">
+              <p
+                *ngIf="availableSeats.hasError('min')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Minimum Available Seats: 0.
+              </p>
+              <p
+                *ngIf="availableSeats.hasError('max')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Maximum Available Seats: 1,000,000.
+              </p>
+              <p
+                *ngIf="availableSeats.hasError('notInteger')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Must be a whole number (no decimals).
+              </p>
+            </div>
+          </div>
           <div class="input-group mb-3">
             <label class="input-group-text" for="category">Category</label>
             <select

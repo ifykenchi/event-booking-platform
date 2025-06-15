@@ -7,6 +7,12 @@
     <p class="card-text">
       {{ eventData.about }}
     </p>
+    <h6 class="badge rounded-pill text-bg-info mb-2">
+      Available seats: {{ eventData.bookedSeats }}/{{
+        eventData.availableSeats
+      }}
+    </h6>
+    <br />
     <ng-container *ngIf="isAdmin">
       <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
       <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>

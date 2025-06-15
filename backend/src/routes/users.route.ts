@@ -64,7 +64,7 @@ class UserRoute {
 	}
 	private deleteBooking(prefix: string, router: Router) {
 		router.delete(
-			`${prefix}/delete/:bookingId`,
+			`${prefix}/booking/:bookingId`,
 			AuthMidware.authUser,
 			UserService.deleteBooking
 		);
