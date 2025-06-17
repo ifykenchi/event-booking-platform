@@ -102,7 +102,7 @@ class UserService extends RootService {
 			const output = await BookingsController.addBooking(req);
 			this.sendResponse({
 				res,
-				status: 200,
+				status: 201,
 				data: output,
 			});
 		} catch (error: any) {

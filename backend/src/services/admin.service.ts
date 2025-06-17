@@ -61,7 +61,7 @@ class AdminService extends RootService {
 			const output = await EventsController.addEvent(req);
 			this.sendResponse({
 				res,
-				status: 200,
+				status: 201,
 				data: output,
 			});
 		} catch (error: any) {
