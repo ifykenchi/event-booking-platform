@@ -12,7 +12,9 @@
     </h6>
     <br />
     <ng-container *ngIf="!isAdmin">
-      <a class="btn btn-success me-2" role="button">Book</a>
+      <a (click)="onBook()" class="btn btn-success me-2" role="button"
+        >Book Event</a
+      >
     </ng-container>
     <ng-container *ngIf="isAdmin">
       <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>

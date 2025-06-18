@@ -25,6 +25,7 @@ export interface responseI {
 }
 
 export interface UserDataI {
+  userId: string;
   username: string;
   password: string;
 }
@@ -46,3 +47,20 @@ export interface DeleteI {
 export type SearchKey = 'title' | 'category';
 
 export type Category = 'ALL' | 'Entertainment' | 'Football' | 'Tech' | 'Others';
+
+export interface BookingI {
+  _id: string;
+  eventId: string;
+  userId: string;
+  userDetails: {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+  };
+  createdOn: string;
+}
+
+export interface bookingsResponseI {
+  message: string;
+  bookings: BookingI[];
+}
