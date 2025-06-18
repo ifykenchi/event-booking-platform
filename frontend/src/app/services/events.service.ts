@@ -55,6 +55,12 @@ export class EventsService {
     });
   }
 
+  refreshUserEvents() {
+    this.getUserEvents().subscribe({
+      next: (res) => this.filteredEventsSource.next(res.events),
+    });
+  }
+
   getAdminEvents(): Observable<responseI> {
     return this.http.get<responseI>(
       `${this.apiUrl}/admin/events`,

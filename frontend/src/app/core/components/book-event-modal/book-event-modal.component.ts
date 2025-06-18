@@ -74,7 +74,8 @@ export class BookEventModalComponent {
           phoneNumber: this.phoneNumber.value,
         },
       };
-      console.log('Booking Form Submitted: ', addedBooking);
+      this.bookClick.emit(addedBooking);
+      // console.log('Booking Form Submitted: ', addedBooking);
     }
   }
 }

@@ -3,8 +3,10 @@ import { NavbarComponent } from '../../../core/components/navbar/navbar.componen
 import { CardComponent } from '../../../core/components/card/card.component';
 import { EventsService } from '../../../services/events.service';
 import { RegisterService } from '../../../services/register.service';
+import { BookingsService } from '../../../services/bookings.service';
 import { BookEventModalComponent } from '../../../core/components/book-event-modal/book-event-modal.component';
-import { EventI } from '../../../interfaces/services.interfaces';
+import { NotificationService } from '../../../services/notification.service';
+import { EventI, BookingI } from '../../../interfaces/services.interfaces';
 import { NgFor } from '@angular/common';
 
 @Component({
@@ -21,7 +23,9 @@ export class ViewEventsComponent {
 
   constructor(
     private eventsService: EventsService,
-    private registerService: RegisterService
+    private registerService: RegisterService,
+    private bookingsService: BookingsService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit() {
@@ -51,5 +55,25 @@ export class ViewEventsComponent {
 
   handleCloseBookingModal() {
     this.showModal = false;
+  }
+
+  handleBookEvent(addedBooking: BookingI) {
+    if (!addedBooking) {
+      console.error('Submitted Booking cannot be empty');
+      return;
+    }
+
+    this.bookingsService.addBooking(addedBooking).subscribe({
+      next: (res) => {
+        console.log('Booking added successfully', res);
+        this.eventsService.refreshUserEvents();
+        this.showModal = false;
+        this.notification.showSuccess('Event has been Booked');
+      },
+      error: (err) => {
+        console.error('Failed to book event', err);
+        this.notification.showError('event booking failed. please try again.');
+      },
+    });
   }
 }
