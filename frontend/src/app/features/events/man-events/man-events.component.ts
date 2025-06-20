@@ -52,7 +52,7 @@ export class ManEventsComponent {
       },
       error: (err) => {
         console.error('Failed to delete event!', err);
-        this.notification.showSuccess('An error occured. Please try again');
+        this.notification.showError('An error occured. Please try again');
       },
     });
   }

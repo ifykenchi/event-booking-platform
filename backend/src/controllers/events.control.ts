@@ -1,14 +1,15 @@
 import Event from "../models/event.model";
+import Booking from "../models/booking.model";
 import { Request } from "express";
 
 class EventsController {
 	addEvent = async (req: Request) => {
 		try {
-			const { title, about, availableSeats, category } = req.body;
+			const { title, about, totalSeats, category } = req.body;
 			const event = new Event({
 				title,
 				about,
-				availableSeats,
+				totalSeats,
 				category,
 			});
 			await event.save();
@@ -24,9 +25,25 @@ class EventsController {
 
 	getAllEvents = async () => {
 		try {
-			const events = await Event.find({}).sort({ title: 1 });
+			const events = await Event.find({}).sort({ title: 1 }).lean();
+			const bookedSeats = await Booking.aggregate([
+				{
+					$group: {
+						_id: "$eventId",
+						count: { $sum: 1 },
+					},
+				},
+			]);
+			const bookedSeatsMap = new Map(
+				bookedSeats.map((item) => [item._id.toString(), item.count])
+			);
+			const eventsWithAvailability = events.map((event) => ({
+				...event,
+				availableSeats:
+					event.totalSeats - (bookedSeatsMap.get(event._id.toString()) || 0),
+			}));
 			const response = {
-				events,
+				events: eventsWithAvailability,
 				message: "All Events Retrieved Successfully",
 			};
 			return response;
@@ -46,8 +63,14 @@ class EventsController {
 				};
 				throw response;
 			}
+			const bookedSeats = await Booking.countDocuments({ eventId: eventId });
+			const availableSeats = event.totalSeats - bookedSeats;
+			const eventWithAvailability = {
+				...event.toObject(),
+				availableSeats: availableSeats,
+			};
 			const response = {
-				event,
+				event: eventWithAvailability,
 				message: "Event Get Successful",
 			};
 			return response;
@@ -59,9 +82,8 @@ class EventsController {
 	editEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const { title, about, availableSeats, category } = req.body;
+			const { title, about, totalSeats, category } = req.body;
 
-			// const { user } = req.user;
 			const event = await Event.findOne({ _id: eventId });
 			if (!event) {
 				const response = {
@@ -72,7 +94,7 @@ class EventsController {
 			}
 			if (title) event.title = title;
 			if (about) event.about = about;
-			if (availableSeats) event.availableSeats = availableSeats;
+			if (totalSeats) event.totalSeats = totalSeats;
 			if (category) event.category = category;
 			await event.save();
 			const response = {
@@ -103,10 +125,37 @@ class EventsController {
 				query = { [payload.key]: { $regex: regrex } };
 			}
 
-			const records = await Event.find(query).select(select).sort({ title: 1 });
-			if (!records) throw { message: `${Event.collection.name} not found` };
-			// if (!records.length) throw { message: `${Event.collection.name} not found` };
-			return records;
+			const events = await Event.find(query)
+				.select(select)
+				.sort({ title: 1 })
+				.lean();
+			if (!events) throw { message: `${Event.collection.name} not found` };
+			// if (!events.length) throw { message: `${Event.collection.name} not found` };
+			const bookedSeats = await Booking.aggregate([
+				{
+					$match: {
+						eventId: { $in: events.map((event) => event._id) },
+					},
+				},
+				{
+					$group: {
+						_id: "$eventId",
+						count: { $sum: 1 },
+					},
+				},
+			]);
+
+			const bookedSeatsMap = new Map(
+				bookedSeats.map((item) => [item._id.toString(), item.count])
+			);
+
+			const eventsWithAvailability = events.map((event) => ({
+				...event,
+				availableSeats:
+					event.totalSeats - (bookedSeatsMap.get(event._id.toString()) || 0),
+			}));
+
+			return eventsWithAvailability;
 		} catch (error) {
 			throw error;
 		}

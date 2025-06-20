@@ -5,8 +5,7 @@ const eventSchema: Schema = new Schema({
 	title: { type: String, required: true },
 	about: { type: String, required: true },
 	category: { type: String, required: true },
-	availableSeats: { type: Number, min: 0, required: true },
-	bookedSeats: { type: Number, min: 0, default: 0 },
+	totalSeats: { type: Number, min: 0, required: true },
 	createdOn: { type: Date, default: new Date().getTime() },
 });
 

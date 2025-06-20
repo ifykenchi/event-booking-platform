@@ -39,7 +39,7 @@ export class EventsModalComponent implements OnChanges {
       nonNullable: true,
       validators: [Validators.minLength(6), Validators.maxLength(3000)],
     }),
-    availableSeats: new FormControl<number>(0, {
+    totalSeats: new FormControl<number>(0, {
       nonNullable: true,
       validators: [
         Validators.min(0),
@@ -66,7 +66,7 @@ export class EventsModalComponent implements OnChanges {
     this.eventModalForm.patchValue({
       title: this.eventData.title,
       about: this.eventData.about,
-      availableSeats: this.eventData.availableSeats,
+      totalSeats: this.eventData.totalSeats,
       category: this.eventData.category,
     });
   }
@@ -85,8 +85,8 @@ export class EventsModalComponent implements OnChanges {
   get about() {
     return this.eventModalForm.controls.about;
   }
-  get availableSeats() {
-    return this.eventModalForm.controls.availableSeats;
+  get totalSeats() {
+    return this.eventModalForm.controls.totalSeats;
   }
   get category() {
     return this.eventModalForm.controls.category;
@@ -98,13 +98,13 @@ export class EventsModalComponent implements OnChanges {
         ...this.eventData,
         ...this.eventModalForm.value,
       };
-      const { _id, title, about, availableSeats, category } = formEvent;
+      const { _id, title, about, totalSeats, category } = formEvent;
 
       const updatedEvent = {
         _id: _id,
         title: title,
         about: about,
-        availableSeats: availableSeats,
+        totalSeats: totalSeats,
         category: category,
       };
       this.editClick.emit(updatedEvent);

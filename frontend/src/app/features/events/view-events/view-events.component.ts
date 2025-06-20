@@ -70,9 +70,9 @@ export class ViewEventsComponent {
         this.showModal = false;
         this.notification.showSuccess('Event has been Booked');
       },
-      error: (err) => {
-        console.error('Failed to book event', err);
-        this.notification.showError('event booking failed. please try again.');
+      error: (error) => {
+        console.error('Failed to book event', error);
+        this.notification.showError(error.error.error);
       },
     });
   }

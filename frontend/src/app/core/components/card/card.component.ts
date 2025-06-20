@@ -11,6 +11,7 @@ import { LocalStorageService } from '../../../services/localStorage.service';
 })
 export class CardComponent {
   @Input() eventData!: EventI;
+  @Input() availableSeats!: number;
   @Output() deleteClick = new EventEmitter();
   @Output() editClick = new EventEmitter();
   @Output() bookClick = new EventEmitter();

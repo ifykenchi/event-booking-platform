@@ -31,7 +31,7 @@ class BookingsController {
 			const bookings = await Booking.find({ userId: userId })
 				.populate({
 					path: "eventId",
-					select: "title category availableSeats bookedSeats",
+					select: "title category totalSeats",
 				})
 				.populate({
 					path: "userId",
@@ -59,7 +59,6 @@ class BookingsController {
 			}).session(session);
 
 			if (existingBooking) {
-				await session.abortTransaction();
 				const response = {
 					status: 400,
 					message: "User has already booked the event",
@@ -69,27 +68,21 @@ class BookingsController {
 
 			const event = await Event.findOne({ _id: eventId }).session(session);
 			if (!event) {
-				await session.abortTransaction();
 				const response = {
 					status: 404,
 					message: "Event does not exist",
 				};
 				throw response;
 			}
-			if (event.bookedSeats >= event.availableSeats) {
-				await session.abortTransaction();
+			const bookedSeats = await Booking.countDocuments({ eventId: eventId });
+			const availableSeats = event.totalSeats - bookedSeats;
+			if (availableSeats <= 0) {
 				const response = {
 					status: 400,
 					message: "No seats available for booking",
 				};
 				throw response;
 			}
-
-			await Event.updateOne(
-				{ _id: eventId },
-				{ $inc: { bookedSeats: 1 } },
-				{ session }
-			);
 
 			const [booking] = await Booking.create(
 				[
@@ -110,9 +103,7 @@ class BookingsController {
 			};
 			return response;
 		} catch (error) {
-			if (session.inTransaction()) {
-				await session.abortTransaction();
-			}
+			await session.abortTransaction();
 			throw error;
 		} finally {
 			session.endSession();
@@ -129,7 +120,6 @@ class BookingsController {
 				session
 			);
 			if (!booking) {
-				await session.abortTransaction();
 				const response = {
 					status: 404,
 					message: "Booking does not exist",
@@ -141,27 +131,21 @@ class BookingsController {
 				session
 			);
 			if (!event) {
-				await session.abortTransaction();
 				const response = {
 					status: 404,
 					message: "Event does not exist",
 				};
 				throw response;
 			}
-			if (event.bookedSeats <= 0) {
-				await session.abortTransaction();
+			const bookedSeats = await Booking.countDocuments({ eventId: event._id });
+			const availableSeats = event.totalSeats - bookedSeats;
+			if (availableSeats <= 0) {
 				const response = {
 					status: 400,
 					message: "No Booked Seats to Delete",
 				};
 				throw response;
 			}
-
-			await Event.updateOne(
-				{ _id: event._id },
-				{ $inc: { bookedSeats: -1 } },
-				{ session }
-			);
 
 			await Booking.deleteOne({ _id: bookingId }, { session });
 
@@ -172,9 +156,7 @@ class BookingsController {
 			};
 			return response;
 		} catch (error) {
-			if (session.inTransaction()) {
-				await session.abortTransaction();
-			}
+			await session.abortTransaction();
 			throw error;
 		} finally {
 			session.endSession();

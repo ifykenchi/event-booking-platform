@@ -13,8 +13,8 @@ export interface EventI {
   _id: string;
   title: string;
   about: string;
-  availableSeats: number;
-  bookedSeats: number;
+  totalSeats: number;
+  availableSeats?: number;
   category: string;
   createdOn: string;
 }
@@ -60,7 +60,29 @@ export interface BookingI {
   createdOn: string;
 }
 
+export interface BookingDataI {
+  _id: string;
+  eventId: {
+    _id: string;
+    title: string;
+    category: string;
+    totalSeats: number;
+  };
+  userId: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  userDetails: {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+  };
+  createdOn: string;
+}
+
 export interface bookingsResponseI {
   message: string;
-  bookings: BookingI[];
+  bookings: BookingDataI[];
+  availableSeats: number;
 }

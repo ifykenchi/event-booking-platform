@@ -38,7 +38,7 @@ export class AddEventModalComponent {
         Validators.maxLength(3000),
       ],
     }),
-    availableSeats: new FormControl<number>(0, {
+    totalSeats: new FormControl<number>(0, {
       nonNullable: true,
       validators: [
         Validators.min(0),
@@ -67,8 +67,8 @@ export class AddEventModalComponent {
   get about() {
     return this.eventModalForm.controls.about;
   }
-  get availableSeats() {
-    return this.eventModalForm.controls.availableSeats;
+  get totalSeats() {
+    return this.eventModalForm.controls.totalSeats;
   }
   get category() {
     return this.eventModalForm.controls.category;

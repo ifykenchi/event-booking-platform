@@ -65,33 +65,31 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="availableSeats" class="form-label"
-              >Available Seats</label
-            >
+            <label for="totalSeats" class="form-label">Total Seats</label>
             <input
               type="number"
               class="form-control"
-              id="availableSeats"
-              aria-describedby="availableSeats"
-              formControlName="availableSeats"
+              id="totalSeats"
+              aria-describedby="totalSeats"
+              formControlName="totalSeats"
             />
-            <div *ngIf="availableSeats.invalid && availableSeats.dirty">
+            <div *ngIf="totalSeats.invalid && totalSeats.dirty">
               <p
-                *ngIf="availableSeats.hasError('min')"
+                *ngIf="totalSeats.hasError('min')"
                 class="alert alert-danger"
                 role="alert"
               >
-                Minimum Available Seats: 0.
+                Minimum Seats: 0.
               </p>
               <p
-                *ngIf="availableSeats.hasError('max')"
+                *ngIf="totalSeats.hasError('max')"
                 class="alert alert-danger"
                 role="alert"
               >
-                Maximum Available Seats: 1,000,000.
+                Maximum Seats: 1,000,000.
               </p>
               <p
-                *ngIf="availableSeats.hasError('notInteger')"
+                *ngIf="totalSeats.hasError('notInteger')"
                 class="alert alert-danger"
                 role="alert"
               >

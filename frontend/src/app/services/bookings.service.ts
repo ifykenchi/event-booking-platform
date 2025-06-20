@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { LocalStorageService } from './localStorage.service';
 import {
   BookingI,
+  BookingDataI,
   bookingsResponseI,
   DeleteI,
 } from '../interfaces/services.interfaces';
@@ -41,6 +42,25 @@ export class BookingsService {
     };
   }
 
+  private filteredBookingsSource = new BehaviorSubject<BookingDataI[]>([]);
+  filteredBookings$ = this.filteredBookingsSource.asObservable();
+
+  setFilteredBookings(bookings: BookingDataI[]) {
+    this.filteredBookingsSource.next(bookings);
+  }
+
+  refreshAdminBookings() {
+    this.getAllBookings().subscribe({
+      next: (res) => this.filteredBookingsSource.next(res.bookings),
+    });
+  }
+
+  refreshUserBookings(userId: string) {
+    this.getUserBookings(userId).subscribe({
+      next: (res) => this.filteredBookingsSource.next(res.bookings),
+    });
+  }
+
   getAllBookings(): Observable<bookingsResponseI> {
     return this.http.get<bookingsResponseI>(
       `${this.apiUrl}/admin/bookings`,
@@ -48,9 +68,9 @@ export class BookingsService {
     );
   }
 
-  getUserBookings(): Observable<bookingsResponseI> {
+  getUserBookings(userId: string): Observable<bookingsResponseI> {
     return this.http.get<bookingsResponseI>(
-      `${this.apiUrl}/user/bookings`,
+      `${this.apiUrl}/user/bookings/${userId}`,
       this.getUserHttpOptions()
     );
   }

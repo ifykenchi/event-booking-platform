@@ -1,0 +1,15 @@
+<ng-container *ngIf="!isAdmin">
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{ bookingData.eventId.title }}</h5>
+      <h6 class="badge rounded-pill text-bg-warning mb-2">
+        category: {{ bookingData.eventId.category }}
+      </h6>
+      <br />
+
+      <a (click)="onCancelBooking()" class="btn btn-danger me-2" role="button"
+        >Cancel Booking</a
+      >
+    </div>
+  </div>
+</ng-container>
