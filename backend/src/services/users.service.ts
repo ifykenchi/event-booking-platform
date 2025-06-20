@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import UserAuthController from "../controllers/userauth.control";
 import EventsController from "../controllers/events.control";
+import BookingsController from "../controllers/bookings.control";
 import { RootService } from "./_root.service";
 
 class UserService extends RootService {
@@ -82,6 +83,57 @@ class UserService extends RootService {
 				select
 			);
 
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
+	addBooking = async (req: Request, res: Response) => {
+		try {
+			const output = await BookingsController.addBooking(req);
+			this.sendResponse({
+				res,
+				status: 201,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
+	getUserBookings = async (req: Request, res: Response) => {
+		try {
+			const output = await BookingsController.getUserBookings(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
+
+	deleteBooking = async (req: Request, res: Response) => {
+		try {
+			const output = await BookingsController.deleteBooking(req);
 			this.sendResponse({
 				res,
 				status: 200,

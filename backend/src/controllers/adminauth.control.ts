@@ -84,6 +84,7 @@ class AdminAuthController {
 				throw response;
 			}
 			const adminData = {
+				userId: admin._id,
 				username: admin.username,
 				email: admin.email,
 			};

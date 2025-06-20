@@ -11,8 +11,10 @@ import { LocalStorageService } from '../../../services/localStorage.service';
 })
 export class CardComponent {
   @Input() eventData!: EventI;
+  @Input() availableSeats!: number;
   @Output() deleteClick = new EventEmitter();
   @Output() editClick = new EventEmitter();
+  @Output() bookClick = new EventEmitter();
   show: boolean = false;
   isAdmin: boolean = false;
 
@@ -29,5 +31,9 @@ export class CardComponent {
   onEdit() {
     this.show = true;
     this.editClick.emit(this.eventData);
+  }
+
+  onBook() {
+    this.bookClick.emit(this.eventData._id);
   }
 }

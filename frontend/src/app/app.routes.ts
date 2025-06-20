@@ -7,6 +7,8 @@ import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/ad
 import { UserDashboardComponent } from './features/dashboard/user-dashboard/user-dashboard.component';
 import { ViewEventsComponent } from './features/events/view-events/view-events.component';
 import { ManEventsComponent } from './features/events/man-events/man-events.component';
+import { UserBookingsComponent } from './features/bookings/user-bookings/user-bookings.component';
+import { AdminBookingsComponent } from './features/bookings/admin-bookings/admin-bookings.component';
 import { adminGuard } from './guards/admin.guard';
 import { userGuard } from './guards/user.guard';
 
@@ -39,6 +41,12 @@ export const routes: Routes = [
     canActivate: [userGuard],
   },
   {
+    path: 'user/bookings',
+    title: 'Bookings',
+    component: UserBookingsComponent,
+    canActivate: [userGuard],
+  },
+  {
     path: 'admin/register',
     title: 'Admin Signup Page',
     component: AdminSignupComponent,
@@ -58,6 +66,12 @@ export const routes: Routes = [
     path: 'admin/events',
     title: 'Events',
     component: ManEventsComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'admin/bookings',
+    title: 'Bookings',
+    component: AdminBookingsComponent,
     canActivate: [adminGuard],
   },
   { path: '**', redirectTo: 'user/register' },

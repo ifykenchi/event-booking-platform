@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { LocalStorageService } from './localStorage.service';
+import { environment } from '../../environments/environment';
 import {
   responseI,
   EventI,
@@ -13,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class EventsService {
-  private apiUrl = 'http://localhost:8082';
+  private apiUrl = environment.domain;
 
   constructor(
     private http: HttpClient,
@@ -51,6 +52,12 @@ export class EventsService {
 
   refreshAdminEvents() {
     this.getAdminEvents().subscribe({
+      next: (res) => this.filteredEventsSource.next(res.events),
+    });
+  }
+
+  refreshUserEvents() {
+    this.getUserEvents().subscribe({
       next: (res) => this.filteredEventsSource.next(res.events),
     });
   }
