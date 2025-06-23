@@ -1,0 +1,23 @@
+<div
+  class="modal fade"
+  [class.show]="showConfirmModal"
+  [style.display]="showConfirmModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>{{ message }}</p>
+        <button
+          type="button"
+          class="btn btn-danger me-3"
+          (click)="closeConfirmModal()"
+        >
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="handleConfirm()">
+          {{ modalType }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BookedCardComponent } from '../../../core/components/booked-card/booked-card.component';
+import { ConfirmationModalComponent } from '../../../core/components/confirmation-modal/confirmation-modal.component';
 import { NotificationService } from '../../../services/notification.service';
 import { BookingsService } from '../../../services/bookings.service';
 import { RegisterService } from '../../../services/register.service';
@@ -12,7 +13,7 @@ import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-user-bookings',
-  imports: [BookedCardComponent, NgFor],
+  imports: [BookedCardComponent, ConfirmationModalComponent, NgFor],
   templateUrl: './user-bookings.component.html',
   styleUrl: './user-bookings.component.css',
 })
@@ -20,6 +21,10 @@ export class UserBookingsComponent {
   bookings: BookingDataI[] = [];
   events: EventI[] = [];
   userId: string = '';
+  showConfirmModal: boolean = false;
+  targetBookingId: string = '';
+  modalType: string = 'cancel booking';
+  message: string = 'Are you sure you want to cancel your booking?';
 
   constructor(
     private notification: NotificationService,
@@ -50,16 +55,25 @@ export class UserBookingsComponent {
   }
 
   handleCancelBooking(bookingId: string) {
-    // console.log(bookingId);
-    this.bookingsService.deleteBooking(bookingId).subscribe({
+    this.showConfirmModal = true;
+    this.targetBookingId = bookingId;
+  }
+
+  handleConfirmCancelBooking() {
+    this.bookingsService.deleteBooking(this.targetBookingId).subscribe({
       next: (res) => {
         this.bookingsService.refreshUserBookings(this.userId);
         this.notification.showSuccess('Your booking has been cancelled');
+        this.showConfirmModal = false;
       },
       error: (err) => {
         console.error('Failed to delete booking', err);
         this.notification.showError('Failed to cancel booking');
       },
     });
+  }
+
+  handleCloseConfirmModal() {
+    this.showConfirmModal = false;
   }
 }
