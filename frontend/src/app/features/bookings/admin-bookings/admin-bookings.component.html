@@ -1,3 +1,11 @@
+<app-confirmation-modal
+  (closeModal)="handleCloseConfirmModal()"
+  (confirmClick)="handleConfirmDeleteBooking()"
+  [modalType]="modalType"
+  [showConfirmModal]="showConfirmModal"
+  [message]="message"
+></app-confirmation-modal>
+
 <div class="container mt-3">
   <h2>Bookings</h2>
 </div>
@@ -10,6 +18,8 @@
       <th>Full Name</th>
       <th>Email</th>
       <th>Phone Number</th>
+      <th>Status</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +36,18 @@
       <td>{{ booking.userDetails.email }}</td>
 
       <td>{{ booking.userDetails.phoneNumber }}</td>
+      <td>
+        <span
+          [class.badge-booked]="booking.status"
+          [class.badge-cancelled]="!booking.status"
+          class="badge"
+        >
+          {{ booking.status ? "Booked" : "Cancelled" }}
+        </span>
+      </td>
+      <td class="btn btn-danger" (click)="handleDeleteBooking(booking._id)">
+        Delete
+      </td>
     </tr>
   </tbody>
 </table>

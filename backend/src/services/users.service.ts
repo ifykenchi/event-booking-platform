@@ -131,9 +131,9 @@ class UserService extends RootService {
 		}
 	};
 
-	deleteBooking = async (req: Request, res: Response) => {
+	cancelBooking = async (req: Request, res: Response) => {
 		try {
-			const output = await BookingsController.deleteBooking(req);
+			const output = await BookingsController.cancelBooking(req);
 			this.sendResponse({
 				res,
 				status: 200,

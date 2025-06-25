@@ -57,6 +57,7 @@ export interface BookingI {
     email: string;
     phoneNumber: string;
   };
+  status: boolean;
   createdOn: string;
 }
 
@@ -78,7 +79,13 @@ export interface BookingDataI {
     email: string;
     phoneNumber: string;
   };
+  status: boolean;
   createdOn: string;
+}
+
+export interface CancelBookingI {
+  booking?: BookingI;
+  message: string;
 }
 
 export interface bookingsResponseI {

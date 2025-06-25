@@ -18,6 +18,7 @@ class BookingSchemaValidator {
 				.pattern(/^\+?[0-9\s\-\(\)]{6,20}$/)
 				.required(),
 		}),
+		status: joi.boolean(),
 		createdOn: joi.date(),
 	});
 }

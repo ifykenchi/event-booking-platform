@@ -8,6 +8,7 @@ import {
   BookingDataI,
   bookingsResponseI,
   DeleteI,
+  CancelBookingI,
 } from '../interfaces/services.interfaces';
 
 @Injectable({
@@ -84,10 +85,18 @@ export class BookingsService {
     );
   }
 
+  cancelBooking(bookingId: string): Observable<CancelBookingI> {
+    return this.http.patch<CancelBookingI>(
+      `${this.apiUrl}/user/booking/${bookingId}`,
+      {},
+      this.getUserHttpOptions()
+    );
+  }
+
   deleteBooking(bookingId: string): Observable<DeleteI> {
     return this.http.delete<DeleteI>(
-      `${this.apiUrl}/user/booking/${bookingId}`,
-      this.getUserHttpOptions()
+      `${this.apiUrl}/admin/booking/${bookingId}`,
+      this.getAdminHttpOptions()
     );
   }
 }

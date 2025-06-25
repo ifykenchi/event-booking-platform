@@ -6,10 +6,16 @@
         category: {{ bookingData.eventId.category }}
       </h6>
       <br />
-
-      <a (click)="onCancelBooking()" class="btn btn-danger me-2" role="button"
-        >Cancel Booking</a
-      >
+      <ng-container *ngIf="bookingData.status">
+        <h6 class="badge rounded-pill text-bg-success mb-2">Booked</h6>
+        <br />
+        <a (click)="onCancelBooking()" class="btn btn-danger me-2" role="button"
+          >Cancel Booking</a
+        >
+      </ng-container>
+      <ng-container *ngIf="!bookingData.status">
+        <h6 class="badge rounded-pill text-bg-danger mb-2">Cancelled</h6>
+      </ng-container>
     </div>
   </div>
 </ng-container>

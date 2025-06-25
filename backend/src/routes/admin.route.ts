@@ -17,6 +17,7 @@ class AdminRoute {
 		this.searchEvents(prefix, router);
 		this.deleteEvent(prefix, router);
 		this.getAllBookings(prefix, router);
+		this.deleteBooking(prefix, router);
 	}
 	private admin(prefix: string, router: Router) {
 		router.get(`${prefix}`, AuthMidware.authAdmin, AdminService.getAdmin);
@@ -84,6 +85,13 @@ class AdminRoute {
 			`${prefix}/bookings`,
 			AuthMidware.authAdmin,
 			AdminService.getAllBookings
+		);
+	}
+	private deleteBooking(prefix: string, router: Router) {
+		router.delete(
+			`${prefix}/booking/:bookingId`,
+			AuthMidware.authAdmin,
+			AdminService.deleteBooking
 		);
 	}
 }

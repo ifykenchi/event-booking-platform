@@ -24,7 +24,7 @@ export class BookedCardComponent {
   }
 
   onCancelBooking() {
-    // console.log('cancelled');
     this.cancelBooking.emit(this.bookingData._id);
+    // console.log('clicked');
   }
 }

@@ -22,13 +22,11 @@ export class SidebarComponent {
 
   ngOnInit(): void {
     this.isAdmin = this.localStorageService.isAdmin();
-    console.log(this.isAdmin);
 
     if (this.isAdmin) {
       this.registerService.getAdmin().subscribe({
         next: (res) => {
           this.username = res.adminData.username;
-          console.log(res);
         },
         error: (err) => console.error('Unauthorized User', err),
       });
@@ -38,7 +36,6 @@ export class SidebarComponent {
       this.registerService.getUser().subscribe({
         next: (res) => {
           this.username = res.userData.username;
-          console.log(res);
         },
         error: (err) => console.error('Unauthorized User', err),
       });

@@ -36,11 +36,9 @@ export class UserBookingsComponent {
     this.registerService.getUser().subscribe({
       next: (res) => {
         this.userId = res.userData.userId;
-        // console.log(this.userId);
 
         this.bookingsService.getUserBookings(this.userId).subscribe({
           next: (res) => {
-            // console.log(res.bookings);
             this.bookings = res.bookings;
           },
           error: (err) => console.error('Failed to load bookings', err),
@@ -60,17 +58,18 @@ export class UserBookingsComponent {
   }
 
   handleConfirmCancelBooking() {
-    this.bookingsService.deleteBooking(this.targetBookingId).subscribe({
+    this.bookingsService.cancelBooking(this.targetBookingId).subscribe({
       next: (res) => {
         this.bookingsService.refreshUserBookings(this.userId);
         this.notification.showSuccess('Your booking has been cancelled');
         this.showConfirmModal = false;
       },
       error: (err) => {
-        console.error('Failed to delete booking', err);
+        console.error('Failed to cancel booking', err);
         this.notification.showError('Failed to cancel booking');
       },
     });
+    // console.log(this.targetBookingId);
   }
 
   handleCloseConfirmModal() {

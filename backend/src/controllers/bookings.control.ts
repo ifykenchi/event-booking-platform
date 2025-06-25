@@ -9,7 +9,7 @@ class BookingsController {
 			const bookings = await Booking.find({})
 				.populate({
 					path: "eventId",
-					select: "title category availableSeats bookedSeats",
+					select: "title category totalSeats",
 				})
 				.populate({
 					path: "userId",
@@ -58,7 +58,7 @@ class BookingsController {
 				eventId: eventId,
 			}).session(session);
 
-			if (existingBooking) {
+			if (existingBooking && existingBooking.status === true) {
 				const response = {
 					status: 400,
 					message: "User has already booked the event",
@@ -74,7 +74,10 @@ class BookingsController {
 				};
 				throw response;
 			}
-			const bookedSeats = await Booking.countDocuments({ eventId: eventId });
+			const bookedSeats = await Booking.countDocuments({
+				eventId: eventId,
+				status: true,
+			});
 			const availableSeats = event.totalSeats - bookedSeats;
 			if (availableSeats <= 0) {
 				const response = {
@@ -82,6 +85,19 @@ class BookingsController {
 					message: "No seats available for booking",
 				};
 				throw response;
+			}
+
+			if (existingBooking && existingBooking.status === false) {
+				existingBooking.status = true;
+				existingBooking.userDetails = userDetails;
+				await existingBooking.save();
+				await session.commitTransaction();
+
+				const response = {
+					booking: existingBooking,
+					message: "Booking Recreated Successfully",
+				};
+				return response;
 			}
 
 			const [booking] = await Booking.create(
@@ -100,6 +116,65 @@ class BookingsController {
 			const response = {
 				booking,
 				message: "Booking Created Successfully",
+			};
+			return response;
+		} catch (error) {
+			await session.abortTransaction();
+			throw error;
+		} finally {
+			session.endSession();
+		}
+	};
+
+	cancelBooking = async (req: Request) => {
+		const session = await mongoose.startSession();
+		session.startTransaction();
+
+		try {
+			const bookingId = req.params.bookingId;
+			const booking = await Booking.findOne({
+				_id: bookingId,
+				status: true,
+			}).session(session);
+			if (!booking) {
+				const response = {
+					status: 404,
+					message: "Booking does not exist",
+				};
+				throw response;
+			}
+
+			const event = await Event.findOne({ _id: booking.eventId }).session(
+				session
+			);
+			if (!event) {
+				const response = {
+					status: 404,
+					message: "Event does not exist",
+				};
+				throw response;
+			}
+			const bookedSeats = await Booking.countDocuments({
+				eventId: event._id,
+				status: true,
+			});
+			const availableSeats = event.totalSeats - bookedSeats;
+			if (availableSeats <= 0) {
+				const response = {
+					status: 400,
+					message: "No Booked Seats to Delete",
+				};
+				throw response;
+			}
+
+			booking.status = false;
+			await booking.save();
+
+			await session.commitTransaction();
+
+			const response = {
+				booking,
+				message: "Booking Cancelled Successfully",
 			};
 			return response;
 		} catch (error) {

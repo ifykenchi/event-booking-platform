@@ -30,5 +30,6 @@ export interface IBooking extends Document {
 	eventId: Types.ObjectId;
 	userId: Types.ObjectId;
 	userDetails: IUserDetails;
+	status: boolean;
 	createdOn: Date;
 }

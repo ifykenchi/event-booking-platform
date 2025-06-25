@@ -14,7 +14,7 @@ class UserRoute {
 		this.searchEvents(prefix, router);
 		this.addBooking(prefix, router);
 		this.getUserBookings(prefix, router);
-		this.deleteBooking(prefix, router);
+		this.cancelBooking(prefix, router);
 	}
 	private user(prefix: string, router: Router) {
 		router.get(`${prefix}`, AuthMidware.authUser, UserService.getUser);
@@ -62,11 +62,11 @@ class UserRoute {
 			UserService.getUserBookings
 		);
 	}
-	private deleteBooking(prefix: string, router: Router) {
-		router.delete(
+	private cancelBooking(prefix: string, router: Router) {
+		router.patch(
 			`${prefix}/booking/:bookingId`,
 			AuthMidware.authUser,
-			UserService.deleteBooking
+			UserService.cancelBooking
 		);
 	}
 }

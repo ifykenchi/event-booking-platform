@@ -13,6 +13,7 @@ const bookingSchema: Schema = new Schema({
 		required: true,
 	},
 	userDetails: { type: Object, required: true },
+	status: { type: Boolean, default: true },
 	createdOn: { type: Date, default: new Date().getTime() },
 });
 

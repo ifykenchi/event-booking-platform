@@ -28,6 +28,11 @@ class EventsController {
 			const events = await Event.find({}).sort({ title: 1 }).lean();
 			const bookedSeats = await Booking.aggregate([
 				{
+					$match: {
+						status: true,
+					},
+				},
+				{
 					$group: {
 						_id: "$eventId",
 						count: { $sum: 1 },
@@ -63,7 +68,10 @@ class EventsController {
 				};
 				throw response;
 			}
-			const bookedSeats = await Booking.countDocuments({ eventId: eventId });
+			const bookedSeats = await Booking.countDocuments({
+				eventId: eventId,
+				status: true,
+			});
 			const availableSeats = event.totalSeats - bookedSeats;
 			const eventWithAvailability = {
 				...event.toObject(),
@@ -135,6 +143,7 @@ class EventsController {
 				{
 					$match: {
 						eventId: { $in: events.map((event) => event._id) },
+						status: true,
 					},
 				},
 				{
