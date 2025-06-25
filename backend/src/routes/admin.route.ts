@@ -18,6 +18,9 @@ class AdminRoute {
 		this.deleteEvent(prefix, router);
 		this.getAllBookings(prefix, router);
 		this.deleteBooking(prefix, router);
+		this.totalEvents(prefix, router);
+		this.totalBookings(prefix, router);
+		this.mostBookedEvents(prefix, router);
 	}
 	private admin(prefix: string, router: Router) {
 		router.get(`${prefix}`, AuthMidware.authAdmin, AdminService.getAdmin);
@@ -92,6 +95,27 @@ class AdminRoute {
 			`${prefix}/booking/:bookingId`,
 			AuthMidware.authAdmin,
 			AdminService.deleteBooking
+		);
+	}
+	private totalEvents(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/dashboard/events`,
+			AuthMidware.authAdmin,
+			AdminService.totalEvents
+		);
+	}
+	private totalBookings(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/dashboard/bookings`,
+			AuthMidware.authAdmin,
+			AdminService.totalBookings
+		);
+	}
+	private mostBookedEvents(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/dashboard/most-booked-events`,
+			AuthMidware.authAdmin,
+			AdminService.mostBookedEvents
 		);
 	}
 }
