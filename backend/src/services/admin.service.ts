@@ -250,6 +250,23 @@ class AdminService extends RootService {
 			});
 		}
 	};
+
+	totalRevenue = async (req: Request, res: Response) => {
+		try {
+			const output = await DashboardController.totalRevenue();
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status || 500,
+				error,
+			});
+		}
+	};
 }
 
 export default new AdminService();

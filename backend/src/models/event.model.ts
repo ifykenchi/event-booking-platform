@@ -6,7 +6,8 @@ const eventSchema: Schema = new Schema({
 	about: { type: String, required: true },
 	category: { type: String, required: true },
 	totalSeats: { type: Number, min: 0, required: true },
-	createdOn: { type: Date, default: new Date().getTime() },
+	price: { type: Number, min: 0, default: 0, required: true },
+	createdOn: { type: Date, default: Date.now },
 });
 
 export interface IEventModel extends Model<IEvent> {}

@@ -8,6 +8,14 @@
       {{ eventData.about }}
     </p>
     <h6 class="badge rounded-pill text-bg-info mb-2">
+      {{
+        eventData.price === 0
+          ? "Free"
+          : "Price: " + (eventData.price | currency : "NGN" : "₦" : "1.2-2")
+      }}
+    </h6>
+    <br />
+    <h6 class="badge rounded-pill text-bg-info mb-2">
       available seats: {{ eventData.availableSeats }}/{{ eventData.totalSeats }}
     </h6>
     <br />

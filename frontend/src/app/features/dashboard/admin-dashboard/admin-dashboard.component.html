@@ -1,3 +1,68 @@
-<div class="d-flex justify-content-center align-items-center vh-100">
-  <h1 class="fw-bold">Admin Dashboard</h1>
+<div class="dashboard-container container-fluid py-4">
+  <h1 class="mb-4">Event Management Dashboard</h1>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Total Events</h5>
+          <div class="d-flex align-items-center">
+            <h2 class="mb-1">{{ totalEvents }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Total Bookings</h5>
+          <div class="d-flex align-items-center">
+            <h2 class="mb-1">{{ totalBookings }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Total Revenue</h5>
+          <div class="d-flex align-items-center">
+            <h2 class="mb-0">
+              {{ totalRevenue | currency : "NGN" : "₦" : "1.2-2" }}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Top Event(s)</h5>
+          <div *ngIf="mostBookedEvents; else noEvent">
+            <div *ngFor="let mostBookedEvent of mostBookedEvents">
+              <h6 class="mb-1">{{ mostBookedEvent.title }}</h6>
+            </div>
+            <p class="mb-1 text-muted small">
+              {{ mostBookedEvents[0].bookingCount }} bookings
+            </p>
+          </div>
+          <ng-template #noEvent>
+            <p class="text-muted small">No bookings yet</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Bookings Overview</h5>
+      <div class="chart-placeholder bg-light rounded p-4">
+        <p class="text-center text-muted">Booking trends visualization</p>
+      </div>
+    </div>
+  </div>
 </div>

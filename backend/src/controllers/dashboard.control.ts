@@ -72,7 +72,41 @@ class DashboardController {
 				},
 			]);
 
-			return aggregationResult.length > 0 ? aggregationResult : null;
+			const mostBookedEvents =
+				aggregationResult.length > 0 ? aggregationResult : null;
+			const response = {
+				mostBookedEvents,
+				message: "most-booked-events sent successfully",
+			};
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	totalRevenue = async () => {
+		try {
+			const result = await Booking.aggregate([
+				{
+					$match: {
+						status: true,
+					},
+				},
+				{
+					$group: {
+						_id: null,
+						totalRevenue: { $sum: "$priceAtBooking" },
+					},
+				},
+			]);
+
+			const totalRevenue = result[0]?.totalRevenue || 0;
+
+			const response = {
+				totalRevenue,
+				message: "Total revenue fetched successfully",
+			};
+			return response;
 		} catch (error) {
 			throw error;
 		}

@@ -3,12 +3,12 @@ import {
   BookingDataI,
   BookingI,
 } from '../../../interfaces/services.interfaces';
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass, CommonModule } from '@angular/common';
 import { LocalStorageService } from '../../../services/localStorage.service';
 
 @Component({
   selector: 'app-booked-card',
-  imports: [NgIf],
+  imports: [NgIf, NgClass, CommonModule],
   templateUrl: './booked-card.component.html',
   styleUrl: './booked-card.component.css',
 })

@@ -30,8 +30,11 @@ export class AdminBookingsComponent {
     this.bookingsService.getAllBookings().subscribe({
       next: (res) => {
         this.bookings = res.bookings;
+        console.log(this.bookings);
       },
-      error: (err) => console.error('Failed to load bookings', err),
+      error: (err) => {
+        console.error('Failed to load bookings', err);
+      },
     });
 
     this.bookingsService.filteredBookings$.subscribe((bookings) => {

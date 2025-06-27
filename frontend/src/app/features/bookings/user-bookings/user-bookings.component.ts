@@ -69,7 +69,6 @@ export class UserBookingsComponent {
         this.notification.showError('Failed to cancel booking');
       },
     });
-    // console.log(this.targetBookingId);
   }
 
   handleCloseConfirmModal() {

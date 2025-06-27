@@ -10,3 +10,5 @@
 
 Cancel a booking (soft delete) description: Updates the booking status to
 'cancelled' but retains the record.
+
+#### categories: 'ALL' | 'Entertainment' | 'Football' | 'Tech' | 'Others';

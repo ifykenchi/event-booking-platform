@@ -87,9 +87,12 @@ class BookingsController {
 				throw response;
 			}
 
+			const priceAtBooking = event.price;
+
 			if (existingBooking && existingBooking.status === false) {
 				existingBooking.status = true;
 				existingBooking.userDetails = userDetails;
+				existingBooking.priceAtBooking = priceAtBooking;
 				await existingBooking.save();
 				await session.commitTransaction();
 
@@ -106,6 +109,7 @@ class BookingsController {
 						eventId,
 						userId,
 						userDetails,
+						priceAtBooking,
 					},
 				],
 				{ session }

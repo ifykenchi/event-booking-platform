@@ -123,6 +123,32 @@
               </p>
             </div>
           </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              class="form-control"
+              id="price"
+              aria-describedby="price"
+              formControlName="price"
+            />
+            <div *ngIf="price.invalid && price.dirty">
+              <p
+                *ngIf="price.hasError('min')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Minimum Price: 0.
+              </p>
+              <p
+                *ngIf="price.hasError('max')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Maximum Price: 100,000,000.
+              </p>
+            </div>
+          </div>
           <button
             type="button"
             class="btn btn-danger me-3"

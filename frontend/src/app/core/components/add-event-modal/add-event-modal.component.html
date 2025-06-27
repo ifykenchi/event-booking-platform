@@ -109,6 +109,13 @@
               >
                 Must be a whole number (no decimals).
               </p>
+              <p
+                *ngIf="totalSeats.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                total seats is required.
+              </p>
             </div>
           </div>
           <div class="input-group mb-3">
@@ -134,6 +141,39 @@
                 role="alert"
               >
                 Category is required
+              </p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              class="form-control"
+              id="price"
+              aria-describedby="price"
+              formControlName="price"
+            />
+            <div *ngIf="price.invalid && price.dirty">
+              <p
+                *ngIf="price.hasError('min')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Minimum Price 0.
+              </p>
+              <p
+                *ngIf="price.hasError('max')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Maximum Price: 100,000,000.
+              </p>
+              <p
+                *ngIf="price.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Price is required.
               </p>
             </div>
           </div>

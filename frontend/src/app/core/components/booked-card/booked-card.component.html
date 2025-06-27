@@ -7,6 +7,22 @@
       </h6>
       <br />
       <ng-container *ngIf="bookingData.status">
+        <h6
+          class="badge rounded-pill mb-2"
+          [ngClass]="
+            bookingData.priceAtBooking === 0
+              ? 'text-bg-success'
+              : 'text-bg-info'
+          "
+        >
+          {{
+            bookingData.priceAtBooking === 0
+              ? "Free"
+              : "Price at booking: " +
+                (bookingData.priceAtBooking | currency : "NGN" : "₦" : "1.2-2")
+          }}
+        </h6>
+        <br />
         <h6 class="badge rounded-pill text-bg-success mb-2">Booked</h6>
         <br />
         <a (click)="onCancelBooking()" class="btn btn-danger me-2" role="button"

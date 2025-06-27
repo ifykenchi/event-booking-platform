@@ -17,6 +17,7 @@ export interface IEvent extends Document {
 	about: string;
 	totalSeats: number;
 	category: string;
+	price: number;
 	createdOn: Date;
 }
 
@@ -31,5 +32,6 @@ export interface IBooking extends Document {
 	userId: Types.ObjectId;
 	userDetails: IUserDetails;
 	status: boolean;
+	priceAtBooking: number;
 	createdOn: Date;
 }

@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EventI } from '../../../interfaces/services.interfaces';
-import { NgIf } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import { LocalStorageService } from '../../../services/localStorage.service';
 
 @Component({
   selector: 'app-card',
-  imports: [NgIf],
+  imports: [NgIf, CommonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
 })

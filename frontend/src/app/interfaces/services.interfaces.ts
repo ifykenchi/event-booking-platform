@@ -16,6 +16,7 @@ export interface EventI {
   totalSeats: number;
   availableSeats?: number;
   category: string;
+  price: number;
   createdOn: string;
 }
 
@@ -58,6 +59,7 @@ export interface BookingI {
     phoneNumber: string;
   };
   status: boolean;
+  priceAtBooking: number;
   createdOn: string;
 }
 
@@ -80,6 +82,7 @@ export interface BookingDataI {
     phoneNumber: string;
   };
   status: boolean;
+  priceAtBooking: number;
   createdOn: string;
 }
 
@@ -92,4 +95,12 @@ export interface bookingsResponseI {
   message: string;
   bookings: BookingDataI[];
   availableSeats: number;
+}
+
+export interface dashboardResponseI {
+  message?: string;
+  totalEvents?: number;
+  totalBookings?: number;
+  mostBookedEvents?: any;
+  totalRevenue?: number;
 }

@@ -30,6 +30,7 @@ class SchemaValidator {
 		about: joi.string().min(6).max(3000).required(),
 		totalSeats: joi.number().integer().min(0).max(1000000).required(),
 		category: joi.string().min(3).max(50).required(),
+		price: joi.number().min(0).max(100000000).required(),
 		createdOn: joi.date(),
 	});
 
@@ -39,6 +40,7 @@ class SchemaValidator {
 		about: joi.string().min(6).max(3000),
 		totalSeats: joi.number().integer().min(0).max(1000000),
 		category: joi.string().min(3).max(50),
+		price: joi.number().min(0).max(100000000),
 		createdOn: joi.date(),
 	});
 }

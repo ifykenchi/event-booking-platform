@@ -51,6 +51,10 @@ export class EventsModalComponent implements OnChanges {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    price: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [Validators.min(0), Validators.max(100000000)],
+    }),
   });
 
   ngOnChanges(changes: SimpleChanges) {
@@ -68,6 +72,7 @@ export class EventsModalComponent implements OnChanges {
       about: this.eventData.about,
       totalSeats: this.eventData.totalSeats,
       category: this.eventData.category,
+      price: this.eventData.price,
     });
   }
 
@@ -91,6 +96,9 @@ export class EventsModalComponent implements OnChanges {
   get category() {
     return this.eventModalForm.controls.category;
   }
+  get price() {
+    return this.eventModalForm.controls.price;
+  }
 
   onSubmit() {
     if (this.eventModalForm.valid) {
@@ -98,7 +106,7 @@ export class EventsModalComponent implements OnChanges {
         ...this.eventData,
         ...this.eventModalForm.value,
       };
-      const { _id, title, about, totalSeats, category } = formEvent;
+      const { _id, title, about, totalSeats, category, price } = formEvent;
 
       const updatedEvent = {
         _id: _id,
@@ -106,6 +114,7 @@ export class EventsModalComponent implements OnChanges {
         about: about,
         totalSeats: totalSeats,
         category: category,
+        price: price,
       };
       this.editClick.emit(updatedEvent);
       console.log(updatedEvent);

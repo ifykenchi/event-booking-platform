@@ -51,6 +51,14 @@ export class AddEventModalComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    price: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [
+        Validators.min(0),
+        Validators.max(1000000000),
+        Validators.required,
+      ],
+    }),
   });
 
   private integerValidator(): ValidatorFn {
@@ -72,6 +80,9 @@ export class AddEventModalComponent {
   }
   get category() {
     return this.eventModalForm.controls.category;
+  }
+  get price() {
+    return this.eventModalForm.controls.price;
   }
 
   closeModal() {

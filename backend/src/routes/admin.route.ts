@@ -21,6 +21,7 @@ class AdminRoute {
 		this.totalEvents(prefix, router);
 		this.totalBookings(prefix, router);
 		this.mostBookedEvents(prefix, router);
+		this.totalRevenue(prefix, router);
 	}
 	private admin(prefix: string, router: Router) {
 		router.get(`${prefix}`, AuthMidware.authAdmin, AdminService.getAdmin);
@@ -116,6 +117,13 @@ class AdminRoute {
 			`${prefix}/dashboard/most-booked-events`,
 			AuthMidware.authAdmin,
 			AdminService.mostBookedEvents
+		);
+	}
+	private totalRevenue(prefix: string, router: Router) {
+		router.get(
+			`${prefix}/dashboard/total-revenue`,
+			AuthMidware.authAdmin,
+			AdminService.totalRevenue
 		);
 	}
 }
