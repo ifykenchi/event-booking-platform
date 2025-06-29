@@ -17,7 +17,7 @@
         >
           {{
             bookingData.priceAtBooking === 0
-              ? "Free"
+              ? "Price at booking: Free"
               : "Price at booking: " +
                 (bookingData.priceAtBooking | currency : "NGN" : "₦" : "1.2-2")
           }}
@@ -25,8 +25,18 @@
         <br />
         <h6 class="badge rounded-pill text-bg-success mb-2">Booked</h6>
         <br />
-        <a (click)="onCancelBooking()" class="btn btn-danger me-2" role="button"
+        <a
+          (click)="onCancelBooking()"
+          class="btn btn-danger me-2 mb-2"
+          role="button"
           >Cancel Booking</a
+        >
+        <br />
+        <a
+          (click)="onOpenDetailsModal()"
+          class="btn btn-primary me-2 mb-2"
+          role="button"
+          >view details</a
         >
       </ng-container>
       <ng-container *ngIf="!bookingData.status">

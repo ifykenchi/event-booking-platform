@@ -6,11 +6,10 @@ class DashboardController {
 	totalEvents = async () => {
 		try {
 			const totalEvents = await Event.countDocuments({});
-			const response = {
+			return {
 				totalEvents,
 				message: "total events sent successfully",
 			};
-			return response;
 		} catch (error) {
 			throw error;
 		}
@@ -19,11 +18,10 @@ class DashboardController {
 	totalBookings = async () => {
 		try {
 			const totalBookings = await Booking.countDocuments({ status: true });
-			const response = {
+			return {
 				totalBookings,
 				message: "total bookings sent successfully",
 			};
-			return response;
 		} catch (error) {
 			throw error;
 		}
@@ -74,11 +72,10 @@ class DashboardController {
 
 			const mostBookedEvents =
 				aggregationResult.length > 0 ? aggregationResult : null;
-			const response = {
+			return {
 				mostBookedEvents,
 				message: "most-booked-events sent successfully",
 			};
-			return response;
 		} catch (error) {
 			throw error;
 		}
@@ -102,11 +99,10 @@ class DashboardController {
 
 			const totalRevenue = result[0]?.totalRevenue || 0;
 
-			const response = {
+			return {
 				totalRevenue,
 				message: "Total revenue fetched successfully",
 			};
-			return response;
 		} catch (error) {
 			throw error;
 		}

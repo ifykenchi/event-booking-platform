@@ -10,11 +10,19 @@
   [message]="message"
 ></app-confirmation-modal>
 
+<app-booking-details
+  *ngIf="showDetailsModal"
+  [bookingData]="userBookingData"
+  [showDetailsModal]="showDetailsModal"
+  (closeDetailsModal)="handleCloseDetailsModal()"
+></app-booking-details>
+
 <div class="container my-3 row row-cols-1 row-cols-md-3 g-4">
   <div class="col" *ngFor="let booking of bookings">
     <app-booked-card
       [bookingData]="booking"
       (cancelBooking)="handleCancelBooking($event)"
+      (openDetailsModal)="handleOpenDetailsModal($event)"
     ></app-booked-card>
   </div>
 </div>

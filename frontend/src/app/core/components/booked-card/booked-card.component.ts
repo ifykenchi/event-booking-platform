@@ -15,6 +15,7 @@ import { LocalStorageService } from '../../../services/localStorage.service';
 export class BookedCardComponent {
   @Input() bookingData!: BookingDataI;
   @Output() cancelBooking = new EventEmitter();
+  @Output() openDetailsModal = new EventEmitter();
   isAdmin: boolean = false;
 
   constructor(private localStorageService: LocalStorageService) {}
@@ -25,6 +26,9 @@ export class BookedCardComponent {
 
   onCancelBooking() {
     this.cancelBooking.emit(this.bookingData._id);
-    // console.log('clicked');
+  }
+
+  onOpenDetailsModal() {
+    this.openDetailsModal.emit(this.bookingData);
   }
 }

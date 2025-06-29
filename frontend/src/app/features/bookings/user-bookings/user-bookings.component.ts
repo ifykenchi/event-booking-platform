@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BookedCardComponent } from '../../../core/components/booked-card/booked-card.component';
 import { ConfirmationModalComponent } from '../../../core/components/confirmation-modal/confirmation-modal.component';
+import { BookingDetailsComponent } from '../../../core/components/booking-details/booking-details.component';
 import { NotificationService } from '../../../services/notification.service';
 import { BookingsService } from '../../../services/bookings.service';
 import { RegisterService } from '../../../services/register.service';
@@ -9,22 +10,30 @@ import {
   BookingI,
   BookingDataI,
 } from '../../../interfaces/services.interfaces';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-user-bookings',
-  imports: [BookedCardComponent, ConfirmationModalComponent, NgFor],
+  imports: [
+    BookedCardComponent,
+    ConfirmationModalComponent,
+    BookingDetailsComponent,
+    NgFor,
+    NgIf,
+  ],
   templateUrl: './user-bookings.component.html',
   styleUrl: './user-bookings.component.css',
 })
 export class UserBookingsComponent {
   bookings: BookingDataI[] = [];
+  userBookingData: any = {};
   events: EventI[] = [];
   userId: string = '';
   showConfirmModal: boolean = false;
   targetBookingId: string = '';
   modalType: string = 'cancel booking';
   message: string = 'Are you sure you want to cancel your booking?';
+  showDetailsModal: boolean = false;
 
   constructor(
     private notification: NotificationService,
@@ -71,7 +80,17 @@ export class UserBookingsComponent {
     });
   }
 
+  handleOpenDetailsModal(bookingData: BookingDataI) {
+    this.userBookingData = bookingData;
+    this.showDetailsModal = true;
+    // console.log(bookingData);
+  }
+
   handleCloseConfirmModal() {
     this.showConfirmModal = false;
+  }
+
+  handleCloseDetailsModal() {
+    this.showDetailsModal = false;
   }
 }

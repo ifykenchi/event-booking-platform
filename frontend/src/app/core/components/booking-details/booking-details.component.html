@@ -1,0 +1,31 @@
+<div class="modal-overlay" *ngIf="showDetailsModal">
+  <div class="modal-content">
+    <div class="card text-center">
+      <div class="card-header">Booked user details</div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Event: {{ bookingData.eventId.title }}
+          </li>
+          <li class="list-group-item">
+            Username: {{ bookingData.userId.username }}
+          </li>
+          <li class="list-group-item">
+            Full Name: {{ bookingData.userDetails.fullName }}
+          </li>
+          <li class="list-group-item">
+            Email: {{ bookingData.userDetails.email }}
+          </li>
+          <li class="list-group-item">
+            Phone Number: {{ bookingData.userDetails.phoneNumber }}
+          </li>
+          <li class="list-group-item">
+            Price at Booking:
+            {{ bookingData.priceAtBooking | currency : "NGN" : "₦" : "1.2-2" }}
+          </li>
+        </ul>
+        <a class="btn btn-danger" (click)="onCloseDetailsModal()">close</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,14 @@
 import Booking from "../models/booking.model";
+import { RootController } from "./_root.control";
 import Event from "../models/event.model";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
 
-class BookingsController {
+class BookingsController extends RootController {
+	constructor() {
+		super(Booking, "Booking");
+	}
+
 	getAllBookings = async () => {
 		try {
 			const bookings = await Booking.find({})
@@ -53,6 +58,17 @@ class BookingsController {
 		session.startTransaction();
 		try {
 			const { eventId, userId, userDetails } = req.body;
+			const event = await Event.findOne({ _id: eventId }).session(session);
+			if (!event) {
+				const response = {
+					status: 404,
+					message: "Event does not exist",
+				};
+				throw response;
+			}
+
+			const priceAtBooking = event.price;
+
 			const existingBooking = await Booking.findOne({
 				userId: userId,
 				eventId: eventId,
@@ -66,18 +82,11 @@ class BookingsController {
 				throw response;
 			}
 
-			const event = await Event.findOne({ _id: eventId }).session(session);
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
 			const bookedSeats = await Booking.countDocuments({
 				eventId: eventId,
 				status: true,
 			});
+
 			const availableSeats = event.totalSeats - bookedSeats;
 			if (availableSeats <= 0) {
 				const response = {
@@ -86,8 +95,6 @@ class BookingsController {
 				};
 				throw response;
 			}
-
-			const priceAtBooking = event.price;
 
 			if (existingBooking && existingBooking.status === false) {
 				existingBooking.status = true;
@@ -136,40 +143,10 @@ class BookingsController {
 
 		try {
 			const bookingId = req.params.bookingId;
-			const booking = await Booking.findOne({
-				_id: bookingId,
-				status: true,
-			}).session(session);
-			if (!booking) {
-				const response = {
-					status: 404,
-					message: "Booking does not exist",
-				};
-				throw response;
-			}
-
-			const event = await Event.findOne({ _id: booking.eventId }).session(
+			const booking = await this.findOne(
+				{ _id: bookingId, status: true },
 				session
 			);
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
-			const bookedSeats = await Booking.countDocuments({
-				eventId: event._id,
-				status: true,
-			});
-			const availableSeats = event.totalSeats - bookedSeats;
-			if (availableSeats <= 0) {
-				const response = {
-					status: 400,
-					message: "No Booked Seats to Delete",
-				};
-				throw response;
-			}
 
 			booking.status = false;
 			await booking.save();
@@ -195,38 +172,12 @@ class BookingsController {
 
 		try {
 			const bookingId = req.params.bookingId;
-			const booking = await Booking.findOne({ _id: bookingId }).session(
+			const booking = await this.findOneAndDelete(
+				{
+					_id: bookingId,
+				},
 				session
 			);
-			if (!booking) {
-				const response = {
-					status: 404,
-					message: "Booking does not exist",
-				};
-				throw response;
-			}
-
-			const event = await Event.findOne({ _id: booking.eventId }).session(
-				session
-			);
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
-			const bookedSeats = await Booking.countDocuments({ eventId: event._id });
-			const availableSeats = event.totalSeats - bookedSeats;
-			if (availableSeats <= 0) {
-				const response = {
-					status: 400,
-					message: "No Booked Seats to Delete",
-				};
-				throw response;
-			}
-
-			await Booking.deleteOne({ _id: bookingId }, { session });
 
 			await session.commitTransaction();
 

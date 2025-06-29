@@ -1,8 +1,13 @@
 import Event from "../models/event.model";
+import { RootController } from "./_root.control";
 import Booking from "../models/booking.model";
 import { Request } from "express";
 
-class EventsController {
+class EventsController extends RootController {
+	constructor() {
+		super(Event, "Event");
+	}
+
 	addEvent = async (req: Request) => {
 		try {
 			const { title, about, totalSeats, category, price } = req.body;
@@ -61,14 +66,7 @@ class EventsController {
 	getEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
+			const event = await this.findOne({ _id: eventId });
 			const bookedSeats = await Booking.countDocuments({
 				eventId: eventId,
 				status: true,
@@ -93,14 +91,7 @@ class EventsController {
 			const eventId = req.params.eventId;
 			const { title, about, totalSeats, category, price } = req.body;
 
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
+			const event = await this.findOne({ _id: eventId });
 			if (title) event.title = title;
 			if (about) event.about = about;
 			if (totalSeats) event.totalSeats = totalSeats;
@@ -175,15 +166,7 @@ class EventsController {
 	deleteEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
-			await event.deleteOne({ _id: eventId });
+			const event = await this.findOneAndDelete({ _id: eventId });
 			const response = {
 				message: "Event Deleted Successfully",
 			};
