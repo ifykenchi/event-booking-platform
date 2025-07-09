@@ -4,6 +4,9 @@ import {
   FormControl,
   ReactiveFormsModule,
   Validators,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
 } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
@@ -35,11 +38,36 @@ export class AddEventModalComponent {
         Validators.maxLength(3000),
       ],
     }),
+    totalSeats: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [
+        Validators.min(0),
+        Validators.max(1000000),
+        Validators.required,
+        this.integerValidator(),
+      ],
+    }),
     category: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    price: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [
+        Validators.min(0),
+        Validators.max(1000000000),
+        Validators.required,
+      ],
+    }),
   });
+
+  private integerValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value === null || value === undefined || value === '') return null;
+      return Number.isInteger(value) ? null : { notInteger: true };
+    };
+  }
 
   get title() {
     return this.eventModalForm.controls.title;
@@ -47,8 +75,14 @@ export class AddEventModalComponent {
   get about() {
     return this.eventModalForm.controls.about;
   }
+  get totalSeats() {
+    return this.eventModalForm.controls.totalSeats;
+  }
   get category() {
     return this.eventModalForm.controls.category;
+  }
+  get price() {
+    return this.eventModalForm.controls.price;
   }
 
   closeModal() {

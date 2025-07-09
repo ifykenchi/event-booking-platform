@@ -1,10 +1,15 @@
 import Admin from "../models/admin.model";
+import { RootController } from "./_root.control";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
 import { Request, Response } from "express";
 import { CustomRequest } from "../interfaces/express";
 
-class AdminAuthController {
+class AdminAuthController extends RootController {
+	constructor() {
+		super(Admin, "Admin");
+	}
+
 	register = async (payload: any) => {
 		try {
 			const { username, email, password } = payload;
@@ -39,15 +44,7 @@ class AdminAuthController {
 	login = async (payload: any) => {
 		try {
 			const { email, password } = payload;
-			const isAdmin = await Admin.findOne({ email: email });
-
-			if (!isAdmin) {
-				const response = {
-					status: 400,
-					message: "Invalid email",
-				};
-				throw response;
-			}
+			const isAdmin = await this.findOne({ email: email });
 
 			const validPassword = await isMatch(password, isAdmin.password);
 
@@ -84,6 +81,7 @@ class AdminAuthController {
 				throw response;
 			}
 			const adminData = {
+				userId: admin._id,
 				username: admin.username,
 				email: admin.email,
 			};

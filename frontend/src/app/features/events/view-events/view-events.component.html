@@ -1,7 +1,18 @@
 <app-navbar></app-navbar>
 
+<app-book-event-modal
+  [showBookingModal]="showModal"
+  [eventId]="eventId"
+  [userId]="userId"
+  (closeBookingModal)="handleCloseBookingModal()"
+  (bookClick)="handleBookEvent($event)"
+></app-book-event-modal>
+
 <div class="container my-3 row row-cols-1 row-cols-md-3 g-4">
   <div class="col" *ngFor="let event of events">
-    <app-card [eventData]="event"></app-card>
+    <app-card
+      [eventData]="event"
+      (bookClick)="showBookModal($event)"
+    ></app-card>
   </div>
 </div>

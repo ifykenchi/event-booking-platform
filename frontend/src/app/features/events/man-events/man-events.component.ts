@@ -6,6 +6,7 @@ import { EventI } from '../../../interfaces/services.interfaces';
 import { NgFor } from '@angular/common';
 import { EventsModalComponent } from '../../../core/components/events-modal/events-modal.component';
 import { AddEventModalComponent } from '../../../core/components/add-event-modal/add-event-modal.component';
+import { ConfirmationModalComponent } from '../../../core/components/confirmation-modal/confirmation-modal.component';
 import { NotificationService } from '../../../services/notification.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { NotificationService } from '../../../services/notification.service';
     NgFor,
     EventsModalComponent,
     AddEventModalComponent,
+    ConfirmationModalComponent,
     NavbarComponent,
   ],
   templateUrl: './man-events.component.html',
@@ -25,6 +27,10 @@ export class ManEventsComponent {
   eventData!: EventI;
   showModal: boolean = false;
   showAddModal: boolean = false;
+  showConfirmModal: boolean = false;
+  targetEventId: string = '';
+  modalType: string = 'Delete';
+  message: string = 'This is irreversible. Are you sure you want to delete?';
 
   constructor(
     private eventsService: EventsService,
@@ -45,14 +51,20 @@ export class ManEventsComponent {
   }
 
   handleDelete(eventId: string) {
-    this.eventsService.deleteAdminEvent(eventId).subscribe({
+    this.showConfirmModal = true;
+    this.targetEventId = eventId;
+  }
+
+  handleConfirmDelete() {
+    this.eventsService.deleteAdminEvent(this.targetEventId).subscribe({
       next: (res) => {
         this.eventsService.refreshAdminEvents();
         this.notification.showSuccess('Event Deleted');
+        this.showConfirmModal = false;
       },
       error: (err) => {
         console.error('Failed to delete event!', err);
-        this.notification.showSuccess('An error occured. Please try again');
+        this.notification.showError('An error occured. Please try again');
       },
     });
   }
@@ -115,5 +127,9 @@ export class ManEventsComponent {
 
   handleCloseAddModal() {
     this.showAddModal = false;
+  }
+
+  handleCloseConfirmModal() {
+    this.showConfirmModal = false;
   }
 }

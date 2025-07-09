@@ -1,0 +1,40 @@
+.table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table th {
+  background-color: #343a40;
+  color: white;
+  padding: 12px;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 12px;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.badge {
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.badge-booked {
+  background-color: #28a745; 
+}
+
+.badge-cancelled {
+  background-color: #dc3545; 
+}

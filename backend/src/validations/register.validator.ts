@@ -1,3 +1,4 @@
+import { create } from "domain";
 import * as joi from "joi";
 
 class SchemaValidator {
@@ -27,7 +28,9 @@ class SchemaValidator {
 	public validEvent = joi.object({
 		title: joi.string().min(3).max(50).required(),
 		about: joi.string().min(6).max(3000).required(),
+		totalSeats: joi.number().integer().min(0).max(1000000).required(),
 		category: joi.string().min(3).max(50).required(),
+		price: joi.number().min(0).max(100000000).required(),
 		createdOn: joi.date(),
 	});
 
@@ -35,7 +38,10 @@ class SchemaValidator {
 		_id: joi.string().min(3).max(50),
 		title: joi.string().min(3).max(50),
 		about: joi.string().min(6).max(3000),
+		totalSeats: joi.number().integer().min(0).max(1000000),
 		category: joi.string().min(3).max(50),
+		price: joi.number().min(0).max(100000000),
+		createdOn: joi.date(),
 	});
 }
 

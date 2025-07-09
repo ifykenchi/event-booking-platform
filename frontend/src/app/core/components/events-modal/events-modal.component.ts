@@ -12,6 +12,9 @@ import {
   FormControl,
   ReactiveFormsModule,
   Validators,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
 } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
@@ -36,9 +39,21 @@ export class EventsModalComponent implements OnChanges {
       nonNullable: true,
       validators: [Validators.minLength(6), Validators.maxLength(3000)],
     }),
+    totalSeats: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [
+        Validators.min(0),
+        Validators.max(1000000),
+        this.integerValidator(),
+      ],
+    }),
     category: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required],
+    }),
+    price: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [Validators.min(0), Validators.max(100000000)],
     }),
   });
 
@@ -55,8 +70,18 @@ export class EventsModalComponent implements OnChanges {
     this.eventModalForm.patchValue({
       title: this.eventData.title,
       about: this.eventData.about,
+      totalSeats: this.eventData.totalSeats,
       category: this.eventData.category,
+      price: this.eventData.price,
     });
+  }
+
+  private integerValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value === null || value === undefined || value === '') return null;
+      return Number.isInteger(value) ? null : { notInteger: true };
+    };
   }
 
   get title() {
@@ -65,8 +90,14 @@ export class EventsModalComponent implements OnChanges {
   get about() {
     return this.eventModalForm.controls.about;
   }
+  get totalSeats() {
+    return this.eventModalForm.controls.totalSeats;
+  }
   get category() {
     return this.eventModalForm.controls.category;
+  }
+  get price() {
+    return this.eventModalForm.controls.price;
   }
 
   onSubmit() {
@@ -75,13 +106,15 @@ export class EventsModalComponent implements OnChanges {
         ...this.eventData,
         ...this.eventModalForm.value,
       };
-      const { _id, title, about, category } = formEvent;
+      const { _id, title, about, totalSeats, category, price } = formEvent;
 
       const updatedEvent = {
         _id: _id,
         title: title,
         about: about,
+        totalSeats: totalSeats,
         category: category,
+        price: price,
       };
       this.editClick.emit(updatedEvent);
       console.log(updatedEvent);

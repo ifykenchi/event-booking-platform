@@ -8,6 +8,7 @@ import {
   AdminDataResponseI,
 } from '../interfaces/services.interfaces';
 import { LocalStorageService } from './localStorage.service';
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +20,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class RegisterService {
-  private apiUrl = 'http://localhost:8082';
+  private apiUrl = environment.domain;
 
   constructor(
     private http: HttpClient,

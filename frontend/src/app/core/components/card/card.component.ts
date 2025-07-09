@@ -1,18 +1,20 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EventI } from '../../../interfaces/services.interfaces';
-import { NgIf } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import { LocalStorageService } from '../../../services/localStorage.service';
 
 @Component({
   selector: 'app-card',
-  imports: [NgIf],
+  imports: [NgIf, CommonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
 })
 export class CardComponent {
   @Input() eventData!: EventI;
+  @Input() availableSeats!: number;
   @Output() deleteClick = new EventEmitter();
   @Output() editClick = new EventEmitter();
+  @Output() bookClick = new EventEmitter();
   show: boolean = false;
   isAdmin: boolean = false;
 
@@ -29,5 +31,9 @@ export class CardComponent {
   onEdit() {
     this.show = true;
     this.editClick.emit(this.eventData);
+  }
+
+  onBook() {
+    this.bookClick.emit(this.eventData._id);
   }
 }

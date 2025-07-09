@@ -1,9 +1,14 @@
 import User from "../models/user.model";
+import { RootController } from "./_root.control";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
 import { CustomRequest } from "../interfaces/express";
 
-class UserAuthController {
+class UserAuthController extends RootController {
+	constructor() {
+		super(User, "User");
+	}
+
 	register = async (payload: any) => {
 		try {
 			const { username, email, password } = payload;
@@ -40,15 +45,7 @@ class UserAuthController {
 	login = async (payload: any) => {
 		try {
 			const { email, password } = payload;
-			const isUser = await User.findOne({ email: email });
-
-			if (!isUser) {
-				const response = {
-					status: 400,
-					message: "Invalid email",
-				};
-				throw response;
-			}
+			const isUser = await this.findOne({ email: email });
 
 			const validPassword = await isMatch(password, isUser.password);
 
@@ -85,6 +82,7 @@ class UserAuthController {
 				throw response;
 			}
 			const userData = {
+				userId: user._id,
 				username: user.username,
 				email: user.email,
 			};

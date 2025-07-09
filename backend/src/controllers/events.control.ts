@@ -1,13 +1,21 @@
 import Event from "../models/event.model";
+import { RootController } from "./_root.control";
+import Booking from "../models/booking.model";
 import { Request } from "express";
 
-class EventsController {
+class EventsController extends RootController {
+	constructor() {
+		super(Event, "Event");
+	}
+
 	addEvent = async (req: Request) => {
 		try {
-			const { title, about, category } = req.body;
+			const { title, about, totalSeats, category, price } = req.body;
 			const event = new Event({
 				title,
 				about,
+				totalSeats,
+				price,
 				category,
 			});
 			await event.save();
@@ -23,9 +31,30 @@ class EventsController {
 
 	getAllEvents = async () => {
 		try {
-			const events = await Event.find({}).sort({ title: 1 });
+			const events = await Event.find({}).sort({ title: 1 }).lean();
+			const bookedSeats = await Booking.aggregate([
+				{
+					$match: {
+						status: true,
+					},
+				},
+				{
+					$group: {
+						_id: "$eventId",
+						count: { $sum: 1 },
+					},
+				},
+			]);
+			const bookedSeatsMap = new Map(
+				bookedSeats.map((item) => [item._id.toString(), item.count])
+			);
+			const eventsWithAvailability = events.map((event) => ({
+				...event,
+				availableSeats:
+					event.totalSeats - (bookedSeatsMap.get(event._id.toString()) || 0),
+			}));
 			const response = {
-				events,
+				events: eventsWithAvailability,
 				message: "All Events Retrieved Successfully",
 			};
 			return response;
@@ -37,16 +66,18 @@ class EventsController {
 	getEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
+			const event = await this.findOne({ _id: eventId });
+			const bookedSeats = await Booking.countDocuments({
+				eventId: eventId,
+				status: true,
+			});
+			const availableSeats = event.totalSeats - bookedSeats;
+			const eventWithAvailability = {
+				...event.toObject(),
+				availableSeats: availableSeats,
+			};
 			const response = {
-				event,
+				event: eventWithAvailability,
 				message: "Event Get Successful",
 			};
 			return response;
@@ -58,20 +89,14 @@ class EventsController {
 	editEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const { title, about, category } = req.body;
+			const { title, about, totalSeats, category, price } = req.body;
 
-			// const { user } = req.user;
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
+			const event = await this.findOne({ _id: eventId });
 			if (title) event.title = title;
 			if (about) event.about = about;
+			if (totalSeats) event.totalSeats = totalSeats;
 			if (category) event.category = category;
+			if (price) event.price = price;
 			await event.save();
 			const response = {
 				event,
@@ -101,10 +126,38 @@ class EventsController {
 				query = { [payload.key]: { $regex: regrex } };
 			}
 
-			const records = await Event.find(query).select(select).sort({ title: 1 });
-			if (!records) throw { message: `${Event.collection.name} not found` };
-			// if (!records.length) throw { message: `${Event.collection.name} not found` };
-			return records;
+			const events = await Event.find(query)
+				.select(select)
+				.sort({ title: 1 })
+				.lean();
+			if (!events) throw { message: `${Event.collection.name} not found` };
+			// if (!events.length) throw { message: `${Event.collection.name} not found` };
+			const bookedSeats = await Booking.aggregate([
+				{
+					$match: {
+						eventId: { $in: events.map((event) => event._id) },
+						status: true,
+					},
+				},
+				{
+					$group: {
+						_id: "$eventId",
+						count: { $sum: 1 },
+					},
+				},
+			]);
+
+			const bookedSeatsMap = new Map(
+				bookedSeats.map((item) => [item._id.toString(), item.count])
+			);
+
+			const eventsWithAvailability = events.map((event) => ({
+				...event,
+				availableSeats:
+					event.totalSeats - (bookedSeatsMap.get(event._id.toString()) || 0),
+			}));
+
+			return eventsWithAvailability;
 		} catch (error) {
 			throw error;
 		}
@@ -113,15 +166,7 @@ class EventsController {
 	deleteEvent = async (req: Request) => {
 		try {
 			const eventId = req.params.eventId;
-			const event = await Event.findOne({ _id: eventId });
-			if (!event) {
-				const response = {
-					status: 404,
-					message: "Event does not exist",
-				};
-				throw response;
-			}
-			await event.deleteOne({ _id: eventId });
+			const event = await this.findOneAndDelete({ _id: eventId });
 			const response = {
 				message: "Event Deleted Successfully",
 			};

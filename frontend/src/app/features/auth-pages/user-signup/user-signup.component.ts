@@ -74,7 +74,7 @@ export class UserSignupComponent {
         },
         error: (err) => {
           console.error('Error!', err);
-          this.notification.showError('An error occured. Please try again.');
+          this.notification.showError(err.error.error || 'signup failed');
         },
       });
       this.userSignupForm.reset();

@@ -2,10 +2,12 @@ import mongoose, { Schema, Model } from "mongoose";
 import type { IEvent } from "../interfaces/models.interfaces";
 
 const eventSchema: Schema = new Schema({
-	title: { type: String },
-	about: { type: String },
-	category: { type: String },
-	createdOn: { type: Date, default: new Date().getTime() },
+	title: { type: String, required: true },
+	about: { type: String, required: true },
+	category: { type: String, required: true },
+	totalSeats: { type: Number, min: 0, required: true },
+	price: { type: Number, min: 0, default: 0, required: true },
+	createdOn: { type: Date, default: Date.now },
 });
 
 export interface IEventModel extends Model<IEvent> {}

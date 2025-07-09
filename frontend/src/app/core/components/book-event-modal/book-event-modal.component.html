@@ -1,0 +1,126 @@
+<div
+  class="modal fade"
+  [class.show]="showBookingModal"
+  [style.display]="showBookingModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form
+          class="mt-4"
+          [formGroup]="bookingModalForm"
+          (ngSubmit)="onSubmit()"
+          style="width: 400px"
+        >
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fullName"
+              aria-describedby="fullName"
+              formControlName="fullName"
+            />
+            <div *ngIf="fullName.invalid && fullName.dirty">
+              <p
+                *ngIf="fullName.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                fullName is required.
+              </p>
+              <p
+                *ngIf="fullName.hasError('minlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                fullName must be at least 3 characters long.
+              </p>
+              <p
+                *ngIf="fullName.hasError('maxlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                fullName cannot exceed 100 characters.
+              </p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+              aria-describedby="email"
+              formControlName="email"
+            />
+            <div *ngIf="email.invalid && email.dirty">
+              <p
+                *ngIf="email.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                email is required.
+              </p>
+              <p
+                *ngIf="email.hasError('maxlength')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                email cannot exceed 254 characters.
+              </p>
+              <p
+                *ngIf="email.hasError('email')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                invalid email format.
+              </p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phoneNumber"
+              aria-describedby="phoneNumber"
+              formControlName="phoneNumber"
+            />
+            <div *ngIf="phoneNumber.invalid && phoneNumber.dirty">
+              <p
+                *ngIf="phoneNumber.hasError('required')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                phoneNumber is required.
+              </p>
+              <p
+                *ngIf="phoneNumber.hasError('pattern')"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Format: +1234567890 (6-20 chars).
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger me-3"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="bookingModalForm.valid === false"
+          >
+            Book Event
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
