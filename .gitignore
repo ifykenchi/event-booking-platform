@@ -3,3 +3,5 @@ node_modules
 .tscache 
 dist
 logs 
+.qodo
+coverage

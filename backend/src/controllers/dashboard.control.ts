@@ -1,6 +1,5 @@
 import Event from "../models/event.model";
 import Booking from "../models/booking.model";
-import { Request } from "express";
 
 class DashboardController {
 	totalEvents = async () => {

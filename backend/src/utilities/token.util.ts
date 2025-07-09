@@ -40,7 +40,7 @@ class TokenUtil {
 			const response = jwt.verify(token, env.ACCESS_TOKEN_SECRET);
 			return response;
 		} catch (error) {
-			throw { error, message: "You are not authorized" };
+			throw error;
 		}
 	}
 
@@ -52,7 +52,7 @@ class TokenUtil {
 			const response = jwt.verify(token, env.ADMIN_TOKEN_SECRET);
 			return response;
 		} catch (error) {
-			throw { error, message: "You are not authorized" };
+			throw error;
 		}
 	}
 }
