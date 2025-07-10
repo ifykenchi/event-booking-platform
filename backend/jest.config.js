@@ -7,7 +7,7 @@ module.exports = {
 	},
 	testMatch: ["**/*.test.ts"],
 	collectCoverage: true,
-	collectCoverageFrom: ["src/controllers/**/*.ts"],
+	collectCoverageFrom: ["src/**/*.ts"],
 	coverageDirectory: "coverage",
 	coverageReporters: ["text", "lcov"],
 };
