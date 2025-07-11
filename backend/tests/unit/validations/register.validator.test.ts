@@ -23,7 +23,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/username/);
+			expect(error?.details[0].message).toContain(
+				"length must be at least 3 characters long"
+			);
 		});
 
 		it("should fail if username is too long", () => {
@@ -34,7 +36,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/username/);
+			expect(error?.details[0].message).toContain(
+				"length must be less than or equal to 30 characters long"
+			);
 		});
 
 		it("should fail if email is invalid", () => {
@@ -45,7 +49,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/email/);
+			expect(error?.details[0].message).toContain("must be a valid email");
 		});
 
 		it("should fail if password is too short", () => {
@@ -56,7 +60,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/password/);
+			expect(error?.details[0].message).toContain(
+				"length must be at least 6 characters long"
+			);
 		});
 
 		it("should fail if password is too long", () => {
@@ -67,7 +73,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/password/);
+			expect(error?.details[0].message).toContain(
+				"length must be less than or equal to 30 characters long"
+			);
 		});
 	});
 
@@ -90,7 +98,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/email/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if password is missing", () => {
@@ -99,7 +107,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/password/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 	});
 
@@ -131,7 +139,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/title/);
+			expect(error?.details[0].message).toContain(
+				"length must be at least 3 characters long"
+			);
 		});
 
 		it("should fail if title is missing", () => {
@@ -144,7 +154,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/title/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if about is missing", () => {
@@ -157,7 +167,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/about/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if totalSeats is missing", () => {
@@ -170,7 +180,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/totalSeats/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if category is missing", () => {
@@ -183,7 +193,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/category/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if price is missing", () => {
@@ -196,7 +206,7 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/price/);
+			expect(error?.details[0].message).toContain("is required");
 		});
 
 		it("should fail if totalSeats is negative", () => {
@@ -210,7 +220,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/totalSeats/);
+			expect(error?.details[0].message).toContain(
+				"must be greater than or equal to 0"
+			);
 		});
 	});
 
@@ -247,7 +259,9 @@ describe("SchemaValidator", () => {
 			};
 			const { error } = schema.validate(payload);
 			expect(error).toBeDefined();
-			expect(error?.details[0].message).toMatch(/price/);
+			expect(error?.details[0].message).toContain(
+				"must be greater than or equal to 0"
+			);
 		});
 	});
 });
