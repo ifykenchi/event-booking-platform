@@ -39,7 +39,7 @@ class AuthMidWare {
 			next();
 		} catch (error: any) {
 			res.status(401).json({
-				message: error.message || "Authentication failed",
+				message: error.message,
 			});
 		}
 	};
@@ -54,7 +54,7 @@ class AuthMidWare {
 			next();
 		} catch (error: any) {
 			res.status(401).json({
-				message: error.message || "Authentication failed",
+				message: error.message,
 			});
 		}
 	};

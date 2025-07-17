@@ -1,4 +1,3 @@
-import { create } from "domain";
 import * as joi from "joi";
 
 class SchemaValidator {

@@ -2,7 +2,6 @@ import Admin from "../models/admin.model";
 import { RootController } from "./_root.control";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
-import { Request, Response } from "express";
 import { CustomRequest } from "../interfaces/express";
 
 class AdminAuthController extends RootController {
