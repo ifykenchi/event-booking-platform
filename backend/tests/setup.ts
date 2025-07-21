@@ -1,20 +1,34 @@
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryReplSet } from "mongodb-memory-server";
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
-let mongo: MongoMemoryServer;
+let replSet: MongoMemoryReplSet;
 
 beforeAll(async () => {
-	mongo = await MongoMemoryServer.create();
-	const uri = mongo.getUri();
-	console.log(`DB running on port: ${uri}`);
-	await mongoose.connect(uri);
+	replSet = await MongoMemoryReplSet.create({
+		replSet: { count: 1 },
+		instanceOpts: [
+			{
+				storageEngine: "wiredTiger",
+			},
+		],
+	});
+
+	const uri = replSet.getUri();
+	console.log(`Replica Set running on: ${uri}`);
+
+	await mongoose.connect(uri, {
+		replicaSet: "testset",
+		directConnection: true,
+	});
+
+	await new Promise((resolve) => setTimeout(resolve, 1000));
 });
 
 afterAll(async () => {
 	await mongoose.connection.close();
-	await mongo.stop();
+	await replSet.stop();
 });
 
 afterEach(async () => {
