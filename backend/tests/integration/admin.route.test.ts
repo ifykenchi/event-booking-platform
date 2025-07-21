@@ -3,7 +3,7 @@ import app from "../../src/app";
 import mongoose from "mongoose";
 import TokenUtil from "../../src/utilities/token.util";
 
-describe("AdminService - register", () => {
+describe("AdminRoute - register", () => {
 	it("should register an admin and return 201 with output data", async () => {
 		const res = await request(app).post("/admin/register").send({
 			username: "collins",
@@ -54,7 +54,7 @@ describe("AdminService - register", () => {
 	});
 });
 
-describe("AdminService - login", () => {
+describe("AdminRoute - login", () => {
 	beforeEach(async () => {
 		await request(app).post("/admin/register").send({
 			username: "collins",
@@ -105,7 +105,7 @@ describe("AdminService - login", () => {
 	});
 });
 
-describe("AdminService - getAdmin", () => {
+describe("AdminRoute - getAdmin", () => {
 	let adminToken: string;
 
 	beforeAll(async () => {
@@ -150,7 +150,7 @@ describe("AdminService - getAdmin", () => {
 	});
 });
 
-describe("AdminService - addEvent", () => {
+describe("AdminRoute - addEvent", () => {
 	let adminToken: string;
 
 	beforeAll(async () => {
@@ -233,7 +233,7 @@ describe("AdminService - addEvent", () => {
 	});
 });
 
-describe("AdminService - getAllEvents", () => {
+describe("AdminRoute - getAllEvents", () => {
 	let adminToken: string;
 
 	beforeAll(async () => {
@@ -305,7 +305,7 @@ describe("AdminService - getAllEvents", () => {
 	});
 });
 
-describe("AdminService - getEvent", () => {
+describe("AdminRoute - getEvent", () => {
 	let adminToken: string;
 	let eventId: string;
 
@@ -380,7 +380,7 @@ describe("AdminService - getEvent", () => {
 	});
 });
 
-describe("AdminService - editEvent", () => {
+describe("AdminRoute - editEvent", () => {
 	let adminToken: string;
 	let eventId: string;
 
@@ -499,7 +499,7 @@ describe("AdminService - editEvent", () => {
 	});
 });
 
-describe("AdminService - searchEvents", () => {
+describe("AdminRoute - searchEvents", () => {
 	let adminToken: string;
 
 	beforeEach(async () => {
@@ -602,7 +602,7 @@ describe("AdminService - searchEvents", () => {
 	});
 });
 
-describe("AdminService - deleteEvent", () => {
+describe("AdminRoute - deleteEvent", () => {
 	let adminToken: string;
 	let eventId: string;
 
@@ -668,7 +668,7 @@ describe("AdminService - deleteEvent", () => {
 	});
 });
 
-describe("AdminService - getAllBookings", () => {
+describe("AdminRoute - getAllBookings", () => {
 	let adminToken: string;
 	let eventId: string;
 	let userId: string;
@@ -758,7 +758,7 @@ describe("AdminService - getAllBookings", () => {
 	});
 });
 
-describe("AdminService - deleteBooking", () => {
+describe("AdminRoute - deleteBooking", () => {
 	let adminToken: string;
 	let bookingId: string;
 	let eventId: string;
@@ -853,7 +853,7 @@ describe("AdminService - deleteBooking", () => {
 	});
 });
 
-describe("AdminService - totalEvents", () => {
+describe("AdminRoute - totalEvents", () => {
 	let adminToken: string;
 
 	beforeAll(async () => {
@@ -969,7 +969,7 @@ describe("AdminService - totalEvents", () => {
 	});
 });
 
-describe("AdminService - totalBookings", () => {
+describe("AdminRoute - totalBookings", () => {
 	let adminToken: string;
 	let eventId: string;
 	let userId1: string;
@@ -1137,7 +1137,7 @@ describe("AdminService - totalBookings", () => {
 	});
 });
 
-describe("AdminService - mostBookedEvents", () => {
+describe("AdminRoute - mostBookedEvents", () => {
 	let adminToken: string;
 	let eventId1: string;
 	let eventId2: string;
@@ -1370,7 +1370,7 @@ describe("AdminService - mostBookedEvents", () => {
 	});
 });
 
-describe("AdminService - totalRevenue", () => {
+describe("AdminRoute - totalRevenue", () => {
 	let adminToken: string;
 	let eventId1: string;
 	let eventId2: string;
