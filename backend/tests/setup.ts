@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { MongoMemoryReplSet } from "mongodb-memory-server";
 
 jest.setTimeout(60000);
-
 let replSet: MongoMemoryReplSet;
 
 beforeAll(async () => {
@@ -11,6 +10,7 @@ beforeAll(async () => {
 		instanceOpts: [
 			{
 				storageEngine: "wiredTiger",
+				launchTimeout: 30000,
 			},
 		],
 	});

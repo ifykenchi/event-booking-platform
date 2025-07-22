@@ -7,7 +7,7 @@
 	"type": "commonjs",
 	"main": "server.js",
 	"scripts": {
-		"test": "set MONGOMS_DOWNLOAD_DIR=C:\\mongodb-binaries&& jest",
+		"test": "jest",
 		"testwatch": "jest --watchAll",
 		"test:coverage": "jest --coverage",
 		"start": "node src/server.js",
