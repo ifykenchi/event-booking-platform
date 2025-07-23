@@ -65,6 +65,22 @@ describe("RootService", () => {
 			});
 		});
 
+		it("should return 500 when status code is not sent", () => {
+			const error = new Error("Test error");
+			const serviceResponse: any = {
+				res,
+				error,
+			};
+
+			rootService.sendResponse(serviceResponse);
+
+			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledWith({ error: "Test error" });
+			expect(res.json).not.toHaveBeenCalledWith({
+				message: "Should not be sent",
+			});
+		});
+
 		it("should handle empty data object when no error", () => {
 			const serviceResponse: IServiceResp = {
 				res,

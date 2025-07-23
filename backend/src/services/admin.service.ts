@@ -17,7 +17,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -34,7 +34,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -51,7 +51,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -68,7 +68,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -85,7 +85,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -102,7 +102,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -119,7 +119,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -143,7 +143,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -160,7 +160,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -177,7 +177,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -194,7 +194,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -211,7 +211,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -228,7 +228,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -245,7 +245,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -262,7 +262,7 @@ class AdminService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}

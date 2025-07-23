@@ -42,7 +42,6 @@ describe("UserService", () => {
 
 			expect(userService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -57,7 +56,6 @@ describe("UserService", () => {
 
 			expect(userService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -77,7 +75,6 @@ describe("UserService", () => {
 
 			expect(userService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});

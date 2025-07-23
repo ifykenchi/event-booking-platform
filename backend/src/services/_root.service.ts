@@ -9,7 +9,8 @@ export class RootService {
 			}
 			res.status(status).json(data);
 		} catch (error: any) {
-			res.status(status).json({ error: error.message });
+			const status_ = status || 500;
+			res.status(status_).json({ error: error.message });
 		}
 	};
 }

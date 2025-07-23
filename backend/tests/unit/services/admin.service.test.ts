@@ -42,7 +42,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -73,7 +72,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -107,7 +105,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -122,7 +119,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -142,7 +138,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});
@@ -157,7 +152,6 @@ describe("AdminService", () => {
 
 			expect(adminService.sendResponse).toHaveBeenCalledWith({
 				res: mockRes,
-				status: 500,
 				error,
 			});
 		});

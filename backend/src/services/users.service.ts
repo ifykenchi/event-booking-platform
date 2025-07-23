@@ -16,7 +16,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -33,7 +33,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -50,7 +50,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -67,7 +67,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -91,7 +91,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -108,7 +108,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -125,7 +125,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
@@ -142,7 +142,7 @@ class UserService extends RootService {
 		} catch (error: any) {
 			this.sendResponse({
 				res,
-				status: error.status || 500,
+				status: error.status,
 				error,
 			});
 		}
