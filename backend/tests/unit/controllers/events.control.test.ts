@@ -182,6 +182,20 @@ describe("EventsController", () => {
 				EventsController.searchEvents({ key: "category", value: "Music" })
 			).rejects.toThrow("DB error");
 		});
+
+		it("should throw error when no events are found (null case)", async () => {
+			const payload = { key: "category", value: "NonExistent" };
+
+			(Event.find as jest.Mock).mockReturnValue({
+				select: jest.fn().mockReturnThis(),
+				sort: jest.fn().mockReturnThis(),
+				lean: jest.fn().mockResolvedValue(null),
+			});
+
+			await expect(EventsController.searchEvents(payload)).rejects.toEqual({
+				message: "events not found",
+			});
+		});
 	});
 
 	describe("deleteEvent", () => {
