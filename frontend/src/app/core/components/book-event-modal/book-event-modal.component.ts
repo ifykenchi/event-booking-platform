@@ -72,7 +72,6 @@ export class BookEventModalComponent {
         },
       };
       this.bookClick.emit(addedBooking);
-      // console.log('Booking Form Submitted: ', addedBooking);
     }
   }
 }

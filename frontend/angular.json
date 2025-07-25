@@ -83,6 +83,13 @@
                 "input": "public"
               }
             ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "**/test.ts",
+              "**/*.spec.ts",
+              "**/*.mock.ts",
+              "**/environments/*"
+            ],
             "styles": ["src/styles.css"],
             "scripts": []
           }

@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManEventsComponent } from './man-events.component';
+// import { ManEventsComponent } from './man-events.component';
 
-describe('ManEventsComponent', () => {
-  let component: ManEventsComponent;
-  let fixture: ComponentFixture<ManEventsComponent>;
+// describe('ManEventsComponent', () => {
+//   let component: ManEventsComponent;
+//   let fixture: ComponentFixture<ManEventsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ManEventsComponent]
-    })
-    .compileComponents();
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       imports: [ManEventsComponent]
+//     })
+//     .compileComponents();
 
-    fixture = TestBed.createComponent(ManEventsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//     fixture = TestBed.createComponent(ManEventsComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });

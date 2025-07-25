@@ -9,10 +9,10 @@ class TokenUtil {
     return false;
   }
 
-  getUsername(isAdmin: boolean) {
-    if (isAdmin) {
-    }
-  }
+  // getUsername(isAdmin: boolean) {
+  //   if (isAdmin) {
+  //   }
+  // }
 }
 
 export default new TokenUtil();
