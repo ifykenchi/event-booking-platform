@@ -1,23 +1,171 @@
-// import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BookedCardComponent } from './booked-card.component';
+import { LocalStorageService } from '../../../services/localStorage.service';
+import { NgIf, NgClass, CommonModule } from '@angular/common';
 
-// import { BookedCardComponent } from './booked-card.component';
+describe('BookedCardComponent', () => {
+  let component: BookedCardComponent;
+  let fixture: ComponentFixture<BookedCardComponent>;
+  let localStorageService: jasmine.SpyObj<LocalStorageService>;
 
-// describe('BookedCardComponent', () => {
-//   let component: BookedCardComponent;
-//   let fixture: ComponentFixture<BookedCardComponent>;
+  const mockBookingData: any = {
+    _id: 'booking-123',
+    eventId: {
+      _id: 'event-123',
+      title: 'Test Event',
+      category: 'Tech',
+      price: 1000,
+    },
+    priceAtBooking: 1000,
+    status: true,
+  };
 
-//   beforeEach(async () => {
-//     await TestBed.configureTestingModule({
-//       imports: [BookedCardComponent]
-//     })
-//     .compileComponents();
+  beforeEach(async () => {
+    const localStorageSpy = jasmine.createSpyObj('LocalStorageService', [
+      'isAdmin',
+    ]);
 
-//     fixture = TestBed.createComponent(BookedCardComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
+    await TestBed.configureTestingModule({
+      imports: [BookedCardComponent, NgIf, NgClass, CommonModule],
+      providers: [{ provide: LocalStorageService, useValue: localStorageSpy }],
+    }).compileComponents();
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+    fixture = TestBed.createComponent(BookedCardComponent);
+    component = fixture.componentInstance;
+    localStorageService = TestBed.inject(
+      LocalStorageService
+    ) as jasmine.SpyObj<LocalStorageService>;
+
+    component.bookingData = mockBookingData;
+
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('Admin Check', () => {
+    it('should set isAdmin to false when user is not admin', () => {
+      localStorageService.isAdmin.and.returnValue(false);
+      component.ngOnInit();
+      expect(component.isAdmin).toBeFalse();
+    });
+
+    it('should set isAdmin to true when user is admin', () => {
+      localStorageService.isAdmin.and.returnValue(true);
+      component.ngOnInit();
+      expect(component.isAdmin).toBeTrue();
+    });
+  });
+
+  describe('Event Emitters', () => {
+    it('should emit booking id when onCancelBooking is called', () => {
+      spyOn(component.cancelBooking, 'emit');
+      component.onCancelBooking();
+      expect(component.cancelBooking.emit).toHaveBeenCalledWith('booking-123');
+    });
+
+    it('should emit booking data when onOpenDetailsModal is called', () => {
+      spyOn(component.openDetailsModal, 'emit');
+      component.onOpenDetailsModal();
+      expect(component.openDetailsModal.emit).toHaveBeenCalledWith(
+        mockBookingData
+      );
+    });
+  });
+
+  describe('DOM Rendering', () => {
+    it('should not render card for admin users', () => {
+      component.isAdmin = true;
+      fixture.detectChanges();
+      const card = fixture.nativeElement.querySelector('.card');
+      expect(card).toBeNull();
+    });
+
+    it('should render card for non-admin users', () => {
+      component.isAdmin = false;
+      fixture.detectChanges();
+      const card = fixture.nativeElement.querySelector('.card');
+      expect(card).toBeTruthy();
+    });
+
+    it('should display correct event title', () => {
+      component.isAdmin = false;
+      fixture.detectChanges();
+      const title = fixture.nativeElement.querySelector('.card-title');
+      expect(title.textContent).toContain('Test Event');
+    });
+
+    it('should display correct category', () => {
+      component.isAdmin = false;
+      fixture.detectChanges();
+      const category = fixture.nativeElement.querySelector(
+        '.badge.text-bg-warning'
+      );
+      expect(category.textContent).toContain('category: Tech');
+    });
+
+    describe('Booking Status', () => {
+      it('should show "Booked" badge and action buttons when status is true', () => {
+        component.bookingData.status = true;
+        component.bookingData.priceAtBooking = 1000;
+        fixture.detectChanges();
+
+        const badges = fixture.nativeElement.querySelectorAll('.badge');
+        const bookedBadge = Array.from(badges).find((badge: any) =>
+          badge.textContent.includes('Booked')
+        ) as any;
+        const cancelButton = fixture.nativeElement.querySelector('.btn-danger');
+        const detailsButton =
+          fixture.nativeElement.querySelector('.btn-primary');
+
+        expect(bookedBadge).toBeTruthy();
+        expect(bookedBadge?.textContent.trim()).toContain('Booked');
+        expect(cancelButton).toBeTruthy();
+        expect(detailsButton).toBeTruthy();
+      });
+
+      it('should show "Cancelled" badge when status is false', () => {
+        component.bookingData.status = false;
+        fixture.detectChanges();
+
+        const badges = fixture.nativeElement.querySelectorAll('.badge');
+        const cancelledBadge = Array.from(badges).find((badge: any) =>
+          badge.textContent.includes('Cancelled')
+        ) as any;
+        const cancelButton = fixture.nativeElement.querySelector('.btn-danger');
+
+        expect(cancelledBadge).toBeTruthy();
+        expect(cancelledBadge?.textContent.trim()).toContain('Cancelled');
+        expect(cancelButton).toBeNull();
+      });
+    });
+
+    describe('Price Display', () => {
+      it('should show "Free" when priceAtBooking is 0', () => {
+        component.bookingData.priceAtBooking = 0;
+        fixture.detectChanges();
+
+        const priceBadge = fixture.nativeElement.querySelector(
+          '.badge.text-bg-success'
+        );
+        expect(priceBadge.textContent).toContain('Price at booking: Free');
+      });
+
+      it('should show formatted price when priceAtBooking > 0', () => {
+        component.bookingData.priceAtBooking = 1500;
+        fixture.detectChanges();
+
+        const priceBadge = fixture.nativeElement.querySelector(
+          '.badge.text-bg-info'
+        );
+        expect(priceBadge.textContent).toContain('Price at booking: ₦1,500.00');
+      });
+    });
+  });
+});
