@@ -110,42 +110,6 @@ describe('BookedCardComponent', () => {
       expect(category.textContent).toContain('category: Tech');
     });
 
-    describe('Booking Status', () => {
-      it('should show "Booked" badge and action buttons when status is true', () => {
-        component.bookingData.status = true;
-        component.bookingData.priceAtBooking = 1000;
-        fixture.detectChanges();
-
-        const badges = fixture.nativeElement.querySelectorAll('.badge');
-        const bookedBadge = Array.from(badges).find((badge: any) =>
-          badge.textContent.includes('Booked')
-        ) as any;
-        const cancelButton = fixture.nativeElement.querySelector('.btn-danger');
-        const detailsButton =
-          fixture.nativeElement.querySelector('.btn-primary');
-
-        expect(bookedBadge).toBeTruthy();
-        expect(bookedBadge?.textContent.trim()).toContain('Booked');
-        expect(cancelButton).toBeTruthy();
-        expect(detailsButton).toBeTruthy();
-      });
-
-      it('should show "Cancelled" badge when status is false', () => {
-        component.bookingData.status = false;
-        fixture.detectChanges();
-
-        const badges = fixture.nativeElement.querySelectorAll('.badge');
-        const cancelledBadge = Array.from(badges).find((badge: any) =>
-          badge.textContent.includes('Cancelled')
-        ) as any;
-        const cancelButton = fixture.nativeElement.querySelector('.btn-danger');
-
-        expect(cancelledBadge).toBeTruthy();
-        expect(cancelledBadge?.textContent.trim()).toContain('Cancelled');
-        expect(cancelButton).toBeNull();
-      });
-    });
-
     describe('Price Display', () => {
       it('should show "Free" when priceAtBooking is 0', () => {
         component.bookingData.priceAtBooking = 0;

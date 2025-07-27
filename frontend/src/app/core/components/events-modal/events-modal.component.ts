@@ -58,7 +58,7 @@ export class EventsModalComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['event'] && this.eventData) {
+    if (changes['eventData'] && this.eventData) {
       this.prefillForm();
     }
     if (changes['showModal'] && this.showModal && this.eventData) {
