@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { NotificationService } from '../../../services/notification.service';
 import { DashboardService } from '../../../services/dashboard.service';
-import { RegisterService } from '../../../services/register.service';
-import { dashboardResponseI } from '../../../interfaces/services.interfaces';
 import { NgFor, NgIf, CommonModule } from '@angular/common';
 
 @Component({
@@ -12,16 +9,12 @@ import { NgFor, NgIf, CommonModule } from '@angular/common';
   styleUrl: './admin-dashboard.component.css',
 })
 export class AdminDashboardComponent {
-  totalEvents: number = 0;
-  totalBookings: number = 0;
+  totalEvents: number | undefined = 0;
+  totalBookings: number | undefined = 0;
   mostBookedEvents: any = [];
-  totalRevenue: number = 0;
+  totalRevenue: number | undefined = 0;
 
-  constructor(
-    private notification: NotificationService,
-    private dashboardService: DashboardService,
-    private registerService: RegisterService
-  ) {}
+  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
     this.loadDashboardData();
@@ -30,7 +23,7 @@ export class AdminDashboardComponent {
   loadDashboardData(): void {
     this.dashboardService.totalEvents().subscribe({
       next: (res) => {
-        this.totalEvents = res.totalEvents || 0;
+        this.totalEvents = res.totalEvents;
       },
       error: (err) => {
         console.error('failed to fetch total events', err);
@@ -38,7 +31,7 @@ export class AdminDashboardComponent {
     });
     this.dashboardService.totalBookings().subscribe({
       next: (res) => {
-        this.totalBookings = res.totalBookings || 0;
+        this.totalBookings = res.totalBookings;
       },
       error: (err) => {
         console.error('failed to fetch total bookings', err);
@@ -55,7 +48,7 @@ export class AdminDashboardComponent {
     });
     this.dashboardService.totalRevenue().subscribe({
       next: (res) => {
-        this.totalRevenue = res.totalRevenue || 0;
+        this.totalRevenue = res.totalRevenue;
       },
       error: (err) => {
         console.error('failed to fetch total revenue', err);
