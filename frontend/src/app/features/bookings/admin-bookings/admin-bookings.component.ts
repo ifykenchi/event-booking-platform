@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NotificationService } from '../../../services/notification.service';
 import { BookingsService } from '../../../services/bookings.service';
-import { RegisterService } from '../../../services/register.service';
 import { EventI, BookingDataI } from '../../../interfaces/services.interfaces';
 import { ConfirmationModalComponent } from '../../../core/components/confirmation-modal/confirmation-modal.component';
 import { NgFor, NgIf } from '@angular/common';
@@ -22,8 +21,7 @@ export class AdminBookingsComponent {
 
   constructor(
     private notification: NotificationService,
-    private bookingsService: BookingsService,
-    private registerService: RegisterService
+    private bookingsService: BookingsService
   ) {}
 
   ngOnInit() {
