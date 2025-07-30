@@ -1,17 +1,51 @@
-// import { TestBed } from '@angular/core/testing';
-// import { CanActivateFn } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { userGuard } from './user.guard';
+import TokenUtil from '../../utils/token.util';
 
-// import { userGuard } from './user.guard';
+describe('UserGuard', () => {
+  let tokenUtil: typeof TokenUtil;
+  let mockRouter: jasmine.SpyObj<Router>;
 
-// describe('userGuard', () => {
-//   const executeGuard: CanActivateFn = (...guardParameters) =>
-//       TestBed.runInInjectionContext(() => userGuard(...guardParameters));
+  beforeEach(() => {
+    tokenUtil = TokenUtil;
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({});
-//   });
+    TestBed.configureTestingModule({
+      providers: [{ provide: Router, useValue: mockRouter }],
+    });
+  });
 
-//   it('should be created', () => {
-//     expect(executeGuard).toBeTruthy();
-//   });
-// });
+  it('should allow access when user_token exists', () => {
+    spyOn(tokenUtil, 'user_token').and.returnValue(true);
+
+    const result = TestBed.runInInjectionContext(() =>
+      userGuard({} as any, {} as any)
+    );
+
+    expect(result).toBe(true);
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to /user/register when user_token does not exist', () => {
+    spyOn(TokenUtil as any, 'user_token').and.returnValue(false);
+
+    const result = TestBed.runInInjectionContext(() =>
+      userGuard({} as any, {} as any)
+    );
+
+    expect(result).toBe(false);
+    expect(mockRouter.navigate).toHaveBeenCalledOnceWith(['/user/register']);
+  });
+
+  it('should inject Router dependency properly', () => {
+    spyOn(TokenUtil as any, 'user_token').and.returnValue(false);
+    const injector = TestBed.inject(Router);
+
+    const result = TestBed.runInInjectionContext(() =>
+      userGuard({} as any, {} as any)
+    );
+
+    expect(injector).toBeTruthy();
+  });
+});
