@@ -10,11 +10,17 @@
         <button
           type="button"
           class="btn btn-danger me-3"
+          data-cy="confirmModal-close-btn"
           (click)="closeConfirmModal()"
         >
           Close
         </button>
-        <button type="submit" class="btn btn-primary" (click)="handleConfirm()">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          data-cy="confirmModal-modalType-btn"
+          (click)="handleConfirm()"
+        >
           {{ modalType }}
         </button>
       </div>
