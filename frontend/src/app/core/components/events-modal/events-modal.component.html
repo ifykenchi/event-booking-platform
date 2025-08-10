@@ -17,6 +17,7 @@
             <input
               type="text"
               class="form-control"
+              data-cy="editEvent-title-input"
               id="title"
               aria-describedby="title"
               formControlName="title"
@@ -152,6 +153,7 @@
           <button
             type="button"
             class="btn btn-danger me-3"
+            data-cy="close-events-modal-btn"
             (click)="closeModal()"
           >
             Close
@@ -159,6 +161,7 @@
           <button
             type="submit"
             class="btn btn-primary"
+            data-cy="submit-edit-event-btn"
             [disabled]="eventModalForm.valid === false"
           >
             Save

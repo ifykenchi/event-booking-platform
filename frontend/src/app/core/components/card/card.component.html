@@ -25,8 +25,20 @@
       >
     </ng-container>
     <ng-container *ngIf="isAdmin">
-      <a (click)="onEdit()" class="btn btn-primary me-2" role="button">Edit</a>
-      <a (click)="onDelete()" class="btn btn-danger" role="button">Delete</a>
+      <a
+        (click)="onEdit()"
+        class="btn btn-primary me-2"
+        data-cy="edit-event-btn"
+        role="button"
+        >Edit</a
+      >
+      <a
+        (click)="onDelete()"
+        class="btn btn-danger"
+        data-cy="delete-event-btn"
+        role="button"
+        >Delete</a
+      >
     </ng-container>
   </div>
 </div>
