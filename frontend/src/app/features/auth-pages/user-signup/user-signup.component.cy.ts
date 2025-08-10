@@ -1,4 +1,4 @@
-import { AdminLoginComponent } from './admin-login.component';
+import { UserSignupComponent } from './user-signup.component';
 import { RegisterService } from '../../../services/register.service';
 import { NotificationService } from '../../../services/notification.service';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { routes } from '../../../app.routes';
 import { of, throwError } from 'rxjs';
 
-describe('AdminLoginComponent', () => {
+describe('UserSignupComponent', () => {
   let mockRegisterService: {
-    adminLogin: Cypress.Agent<sinon.SinonStub>;
+    userSignup: Cypress.Agent<sinon.SinonStub>;
   };
   let mockNotificationService: {
     showSuccess: Cypress.Agent<sinon.SinonStub>;
@@ -18,7 +18,7 @@ describe('AdminLoginComponent', () => {
 
   beforeEach(() => {
     mockRegisterService = {
-      adminLogin: cy.stub().returns(of({})) as any,
+      userSignup: cy.stub().returns(of({})) as any,
     };
 
     mockNotificationService = {
@@ -26,7 +26,7 @@ describe('AdminLoginComponent', () => {
       showError: cy.stub(),
     };
 
-    cy.mount(AdminLoginComponent, {
+    cy.mount(UserSignupComponent, {
       imports: [ReactiveFormsModule, RouterTestingModule.withRoutes(routes)],
       providers: [
         { provide: RegisterService, useValue: mockRegisterService },
@@ -37,7 +37,7 @@ describe('AdminLoginComponent', () => {
   });
 
   it('should render correctly', () => {
-    cy.get('h1').should('contain', 'Admin Login');
+    cy.get('h1').should('contain', 'User Signup');
     cy.get('form').should('exist');
     cy.get('button[type="submit"]').should('exist');
   });
@@ -45,6 +45,22 @@ describe('AdminLoginComponent', () => {
   describe('Form Validation', () => {
     it('should have disabled submit button when form is invalid', () => {
       cy.get('button[type="submit"]').should('be.disabled');
+    });
+
+    it('should validate username field', () => {
+      cy.get('#username').type('a').clear().blur();
+      cy.contains('Username is required.').should('exist');
+
+      cy.get('#username').type('ab');
+      cy.contains('Username must be at least 3 characters long.').should(
+        'exist'
+      );
+
+      cy.get('#username').clear().type('a'.repeat(31));
+      cy.contains('Username cannot exceed 30 characters.').should('exist');
+
+      cy.get('#username').clear().type('validusername');
+      cy.get('.alert-danger').should('not.exist');
     });
 
     it('should validate email field', () => {
@@ -79,71 +95,72 @@ describe('AdminLoginComponent', () => {
   });
 
   describe('Form Submission', () => {
-    const validAdmin = {
-      email: 'admin@example.com',
+    const validUser = {
+      username: 'testuser',
+      email: 'user@example.com',
       password: 'validpassword123',
     };
 
     beforeEach(() => {
-      cy.get('#email').type(validAdmin.email);
-      cy.get('#password').type(validAdmin.password);
+      cy.get('#username').type(validUser.username);
+      cy.get('#email').type(validUser.email);
+      cy.get('#password').type(validUser.password);
     });
 
     it('should enable submit button when form is valid', () => {
       cy.get('button[type="submit"]').should('not.be.disabled');
     });
 
-    it('should call adminLogin with form data when submitted', () => {
+    it('should call adminSignup with form data when submitted', () => {
       cy.get('form').submit();
-      cy.wrap(mockRegisterService.adminLogin).should(
+      cy.wrap(mockRegisterService.userSignup).should(
         'have.been.calledWith',
-        validAdmin
+        validUser
       );
     });
 
-    it('should handle successful login', () => {
+    it('should handle successful signup', () => {
       cy.get('form').submit();
-
       cy.wrap(mockNotificationService.showSuccess).should(
         'have.been.calledWith',
-        'Logged In'
+        'You are Signed Up!'
       );
     });
 
-    it('should handle login error', () => {
+    it('should handle signup error', () => {
       const errorResponse = {
-        error: { error: 'Invalid credentials' },
+        error: { error: 'Email already exists' },
       };
-      mockRegisterService.adminLogin = cy
+      mockRegisterService.userSignup = cy
         .stub()
         .returns(throwError(() => errorResponse)) as any;
 
       cy.get('form').submit();
-
       cy.wrap(mockNotificationService.showError).should(
         'have.been.calledWith',
-        'Invalid credentials'
+        'Email already exists'
       );
     });
 
     it('should reset form after submission', () => {
       cy.get('form').submit();
+      cy.get('#username').should('have.value', '');
       cy.get('#email').should('have.value', '');
       cy.get('#password').should('have.value', '');
     });
   });
 
   describe('Navigation Links', () => {
-    it('should have link to admin register', () => {
-      cy.contains('a', 'Sign Up')
-        .should('exist')
-        .and('have.attr', 'routerLink', '/admin/register');
-    });
-
     it('should have link to user login', () => {
-      cy.contains('a', 'User')
+      cy.contains('a', 'Log In')
         .should('exist')
         .and('have.attr', 'routerLink', '/user/login');
+    });
+
+    it('should have link to admin register', () => {
+      cy.contains('a', 'Admin')
+        .should('exist')
+        .and('have.attr', 'routerLink', '/admin/register');
     });
   });
 });

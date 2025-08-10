@@ -17,6 +17,7 @@
             <input
               type="text"
               class="form-control"
+              data-cy="booking-fullName-input"
               id="fullName"
               aria-describedby="fullName"
               formControlName="fullName"
@@ -50,6 +51,7 @@
             <input
               type="text"
               class="form-control"
+              data-cy="booking-email-input"
               id="email"
               aria-describedby="email"
               formControlName="email"
@@ -83,6 +85,7 @@
             <input
               type="tel"
               class="form-control"
+              data-cy="booking-phone-input"
               id="phoneNumber"
               aria-describedby="phoneNumber"
               formControlName="phoneNumber"
@@ -108,6 +111,7 @@
           <button
             type="button"
             class="btn btn-danger me-3"
+            data-cy="close-bookEvent-modal-btn"
             (click)="closeModal()"
           >
             Close
@@ -115,6 +119,7 @@
           <button
             type="submit"
             class="btn btn-primary"
+            data-cy="submit-booking-btn"
             [disabled]="bookingModalForm.valid === false"
           >
             Book Event

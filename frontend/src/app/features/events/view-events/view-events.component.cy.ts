@@ -1,219 +1,192 @@
-// import { ManEventsComponent } from './man-events.component';
-// import { EventsService } from '../../../services/events.service';
-// import { NotificationService } from '../../../services/notification.service';
-// import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
-// import { CardComponent } from '../../../core/components/card/card.component';
-// import { EventsModalComponent } from '../../../core/components/events-modal/events-modal.component';
-// import { AddEventModalComponent } from '../../../core/components/add-event-modal/add-event-modal.component';
-// import { ConfirmationModalComponent } from '../../../core/components/confirmation-modal/confirmation-modal.component';
-// import { of, throwError } from 'rxjs';
+import { ViewEventsComponent } from './view-events.component';
+import { EventsService } from '../../../services/events.service';
+import { RegisterService } from '../../../services/register.service';
+import { BookingsService } from '../../../services/bookings.service';
+import { NotificationService } from '../../../services/notification.service';
+import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
+import { CardComponent } from '../../../core/components/card/card.component';
+import { BookEventModalComponent } from '../../../core/components/book-event-modal/book-event-modal.component';
+import { of, throwError } from 'rxjs';
 
-// describe('ManEventsComponent', () => {
-//   const mockEvent = {
-//     _id: 'event123',
-//     title: 'Test Event',
-//     about: 'Test event description',
-//     totalSeats: 100,
-//     availableSeats: 80,
-//     category: 'Tech',
-//     price: 1000,
-//     createdOn: '2023-01-01',
-//   };
+describe('ViewEventsComponent', () => {
+  const mockEvent = {
+    _id: 'event123',
+    title: 'Test Event',
+    about: 'Test event description',
+    totalSeats: 100,
+    availableSeats: 80,
+    category: 'Tech',
+    price: 1000,
+    createdOn: '2023-01-01',
+  };
 
-//   let mockEventsService: {
-//     getAdminEvents: Cypress.Agent<sinon.SinonStub>;
-//     deleteAdminEvent: Cypress.Agent<sinon.SinonStub>;
-//     refreshAdminEvents: Cypress.Agent<sinon.SinonStub>;
-//     editAdminEvent: Cypress.Agent<sinon.SinonStub>;
-//     addAdminEvent: Cypress.Agent<sinon.SinonStub>;
-//     filteredEvents$: any;
-//   };
+  const mockUser = {
+    userData: {
+      userId: 'user123',
+      username: 'testuser',
+      email: 'test@example.com',
+    },
+  };
 
-//   let mockNotificationService: {
-//     showSuccess: Cypress.Agent<sinon.SinonStub>;
-//     showError: Cypress.Agent<sinon.SinonStub>;
-//   };
+  let mockEventsService: {
+    getUserEvents: Cypress.Agent<sinon.SinonStub>;
+    refreshUserEvents: Cypress.Agent<sinon.SinonStub>;
+    filteredEvents$: any;
+  };
 
-//   beforeEach(() => {
-//     mockEventsService = {
-//       getAdminEvents: cy
-//         .stub()
-//         .returns(of({ message: 'success', events: [mockEvent] })),
-//       deleteAdminEvent: cy.stub().returns(of({})),
-//       refreshAdminEvents: cy.stub(),
-//       editAdminEvent: cy.stub().returns(of({})),
-//       addAdminEvent: cy.stub().returns(of({})),
-//       filteredEvents$: of([mockEvent]),
-//     } as any;
+  let mockRegisterService: {
+    getUser: Cypress.Agent<sinon.SinonStub>;
+  };
 
-//     mockNotificationService = {
-//       showSuccess: cy.stub(),
-//       showError: cy.stub(),
-//     };
+  let mockBookingsService: {
+    addBooking: Cypress.Agent<sinon.SinonStub>;
+  };
 
-//     cy.mount(ManEventsComponent, {
-//       imports: [
-//         NavbarComponent,
-//         CardComponent,
-//         EventsModalComponent,
-//         AddEventModalComponent,
-//         ConfirmationModalComponent,
-//       ],
-//       providers: [
-//         { provide: EventsService, useValue: mockEventsService },
-//         { provide: NotificationService, useValue: mockNotificationService },
-//       ],
-//     });
-//   });
+  let mockNotificationService: {
+    showSuccess: Cypress.Agent<sinon.SinonStub>;
+    showError: Cypress.Agent<sinon.SinonStub>;
+  };
 
-//   it('should render correctly', () => {
-//     cy.get('app-navbar').should('exist');
-//     cy.contains('button', 'Add Event').should('exist');
-//     cy.get('app-card').should('have.length', 1);
-//   });
+  beforeEach(() => {
+    mockEventsService = {
+      getUserEvents: cy
+        .stub()
+        .returns(of({ message: 'success', events: [mockEvent] })) as any,
+      refreshUserEvents: cy.stub(),
+      filteredEvents$: of([mockEvent]),
+    };
 
-//   it('should load and display events', () => {
-//     cy.wrap(mockEventsService.getAdminEvents).should('have.been.called');
-//     cy.get('app-card').should('contain', 'Test Event');
-//     cy.get('app-card').should('contain', 'Tech');
-//   });
+    mockRegisterService = {
+      getUser: cy.stub().returns(of(mockUser)) as any,
+    };
 
-//   it('should show empty state when no events', () => {
-//     mockEventsService.getAdminEvents = cy
-//       .stub()
-//       .returns(of({ events: [] })) as any;
-//     mockEventsService.filteredEvents$ = of([]);
+    mockBookingsService = {
+      addBooking: cy.stub().returns(of({})) as any,
+    };
 
-//     cy.mount(ManEventsComponent, {
-//       imports: [
-//         NavbarComponent,
-//         CardComponent,
-//         EventsModalComponent,
-//         AddEventModalComponent,
-//         ConfirmationModalComponent,
-//       ],
-//       providers: [
-//         { provide: EventsService, useValue: mockEventsService },
-//         { provide: NotificationService, useValue: mockNotificationService },
-//       ],
-//     });
+    mockNotificationService = {
+      showSuccess: cy.stub(),
+      showError: cy.stub(),
+    };
 
-//     cy.get('app-card').should('not.exist');
-//   });
+    cy.mount(ViewEventsComponent, {
+      imports: [NavbarComponent, CardComponent, BookEventModalComponent],
+      providers: [
+        { provide: EventsService, useValue: mockEventsService },
+        { provide: RegisterService, useValue: mockRegisterService },
+        { provide: BookingsService, useValue: mockBookingsService },
+        { provide: NotificationService, useValue: mockNotificationService },
+      ],
+    });
+  });
 
-//   describe('Add Event', () => {
-//     it('should open add modal when button clicked', () => {
-//       cy.contains('button', 'Add Event').click();
-//       cy.get('app-add-event-modal').should('exist');
-//     });
+  it('should render correctly', () => {
+    cy.get('app-navbar').should('exist');
+    cy.get('app-card').should('have.length', 1);
+  });
 
-//     it('should close add modal', () => {
-//       cy.contains('button', 'Add Event').click();
-//       cy.get('[data-cy="close-add-modal-btn"]').click();
-//       cy.get('app-add-event-modal')
-//         .get('.modal')
-//         .should('have.css', 'display', 'none');
-//       cy.get('app-add-event-modal').get('.modal').should('not.be.visible');
-//     });
+  it('should load and display events', () => {
+    cy.wrap(mockEventsService.getUserEvents).should('have.been.called');
+    cy.get('app-card').should('contain', 'Test Event');
+    cy.get('app-card').should('contain', 'Tech');
+  });
 
-//     it('should add event when form submitted', () => {
-//       const newEvent = { ...mockEvent, title: 'New Event' };
+  it('should load user data', () => {
+    cy.wrap(mockRegisterService.getUser).should('have.been.called');
+  });
 
-//       cy.contains('button', 'Add Event').click();
-//       cy.get('[data-cy="event-title-input"]').type(newEvent.title);
-//       cy.get('[data-cy="event-about-input"]').type(newEvent.about);
-//       cy.get('[data-cy="event-totalSeats-input"]').type(
-//         newEvent.totalSeats.toString()
-//       );
-//       cy.get('[data-cy="event-category-input"]').select(newEvent.category);
-//       cy.get('[data-cy="event-price-input"]').type(newEvent.price.toString());
+  it('should show empty state when no events', () => {
+    mockEventsService.getUserEvents = cy
+      .stub()
+      .returns(of({ events: [] })) as any;
+    mockEventsService.filteredEvents$ = of([]);
 
-//       cy.get('[data-cy="submit-add-event-btn"]').click();
+    cy.mount(ViewEventsComponent, {
+      imports: [NavbarComponent, CardComponent, BookEventModalComponent],
+      providers: [
+        { provide: EventsService, useValue: mockEventsService },
+        { provide: RegisterService, useValue: mockRegisterService },
+        { provide: BookingsService, useValue: mockBookingsService },
+        { provide: NotificationService, useValue: mockNotificationService },
+      ],
+    });
 
-//       cy.wrap(mockEventsService.addAdminEvent).should('have.been.called');
-//       cy.wrap(mockEventsService.refreshAdminEvents).should('have.been.called');
-//       cy.wrap(mockNotificationService.showSuccess).should(
-//         'have.been.calledWith',
-//         'Event created'
-//       );
-//     });
-//   });
+    cy.get('app-card').should('not.exist');
+  });
 
-//   describe('Edit Event', () => {
-//     it('should open edit modal when edit button clicked', () => {
-//       cy.get('app-card').first().find('[data-cy="edit-event-btn"]').click();
-//       cy.get('app-events-modal').should('exist');
-//     });
+  describe('Book Event', () => {
+    it('should open booking modal when book button clicked', () => {
+      cy.get('app-card').first().find('[data-cy="book-event-btn"]').click();
+      cy.get('app-book-event-modal').should('exist');
+    });
 
-//     //   it('should close edit modal', () => {
-//     //     cy.get('app-card').first().find('[data-cy="edit-event-btn"]').click();
-//     //     cy.get('[data-cy="close-events-modal-btn"]').click();
-//     //     cy.get('app-events-modal').should('not.exist');
-//     //   });
+    it('should close booking modal', () => {
+      cy.get('app-card').first().find('[data-cy="book-event-btn"]').click();
+      cy.get('[data-cy="close-bookEvent-modal-btn"]').click();
+      cy.get('app-book-event-modal')
+        .get('.modal')
+        .should('have.css', 'display', 'none');
+      cy.get('app-book-event-modal').get('.modal').should('not.be.visible');
+    });
 
-//     //   it('should edit event when form submitted', () => {
-//     //     const updatedEvent = { ...mockEvent, title: 'Updated Event' };
+    it('should book event when form submitted', () => {
+      const bookingData = {
+        eventId: mockEvent._id,
+        userId: mockUser.userData.userId,
+        userDetails: {
+          fullName: 'Test User',
+          email: 'test@example.com',
+          phoneNumber: '+1234567890',
+        },
+      };
 
-//     //     cy.get('app-card').first().find('[data-cy="edit-event-btn"]').click();
-//     //     // Simulate editing the form in the events-modal component
-//     //     cy.get('[data-cy="event-title-input"]').clear().type(updatedEvent.title);
-//     //     // ... modify other fields as needed
+      cy.get('app-card').first().find('[data-cy="book-event-btn"]').click();
 
-//     //     cy.get('[data-cy="submit-edit-event-btn"]').click();
+      cy.get('[data-cy="booking-fullName-input"]').type(
+        bookingData.userDetails.fullName
+      );
+      cy.get('[data-cy="booking-email-input"]').type(
+        bookingData.userDetails.email
+      );
+      cy.get('[data-cy="booking-phone-input"]').type(
+        bookingData.userDetails.phoneNumber
+      );
 
-//     //     cy.wrap(mockEventsService.editAdminEvent).should(
-//     //       'have.been.calledWith',
-//     //       mockEvent._id,
-//     //       updatedEvent
-//     //     );
-//     //     cy.wrap(mockEventsService.refreshAdminEvents).should('have.been.called');
-//     //     cy.wrap(mockNotificationService.showSuccess).should(
-//     //       'have.been.calledWith',
-//     //       'Event updated'
-//     //     );
-//     //   });
-//   });
+      cy.get('[data-cy="submit-booking-btn"]').click();
 
-//   //   describe('Delete Event', () => {
-//   //     it('should open confirmation modal when delete clicked', () => {
-//   //       cy.get('app-card').first().find('[data-cy="delete-event-btn"]').click();
-//   //       cy.get('app-confirmation-modal').should('exist');
-//   //       cy.contains('This is irreversible. Are you sure you want to delete?');
-//   //     });
+      cy.wrap(mockBookingsService.addBooking).should('have.been.calledWith', {
+        eventId: bookingData.eventId,
+        userId: bookingData.userId,
+        userDetails: bookingData.userDetails,
+      });
 
-//   //     it('should close confirmation modal when cancelled', () => {
-//   //       cy.get('app-card').first().find('[data-cy="delete-event-btn"]').click();
-//   //       cy.get('[data-cy="confirmModal-close-btn"]').click();
-//   //       cy.get('app-confirmation-modal').should('not.exist');
-//   //     });
+      cy.wrap(mockEventsService.refreshUserEvents).should('have.been.called');
+      cy.wrap(mockNotificationService.showSuccess).should(
+        'have.been.calledWith',
+        'Event has been Booked'
+      );
+    });
 
-//   //     it('should delete event when confirmed', () => {
-//   //       cy.get('app-card').first().find('[data-cy="delete-event-btn"]').click();
-//   //       cy.get('[data-cy="confirmModal-modalType-btn"]').click();
+    it('should show error when booking fails', () => {
+      const errorResponse = {
+        error: {
+          error: 'Booking failed - no seats available',
+        },
+      };
 
-//   //       cy.wrap(mockEventsService.deleteAdminEvent).should(
-//   //         'have.been.calledWith',
-//   //         mockEvent._id
-//   //       );
-//   //       cy.wrap(mockEventsService.refreshAdminEvents).should('have.been.called');
-//   //       cy.wrap(mockNotificationService.showSuccess).should(
-//   //         'have.been.calledWith',
-//   //         'Event Deleted'
-//   //       );
-//   //     });
+      mockBookingsService.addBooking = cy
+        .stub()
+        .returns(throwError(() => errorResponse)) as any;
 
-//   //     it('should show error when delete fails', () => {
-//   //       mockEventsService.deleteAdminEvent = cy
-//   //         .stub()
-//   //         .returns(throwError(() => new Error('Delete failed'))) as any;
+      cy.get('app-card').first().find('[data-cy="book-event-btn"]').click();
 
-//   //       cy.get('app-card').first().find('[data-cy="delete-event-btn"]').click();
-//   //       cy.get('[data-cy="confirmModal-modalType-btn"]').click();
+      cy.get('[data-cy="booking-fullName-input"]').type('Test User');
+      cy.get('[data-cy="booking-email-input"]').type('test@example.com');
+      cy.get('[data-cy="booking-phone-input"]').type('+1234567890');
 
-//   //       cy.wrap(mockNotificationService.showError).should(
-//   //         'have.been.calledWith',
-//   //         'An error occured. Please try again'
-//   //       );
-//   //     });
-//   //   });
-// });
+      cy.get('[data-cy="submit-booking-btn"]').click();
+
+      cy.wrap(mockNotificationService.showError).should('have.been.called');
+    });
+  });
+});
