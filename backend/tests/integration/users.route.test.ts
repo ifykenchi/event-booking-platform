@@ -31,6 +31,7 @@ describe("UserRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("User already exists");
 	});
 
 	it("should return 400 if required fields are missing", async () => {
@@ -40,6 +41,7 @@ describe("UserRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("username is required");
 	});
 
 	it("should return 400 for invalid email format", async () => {
@@ -51,6 +53,7 @@ describe("UserRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("email must be a valid email");
 	});
 });
 
@@ -83,6 +86,7 @@ describe("UserRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("Invalid password");
 	});
 
 	it("should return 400 if required fields are missing", async () => {
@@ -92,6 +96,7 @@ describe("UserRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("password is required");
 	});
 
 	it("should return 400 for invalid email format", async () => {
@@ -102,6 +107,7 @@ describe("UserRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("email must be a valid email");
 	});
 });
 
@@ -201,7 +207,7 @@ describe("UserRoute - getAllEvents", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body.events).toBeInstanceOf(Array);
-		expect(res.body.events.length).toBeGreaterThanOrEqual(2);
+		expect(res.body.events.length).toEqual(2);
 
 		const titles = res.body.events.map((e: any) => e.title);
 		expect(titles).toEqual(
@@ -289,7 +295,7 @@ describe("UserRoute - searchEvents", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body).toBeInstanceOf(Array);
-		expect(res.body.length).toBeGreaterThanOrEqual(1);
+		expect(res.body.length).toEqual(1);
 		const categories = res.body.map((e: any) => e.category);
 		expect(categories).toContain("Technology");
 	});
@@ -302,7 +308,7 @@ describe("UserRoute - searchEvents", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body).toBeInstanceOf(Array);
-		expect(res.body.length).toBeGreaterThanOrEqual(3);
+		expect(res.body.length).toEqual(3);
 	});
 
 	it("should return 400 if key or value is missing", async () => {
@@ -569,6 +575,7 @@ describe("UserRoute - addBooking", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("userDetails.email is required");
 	});
 
 	it("should return 400 for invalid user details", async () => {
@@ -587,6 +594,9 @@ describe("UserRoute - addBooking", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe(
+			"userDetails.fullName length must be at least 3 characters long"
+		);
 	});
 
 	it("should return 401 if no user token is provided", async () => {

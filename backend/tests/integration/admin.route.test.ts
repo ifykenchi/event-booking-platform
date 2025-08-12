@@ -31,6 +31,7 @@ describe("AdminRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("Admin already exists");
 	});
 
 	it("should return 400 if required fields are missing", async () => {
@@ -40,6 +41,7 @@ describe("AdminRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("username is required");
 	});
 
 	it("should return 400 for invalid email format", async () => {
@@ -51,6 +53,7 @@ describe("AdminRoute - register", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("email must be a valid email");
 	});
 });
 
@@ -83,6 +86,7 @@ describe("AdminRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("Invalid password");
 	});
 
 	it("should return 400 if required fields are missing", async () => {
@@ -92,6 +96,7 @@ describe("AdminRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("password is required");
 	});
 
 	it("should return 400 for invalid email format", async () => {
@@ -102,6 +107,7 @@ describe("AdminRoute - login", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("email must be a valid email");
 	});
 });
 
@@ -194,6 +200,7 @@ describe("AdminRoute - addEvent", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe("about is required");
 	});
 
 	it("should return 401 if no admin token is provided", async () => {
@@ -230,6 +237,9 @@ describe("AdminRoute - addEvent", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe(
+			"title length must be at least 3 characters long"
+		);
 	});
 });
 
@@ -444,6 +454,9 @@ describe("AdminRoute - editEvent", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.message).toBe(
+			"title length must be at least 3 characters long"
+		);
 	});
 
 	it("should return 404 if event does not exist", async () => {
@@ -461,6 +474,7 @@ describe("AdminRoute - editEvent", () => {
 
 		expect(res.status).toBe(404);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("Event does not exist");
 	});
 
 	it("should return 401 if no admin token is provided", async () => {
@@ -574,6 +588,9 @@ describe("AdminRoute - searchEvents", () => {
 
 		expect(res.status).toBe(400);
 		expect(res.body.error).toBeDefined();
+		expect(res.body.error).toBe(
+			"Both 'key' and 'value' query parameters are required"
+		);
 	});
 
 	it("should return 401 if no admin token is provided", async () => {
@@ -644,6 +661,7 @@ describe("AdminRoute - deleteEvent", () => {
 
 		expect(res.status).toBe(404);
 		expect(res.body).toHaveProperty("error");
+		expect(res.body.error).toBe("Event does not exist");
 	});
 
 	it("should return 401 if no admin token is provided", async () => {
@@ -903,7 +921,7 @@ describe("AdminRoute - totalEvents", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty("totalEvents");
-		expect(res.body.totalEvents).toBeGreaterThanOrEqual(3);
+		expect(res.body.totalEvents).toEqual(3);
 		expect(res.body).toHaveProperty(
 			"message",
 			"total events sent successfully"
@@ -976,6 +994,7 @@ describe("AdminRoute - totalBookings", () => {
 	let userId2: string;
 	let accessToken1: string;
 	let accessToken2: string;
+	let firstBooking: any;
 
 	beforeEach(async () => {
 		const adminRes = await request(app).post("/admin/register").send({
@@ -1013,7 +1032,7 @@ describe("AdminRoute - totalBookings", () => {
 		userId2 = userRes2.body.user._id;
 		accessToken2 = userRes2.body.accessToken;
 
-		const firstBooking = await request(app)
+		firstBooking = await request(app)
 			.post("/user/booking")
 			.set("Authorization", `Bearer ${accessToken1}`)
 			.send({
@@ -1047,7 +1066,7 @@ describe("AdminRoute - totalBookings", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty("totalBookings");
-		expect(res.body.totalBookings).toBeGreaterThanOrEqual(2);
+		expect(res.body.totalBookings).toEqual(2);
 		expect(res.body).toHaveProperty(
 			"message",
 			"total bookings sent successfully"
@@ -1083,36 +1102,15 @@ describe("AdminRoute - totalBookings", () => {
 			.set("Authorization", `Bearer ${adminToken}`);
 		const initialCount = initialRes.body.totalBookings;
 
-		const userRes = await request(app).post("/user/register").send({
-			username: "bookingsuser2",
-			email: "thirdbookingsuser@example.com",
-			password: "password123",
-		});
-		const userId = userRes.body.user._id;
-		const accessToken = userRes.body.accessToken;
-
-		const bookingRes = await request(app)
-			.post("/user/booking")
-			.set("Authorization", `Bearer ${accessToken}`)
-			.send({
-				eventId,
-				userId,
-				userDetails: {
-					fullName: "Test User 3",
-					email: "bookingsuser@example.com",
-					phoneNumber: "+1234567890",
-				},
-			});
-
 		await request(app)
-			.patch(`/user/booking/${bookingRes.body.booking._id}`)
-			.set("Authorization", `Bearer ${userRes.body.accessToken}`);
+			.patch(`/user/booking/${firstBooking.body.booking._id}`)
+			.set("Authorization", `Bearer ${accessToken1}`);
 
 		const updatedRes = await request(app)
 			.get("/admin/dashboard/bookings")
 			.set("Authorization", `Bearer ${adminToken}`);
 
-		expect(updatedRes.body.totalBookings).toBe(initialCount);
+		expect(updatedRes.body.totalBookings).toBe(initialCount - 1);
 	});
 
 	it("should return 401 if no admin token is provided", async () => {
