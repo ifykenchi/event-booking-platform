@@ -873,6 +873,7 @@ describe("AdminRoute - deleteBooking", () => {
 
 describe("AdminRoute - totalEvents", () => {
 	let adminToken: string;
+	let events: any[];
 
 	beforeAll(async () => {
 		const adminRes = await request(app).post("/admin/register").send({
@@ -882,7 +883,7 @@ describe("AdminRoute - totalEvents", () => {
 		});
 		adminToken = adminRes.body.adminToken;
 
-		const events = [
+		events = [
 			{
 				title: "Tech Conference 1",
 				about: "First tech conference",
@@ -905,16 +906,16 @@ describe("AdminRoute - totalEvents", () => {
 				price: 20,
 			},
 		];
+	});
 
-		for (const event of events) {
+	it("should return the total number of events with success message", async () => {
+		for (event of events) {
 			await request(app)
 				.post("/admin/event")
 				.set("Authorization", `Bearer ${adminToken}`)
 				.send(event);
 		}
-	});
 
-	it("should return the total number of events with success message", async () => {
 		const res = await request(app)
 			.get("/admin/dashboard/events")
 			.set("Authorization", `Bearer ${adminToken}`);
