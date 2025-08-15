@@ -10,6 +10,6 @@
 
 describe('My First Test', () => {
   it('Visits the User Register page', () => {
-    cy.visit('http://localhost:4200/user/register');
+    cy.visit('http://localhost:4200/user/login');
   });
 });
