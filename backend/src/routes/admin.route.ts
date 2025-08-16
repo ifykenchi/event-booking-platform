@@ -10,6 +10,7 @@ class AdminRoute {
 		this.admin(prefix, router);
 		this.register(prefix, router);
 		this.login(prefix, router);
+		this.deleteAdmin(prefix, router);
 		this.addEvent(prefix, router);
 		this.getAllEvents(prefix, router);
 		this.getEvent(prefix, router);
@@ -38,6 +39,13 @@ class AdminRoute {
 			`${prefix}/login`,
 			Joi.vdtor(SchemaValidator.login),
 			AdminService.login
+		);
+	}
+	private deleteAdmin(prefix: string, router: Router) {
+		router.delete(
+			`${prefix}/admin-delete`,
+			AuthMidware.authAdmin,
+			AdminService.deleteAdmin
 		);
 	}
 	private addEvent(prefix: string, router: Router) {

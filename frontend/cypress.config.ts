@@ -1,14 +1,14 @@
-import { defineConfig } from "cypress";
-import { devServer } from "@cypress/webpack-dev-server";
-import { AngularWebpackPlugin } from "@ngtools/webpack";
+import { defineConfig } from 'cypress';
+import { devServer } from '@cypress/webpack-dev-server';
+import { AngularWebpackPlugin } from '@ngtools/webpack';
 // import { defineElement } from '@angular/elements';
 
 export default defineConfig({
   component: {
     devServer: {
-      framework: "angular",
-      bundler: "webpack",
-      webpackConfig: { stats: "errors-only" }, // see issue https://github.com/cypress-io/cypress/issues/26456
+      framework: 'angular',
+      bundler: 'webpack',
+      webpackConfig: { stats: 'errors-only' }, // see issue https://github.com/cypress-io/cypress/issues/26456
       // options: {
       //   projectConfig: {
       //     root: '',
@@ -26,10 +26,11 @@ export default defineConfig({
       //   },
       // },
     },
-    specPattern: "**/*.cy.ts",
+    specPattern: '**/*.cy.ts',
   },
 
   e2e: {
+    baseUrl: 'http://localhost:4200',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },

@@ -3,6 +3,7 @@ import { RootController } from "./_root.control";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
 import { CustomRequest } from "../interfaces/express";
+import { Request } from "express";
 
 class UserAuthController extends RootController {
 	constructor() {
@@ -89,6 +90,27 @@ class UserAuthController extends RootController {
 			const response = {
 				userData,
 				message: "User Details Have been Sent",
+			};
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	deleteUser = async (req: CustomRequest) => {
+		try {
+			const { user } = req.user || {};
+			if (!user) {
+				const response = {
+					status: 401,
+					message: "Unauthorized User",
+				};
+				throw response;
+			}
+			const userId = user._id;
+			await this.findOneAndDelete({ _id: userId });
+			const response = {
+				message: "User Deleted Successfully",
 			};
 			return response;
 		} catch (error) {
