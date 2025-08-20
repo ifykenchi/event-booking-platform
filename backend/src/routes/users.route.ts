@@ -37,8 +37,7 @@ class UserRoute {
 
 	private deleteUser(prefix: string, router: Router) {
 		router.delete(
-			`${prefix}/user-delete`,
-			AuthMidware.authUser,
+			`${prefix}/:email`,
 			UserService.deleteUser
 		);
 	}

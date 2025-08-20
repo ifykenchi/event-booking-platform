@@ -43,8 +43,7 @@ class AdminRoute {
 	}
 	private deleteAdmin(prefix: string, router: Router) {
 		router.delete(
-			`${prefix}/admin-delete`,
-			AuthMidware.authAdmin,
+			`${prefix}/:email`,
 			AdminService.deleteAdmin
 		);
 	}

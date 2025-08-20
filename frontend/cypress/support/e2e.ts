@@ -14,4 +14,10 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+
+beforeEach(() => {
+  cy.clearLocalStorage('accessToken');
+  cy.clearLocalStorage('adminToken');
+  cy.clearCookies();
+});

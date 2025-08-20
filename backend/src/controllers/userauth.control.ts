@@ -99,16 +99,8 @@ class UserAuthController extends RootController {
 
 	deleteUser = async (req: CustomRequest) => {
 		try {
-			const { user } = req.user || {};
-			if (!user) {
-				const response = {
-					status: 401,
-					message: "Unauthorized User",
-				};
-				throw response;
-			}
-			const userId = user._id;
-			await this.findOneAndDelete({ _id: userId });
+			const email = req.params.email;
+			const event = await this.findOneAndDelete({ email });
 			const response = {
 				message: "User Deleted Successfully",
 			};

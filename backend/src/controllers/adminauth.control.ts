@@ -95,16 +95,8 @@ class AdminAuthController extends RootController {
 
 	deleteAdmin = async (req: CustomRequest) => {
 		try {
-			const { admin } = req.user || {};
-			if (!admin) {
-				const response = {
-					status: 401,
-					message: "Unauthorized User",
-				};
-				throw response;
-			}
-			const adminId = admin._id;
-			await this.findOneAndDelete({ _id: adminId });
+			const email = req.params.email;
+			const event = await this.findOneAndDelete({ email });
 			const response = {
 				message: "Admin Deleted Successfully",
 			};
