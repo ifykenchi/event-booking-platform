@@ -1,4 +1,4 @@
-describe('User Auth', () => {
+describe('User Auth Page', () => {
   const validUser = {
     username: 'johnny',
     email: 'johnny@gmail.com',

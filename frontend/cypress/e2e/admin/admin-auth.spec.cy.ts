@@ -1,4 +1,4 @@
-describe('Admin Auth', () => {
+describe('Admin Auth Page', () => {
   const validAdmin = {
     username: 'charles',
     email: 'charles@gmail.com',
