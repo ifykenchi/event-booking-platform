@@ -61,7 +61,7 @@ export class AdminLoginComponent {
         },
         error: (err) => {
           console.error('Error!', err);
-          this.notification.showError(err.error.error || 'login failed');
+          this.notification.showError(err.error.error);
         },
       });
       this.adminLoginForm.reset();

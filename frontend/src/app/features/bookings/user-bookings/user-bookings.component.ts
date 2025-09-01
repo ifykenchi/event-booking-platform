@@ -83,7 +83,6 @@ export class UserBookingsComponent {
   handleOpenDetailsModal(bookingData: BookingDataI) {
     this.userBookingData = bookingData;
     this.showDetailsModal = true;
-    // console.log(bookingData);
   }
 
   handleCloseConfirmModal() {

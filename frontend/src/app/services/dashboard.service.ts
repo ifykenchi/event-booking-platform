@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from './localStorage.service';
 import { environment } from '../../environments/environment';
-import {
-  BookingI,
-  BookingDataI,
-  bookingsResponseI,
-  dashboardResponseI,
-  DeleteI,
-  CancelBookingI,
-} from '../interfaces/services.interfaces';
+import { dashboardResponseI } from '../interfaces/services.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -22,17 +15,6 @@ export class DashboardService {
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {}
-
-  private getUserHttpOptions() {
-    const accessToken = this.localStorageService.getItem('accessToken');
-    if (!accessToken) throw new Error('Token not found');
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + accessToken,
-      }),
-    };
-  }
 
   private getAdminHttpOptions() {
     const adminToken = this.localStorageService.getItem('adminToken');

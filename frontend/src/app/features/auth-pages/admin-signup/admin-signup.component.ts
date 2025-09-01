@@ -74,7 +74,7 @@ export class AdminSignupComponent {
         },
         error: (err) => {
           console.error('Error!', err);
-          this.notification.showError(err.error.error || 'signup failed');
+          this.notification.showError(err.error.error);
         },
       });
       this.adminSignupForm.reset();
