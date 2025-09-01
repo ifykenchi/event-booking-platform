@@ -10,14 +10,16 @@ class BookingSchemaValidator {
 			"string.hex": "User ID must be valid hexadecimal",
 			"string.length": "User ID must be 24 characters long",
 		}),
-		userDetails: joi.object({
-			fullName: joi.string().min(3).max(100).required(),
-			email: joi.string().email().required(),
-			phoneNumber: joi
-				.string()
-				.pattern(/^\+?[0-9\s\-\(\)]{6,20}$/)
-				.required(),
-		}),
+		userDetails: joi
+			.object({
+				fullName: joi.string().min(3).max(100).required(),
+				email: joi.string().email().required(),
+				phoneNumber: joi
+					.string()
+					.pattern(/^\+?[0-9\s\-\(\)]{6,20}$/)
+					.required(),
+			})
+			.required(),
 		status: joi.boolean(),
 		createdOn: joi.date(),
 	});
