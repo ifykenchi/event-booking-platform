@@ -24,7 +24,12 @@
             {{ bookingData.priceAtBooking | currency : "NGN" : "₦" : "1.2-2" }}
           </li>
         </ul>
-        <a class="btn btn-danger" (click)="onCloseDetailsModal()">close</a>
+        <a
+          class="btn btn-danger"
+          data-cy="close-details-btn"
+          (click)="onCloseDetailsModal()"
+          >close</a
+        >
       </div>
     </div>
   </div>

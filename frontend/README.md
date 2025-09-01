@@ -44,6 +44,12 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
+## Running component tests
+
+```bash
+npx cypress open
+```
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
