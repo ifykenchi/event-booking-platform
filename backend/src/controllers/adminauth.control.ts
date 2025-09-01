@@ -3,7 +3,6 @@ import { RootController } from "./_root.control";
 import { hash, isMatch } from "../utilities/hash.util";
 import TokenUtil from "../utilities/token.util";
 import { CustomRequest } from "../interfaces/express";
-
 class AdminAuthController extends RootController {
 	constructor() {
 		super(Admin, "Admin");
@@ -87,6 +86,19 @@ class AdminAuthController extends RootController {
 			const response = {
 				adminData,
 				message: "Admin Details Have been Sent",
+			};
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	deleteAdmin = async (req: CustomRequest) => {
+		try {
+			const email = req.params.email;
+			const event = await this.findOneAndDelete({ email });
+			const response = {
+				message: "Admin Deleted Successfully",
 			};
 			return response;
 		} catch (error) {

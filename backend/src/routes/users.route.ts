@@ -10,6 +10,7 @@ class UserRoute {
 		this.user(prefix, router);
 		this.register(prefix, router);
 		this.login(prefix, router);
+		this.deleteUser(prefix, router);
 		this.getAllEvents(prefix, router);
 		this.searchEvents(prefix, router);
 		this.addBooking(prefix, router);
@@ -31,6 +32,13 @@ class UserRoute {
 			`${prefix}/login`,
 			Joi.vdtor(SchemaValidator.login),
 			UserService.login
+		);
+	}
+
+	private deleteUser(prefix: string, router: Router) {
+		router.delete(
+			`${prefix}/:email`,
+			UserService.deleteUser
 		);
 	}
 	private getAllEvents(prefix: string, router: Router) {

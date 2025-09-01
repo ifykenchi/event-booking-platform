@@ -57,6 +57,23 @@ class AdminService extends RootService {
 		}
 	};
 
+	deleteAdmin = async (req: Request, res: Response) => {
+		try {
+			const output = await AdminAuthController.deleteAdmin(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status,
+				error,
+			});
+		}
+	};
+
 	addEvent = async (req: Request, res: Response) => {
 		try {
 			const output = await EventsController.addEvent(req);

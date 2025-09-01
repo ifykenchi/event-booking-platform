@@ -35,3 +35,9 @@
 //     }
 //   }
 // }
+
+import './commands/auth.commands';
+import './commands/event.commands';
+import './commands/booking.commands';
+
+export {};

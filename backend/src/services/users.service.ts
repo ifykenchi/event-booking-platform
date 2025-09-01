@@ -56,6 +56,23 @@ class UserService extends RootService {
 		}
 	};
 
+	deleteUser = async (req: Request, res: Response) => {
+		try {
+			const output = await UserAuthController.deleteUser(req);
+			this.sendResponse({
+				res,
+				status: 200,
+				data: output,
+			});
+		} catch (error: any) {
+			this.sendResponse({
+				res,
+				status: error.status,
+				error,
+			});
+		}
+	};
+
 	getAllEvents = async (req: Request, res: Response) => {
 		try {
 			const output = await EventsController.getAllEvents();
